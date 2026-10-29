@@ -290,27 +290,41 @@ def generate_synthetic_split(
     allowed_templates = TEMPLATE_ALLOCATION[split_name]
     names_pool = FICTIONAL_NAMES[split_name]
     
+    seen_texts = set()
     records = []
-    for i in range(count):
+    i = 0
+    max_attempts = count * 50
+    attempts = 0
+    while len(records) < count and attempts < max_attempts:
+        attempts += 1
         tmpl_id = allowed_templates[i % len(allowed_templates)]
         name = rng.choice(names_pool)
         disease = rng.choice(VERIFIED_DISEASES)
         medication = rng.choice(VERIFIED_MEDICATIONS)
         
         tokens, ner_tags = generate_sentence_from_template(tmpl_id, name, disease, medication)
-        
+        sent_str = " ".join(tokens)
+        if sent_str in seen_texts:
+            continue
+            
+        seen_texts.add(sent_str)
         record = {
-            "document_id": f"synthetic_{split_name}_{i:06d}",
-            "sentence_id": f"synth_{split_name}_{i}",
+            "document_id": f"synthetic_{split_name}_{len(records):06d}",
+            "sentence_id": f"synth_{split_name}_{len(records)}",
             "source": "synthetic",
             "source_split": split_name,
             "template_id": tmpl_id,
             "random_seed": random_seed,
             "generation_version": GENERATION_VERSION,
             "tokens": tokens,
-            "ner_tags": ner_tags
+            "ner_tags": ner_tags,
+            "original_ner_tags": ner_tags
         }
         records.append(record)
+        i += 1
+        
+    if len(records) < count:
+        raise ValueError(f"Could not generate {count} unique sentences (reached {len(records)})")
         
     logger.info(f"Generated {len(records)} synthetic records for split '{split_name}' using seed {random_seed}")
     return records

@@ -1,0 +1,147 @@
+# ==============================================================================
+# .gitignore for Medical NER Project (HMM, MEMM, CRF Sequence Labeling)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Python Bytecode, Caches, and Distribution Artifacts
+# ------------------------------------------------------------------------------
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ------------------------------------------------------------------------------
+# 2. Testing, Code Quality, and Coverage
+# ------------------------------------------------------------------------------
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+.tox/
+.nox/
+
+# ------------------------------------------------------------------------------
+# 3. Virtual Environments
+# ------------------------------------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ------------------------------------------------------------------------------
+# 4. Jupyter Notebook Checkpoints
+# ------------------------------------------------------------------------------
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# ------------------------------------------------------------------------------
+# 5. Operating System Artifacts (macOS, Windows, Linux)
+# ------------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ------------------------------------------------------------------------------
+# 6. IDE, Editors, and Workspace Configuration
+# ------------------------------------------------------------------------------
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.sublime-workspace
+*.sublime-project
+
+# ------------------------------------------------------------------------------
+# 7. Local Configuration, Secrets, and Credentials
+# ------------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+*.pkcs12
+id_rsa
+id_ed25519
+credentials.json
+client_secret*.json
+
+# ------------------------------------------------------------------------------
+# 8. Logs and Temporary Files
+# ------------------------------------------------------------------------------
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+*.bak
+
+# ------------------------------------------------------------------------------
+# 9. Machine Learning Models, Serialized Checkpoints, and Tracking
+# ------------------------------------------------------------------------------
+models/
+checkpoints/
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.onnx
+*.h5
+wandb/
+runs/
+mlruns/
+
+# ------------------------------------------------------------------------------
+# 10. Large Downloaded and Generated Datasets (~29 MB total)
+# ------------------------------------------------------------------------------
+# Prevent large raw and generated dataset splits from being added to Git.
+# All data splits can be deterministically reproduced via:
+#   PYTHONPATH=. python3 src/data/prepare_dataset.py
+data/raw/*.jsonl
+data/processed/*.jsonl
+data/synthetic/*.jsonl
+*.parquet
+*.tar.gz
+*.zip
+
+# Preserve dataset schemas, configuration, and non-sensitive provenance metadata
+!data/raw/raw_provenance_metadata.json
+!data/synthetic/synthetic_generation_metadata.json
+!data/processed/label2id.json
+!data/processed/id2label.json
+

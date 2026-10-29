@@ -333,14 +333,14 @@ rifampin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'rifampi
 rifampin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'rifampin',train
 isoniazid,MEDICATION,Curated gazetteer match for approved pharmaceutical 'isoniazid',train
 rifampin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'rifampin',train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
 oxygen,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'oxygen',train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
 thiobarbituric acid,CHEMICAL,Default fallback: unverified chemical entity 'thiobarbituric acid' retained as CHEMICAL,train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
 Clomipramine,CHEMICAL,Default fallback: unverified chemical entity 'clomipramine' retained as CHEMICAL,train
 clomipramine,CHEMICAL,Default fallback: unverified chemical entity 'clomipramine' retained as CHEMICAL,train
 clomipramine,CHEMICAL,Default fallback: unverified chemical entity 'clomipramine' retained as CHEMICAL,train
@@ -554,24 +554,24 @@ ticlopidine,CHEMICAL,Default fallback: unverified chemical entity 'ticlopidine' 
 ticlopidine,CHEMICAL,Default fallback: unverified chemical entity 'ticlopidine' retained as CHEMICAL,train
 clopidogrel,CHEMICAL,Default fallback: unverified chemical entity 'clopidogrel' retained as CHEMICAL,train
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',train
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',train
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',train
 aldosterone,CHEMICAL,Default fallback: unverified chemical entity 'aldosterone' retained as CHEMICAL,train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',train
 Sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',train
 aldosterone,CHEMICAL,Default fallback: unverified chemical entity 'aldosterone' retained as CHEMICAL,train
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
 aldosterone,CHEMICAL,Default fallback: unverified chemical entity 'aldosterone' retained as CHEMICAL,train
 NO,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'no',train
 calcitonin gene-related peptide,CHEMICAL,Default fallback: unverified chemical entity 'calcitonin gene-related peptide' retained as CHEMICAL,train
@@ -2039,14 +2039,14 @@ alprazolam,MEDICATION,Curated gazetteer match for approved pharmaceutical 'alpra
 alprazolam,MEDICATION,Curated gazetteer match for approved pharmaceutical 'alprazolam',train
 Alprazolam,MEDICATION,Curated gazetteer match for approved pharmaceutical 'alprazolam',train
 Dup 753,CHEMICAL,Default fallback: unverified chemical entity 'dup 753' retained as CHEMICAL,train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
 blood nitrogen urea,CHEMICAL,Default fallback: unverified chemical entity 'blood nitrogen urea' retained as CHEMICAL,train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
 Dup 753,CHEMICAL,Default fallback: unverified chemical entity 'dup 753' retained as CHEMICAL,train
 losartan,MEDICATION,Curated gazetteer match for approved pharmaceutical 'losartan',train
 angiotensin II,CHEMICAL,Default fallback: unverified chemical entity 'angiotensin ii' retained as CHEMICAL,train
 angiotensin,CHEMICAL,Default fallback: unverified chemical entity 'angiotensin' retained as CHEMICAL,train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
 Sodium bicarbonate,CHEMICAL,Default fallback: unverified chemical entity 'sodium bicarbonate' retained as CHEMICAL,train
 sodium bicarbonate,CHEMICAL,Default fallback: unverified chemical entity 'sodium bicarbonate' retained as CHEMICAL,train
 papaverine,CHEMICAL,Default fallback: unverified chemical entity 'papaverine' retained as CHEMICAL,train
@@ -2555,10 +2555,10 @@ Methamphetamine,MEDICATION,Curated gazetteer match for approved pharmaceutical '
 METH,CHEMICAL,Default fallback: unverified chemical entity 'meth' retained as CHEMICAL,train
 dopamine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'dopamine',train
 DA,CHEMICAL,Default fallback: unverified chemical entity 'da' retained as CHEMICAL,train
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,train
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',train
 DA,CHEMICAL,Default fallback: unverified chemical entity 'da' retained as CHEMICAL,train
 METH,CHEMICAL,Default fallback: unverified chemical entity 'meth' retained as CHEMICAL,train
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,train
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',train
 DA,CHEMICAL,Default fallback: unverified chemical entity 'da' retained as CHEMICAL,train
 METH,CHEMICAL,Default fallback: unverified chemical entity 'meth' retained as CHEMICAL,train
 METH,CHEMICAL,Default fallback: unverified chemical entity 'meth' retained as CHEMICAL,train
@@ -2673,8 +2673,8 @@ asenapine,CHEMICAL,Default fallback: unverified chemical entity 'asenapine' reta
 haloperidol,MEDICATION,Curated gazetteer match for approved pharmaceutical 'haloperidol',train
 asenapine,CHEMICAL,Default fallback: unverified chemical entity 'asenapine' retained as CHEMICAL,train
 haloperidol,MEDICATION,Curated gazetteer match for approved pharmaceutical 'haloperidol',train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
 lopinavir/ritonavir,MEDICATION,Pharmacological stem match (.*avir$) in token 'lopinavir',train
 lopinavir/ritonavir,MEDICATION,Pharmacological stem match (.*avir$) in token 'lopinavir',train
 lopinavir/ritonavir,MEDICATION,Pharmacological stem match (.*avir$) in token 'lopinavir',train
@@ -4618,7 +4618,7 @@ rizatriptan,MEDICATION,Pharmacological stem match (.*triptan$) in token 'rizatri
 ergotamine,CHEMICAL,Default fallback: unverified chemical entity 'ergotamine' retained as CHEMICAL,train
 caffeine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'caffeine',train
 cisplatin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'cisplatin',train
-bleomycin,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'bleomycin',train
+bleomycin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'bleomycin',train
 vinca alkaloid,CHEMICAL,Default fallback: unverified chemical entity 'vinca alkaloid' retained as CHEMICAL,train
 cisplatin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'cisplatin',train
 nelarabine,CHEMICAL,Default fallback: unverified chemical entity 'nelarabine' retained as CHEMICAL,train
@@ -4862,12 +4862,12 @@ nicotine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'nicotin
 nicotine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'nicotine',train
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',train
 Levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',train
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,train
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',train
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',train
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,train
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',train
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',train
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',train
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,train
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',train
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',train
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',train
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',train
@@ -5163,13 +5163,13 @@ zonisamide,CHEMICAL,Default fallback: unverified chemical entity 'zonisamide' re
 zonisamide,CHEMICAL,Default fallback: unverified chemical entity 'zonisamide' retained as CHEMICAL,train
 zonisamide,CHEMICAL,Default fallback: unverified chemical entity 'zonisamide' retained as CHEMICAL,train
 tyrosine,CHEMICAL,Default fallback: unverified chemical entity 'tyrosine' retained as CHEMICAL,train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
 tyrosine,CHEMICAL,Default fallback: unverified chemical entity 'tyrosine' retained as CHEMICAL,train
-Puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,train
+Puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',train
 Ticlopidine,CHEMICAL,Default fallback: unverified chemical entity 'ticlopidine' retained as CHEMICAL,train
 ticlopidine,CHEMICAL,Default fallback: unverified chemical entity 'ticlopidine' retained as CHEMICAL,train
 ticlopidine,CHEMICAL,Default fallback: unverified chemical entity 'ticlopidine' retained as CHEMICAL,train
@@ -5708,7 +5708,7 @@ haloperidol,MEDICATION,Curated gazetteer match for approved pharmaceutical 'halo
 reserpine,CHEMICAL,Default fallback: unverified chemical entity 'reserpine' retained as CHEMICAL,valid
 6-hydroxydopamine,CHEMICAL,Default fallback: unverified chemical entity '6-hydroxydopamine' retained as CHEMICAL,valid
 6-OHDA,CHEMICAL,Default fallback: unverified chemical entity '6-ohda' retained as CHEMICAL,valid
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,valid
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',valid
 pegylated interferon alpha-2b,CHEMICAL,Default fallback: unverified chemical entity 'pegylated interferon alpha-2b' retained as CHEMICAL,valid
 ribavirin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ribavirin',valid
 ribavirin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ribavirin',valid
@@ -5884,7 +5884,7 @@ A-77636,CHEMICAL,Default fallback: unverified chemical entity 'a-77636' retained
 SKF-82958,CHEMICAL,Default fallback: unverified chemical entity 'skf-82958' retained as CHEMICAL,valid
 A-77636,CHEMICAL,Default fallback: unverified chemical entity 'a-77636' retained as CHEMICAL,valid
 "1-methyl-4-phenyl-1,2,3,6-tetrahydropyridine",CHEMICAL,"Default fallback: unverified chemical entity '1-methyl-4-phenyl-1,2,3,6-tetrahydropyridine' retained as CHEMICAL",valid
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,valid
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',valid
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',valid
 A-86929,CHEMICAL,Default fallback: unverified chemical entity 'a-86929' retained as CHEMICAL,valid
 "[-]-[5aR,11bS]-4,5,5a,6,7,11b-hexahydro-2-propyl-3-thia-5-+ ++azacyclopent-1- ena[c]phenathrene-9-10-diol",CHEMICAL,"Default fallback: unverified chemical entity '[-]-[5ar,11bs]-4,5,5a,6,7,11b-hexahydro-2-propyl-3-thia-5-+ ++azacyclopent-1- ena[c]phenathrene-9-10-diol' retained as CHEMICAL",valid
@@ -5894,7 +5894,7 @@ DA,CHEMICAL,Default fallback: unverified chemical entity 'da' retained as CHEMIC
 LY-171555,CHEMICAL,Default fallback: unverified chemical entity 'ly-171555' retained as CHEMICAL,valid
 "[4aR-trans]-4,4a,5,6,7,8,8a,9-o-dihydro-5n-propyl-2H-pyrazo lo-3-4-quinoline hydrochloride",CHEMICAL,"Default fallback: unverified chemical entity '[4ar-trans]-4,4a,5,6,7,8,8a,9-o-dihydro-5n-propyl-2h-pyrazo lo-3-4-quinoline hydrochloride' retained as CHEMICAL",valid
 A-86929,CHEMICAL,Default fallback: unverified chemical entity 'a-86929' retained as CHEMICAL,valid
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,valid
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',valid
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',valid
 LY-171555,CHEMICAL,Default fallback: unverified chemical entity 'ly-171555' retained as CHEMICAL,valid
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',valid
@@ -6267,14 +6267,14 @@ levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodop
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',valid
 Levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',valid
 Valproate,MEDICATION,Curated gazetteer match for approved pharmaceutical 'valproate',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-Puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+Puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
 amphetamine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'amphetamine',valid
 amphetamine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'amphetamine',valid
 corticosterone,CHEMICAL,Default fallback: unverified chemical entity 'corticosterone' retained as CHEMICAL,valid
@@ -6360,9 +6360,9 @@ methadone,MEDICATION,Curated gazetteer match for approved pharmaceutical 'methad
 methadone,MEDICATION,Curated gazetteer match for approved pharmaceutical 'methadone',valid
 hydromorphone,CHEMICAL,Default fallback: unverified chemical entity 'hydromorphone' retained as CHEMICAL,valid
 ketorolac,CHEMICAL,Default fallback: unverified chemical entity 'ketorolac' retained as CHEMICAL,valid
-Puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
+Puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
 estrogen,MEDICATION,Curated gazetteer match for approved pharmaceutical 'estrogen',valid
 estrogen,MEDICATION,Curated gazetteer match for approved pharmaceutical 'estrogen',valid
 Estrogens,CHEMICAL,Default fallback: unverified chemical entity 'estrogens' retained as CHEMICAL,valid
@@ -7042,8 +7042,8 @@ ritanserin,CHEMICAL,Default fallback: unverified chemical entity 'ritanserin' re
 scopolamine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'scopolamine',valid
 ritanserin,CHEMICAL,Default fallback: unverified chemical entity 'ritanserin' retained as CHEMICAL,valid
 scopolamine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'scopolamine',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
 cyclophosphamide,MEDICATION,Curated gazetteer match for approved pharmaceutical 'cyclophosphamide',valid
 anthracyclines,CHEMICAL,Default fallback: unverified chemical entity 'anthracyclines' retained as CHEMICAL,valid
 mitoxantrone,CHEMICAL,Default fallback: unverified chemical entity 'mitoxantrone' retained as CHEMICAL,valid
@@ -7406,14 +7406,14 @@ allopurinol,CHEMICAL,Default fallback: unverified chemical entity 'allopurinol' 
 indomethacin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'indomethacin',valid
 Indomethacin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'indomethacin',valid
 indomethacin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'indomethacin',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
 aminonucleoside,CHEMICAL,Default fallback: unverified chemical entity 'aminonucleoside' retained as CHEMICAL,valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
 fatty acids,CHEMICAL,Default fallback: unverified chemical entity 'fatty acids' retained as CHEMICAL,valid
 triacylglycerol,CHEMICAL,Default fallback: unverified chemical entity 'triacylglycerol' retained as CHEMICAL,valid
 cholesteryl esters,CHEMICAL,Default fallback: unverified chemical entity 'cholesteryl esters' retained as CHEMICAL,valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
 paracetamol,MEDICATION,Curated gazetteer match for approved pharmaceutical 'paracetamol',valid
 aspartate,CHEMICAL,Default fallback: unverified chemical entity 'aspartate' retained as CHEMICAL,valid
 tolazamide,CHEMICAL,Default fallback: unverified chemical entity 'tolazamide' retained as CHEMICAL,valid
@@ -7454,7 +7454,7 @@ AZT,MEDICATION,Curated gazetteer match for approved pharmaceutical 'azt',valid
 AZT,MEDICATION,Curated gazetteer match for approved pharmaceutical 'azt',valid
 AZT,MEDICATION,Curated gazetteer match for approved pharmaceutical 'azt',valid
 AZT,MEDICATION,Curated gazetteer match for approved pharmaceutical 'azt',valid
-phenylhydrazine,MEDICATION,Pharmacological stem match (.*azine$) in token 'phenylhydrazine',valid
+phenylhydrazine,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'phenylhydrazine',valid
 PHZ,CHEMICAL,Default fallback: unverified chemical entity 'phz' retained as CHEMICAL,valid
 AZT,MEDICATION,Curated gazetteer match for approved pharmaceutical 'azt',valid
 PHZ,CHEMICAL,Default fallback: unverified chemical entity 'phz' retained as CHEMICAL,valid
@@ -7684,24 +7684,24 @@ carotenoids,CHEMICAL,Default fallback: unverified chemical entity 'carotenoids' 
 crocins,CHEMICAL,Default fallback: unverified chemical entity 'crocins' retained as CHEMICAL,valid
 crocins,CHEMICAL,Default fallback: unverified chemical entity 'crocins' retained as CHEMICAL,valid
 streptozocin,CHEMICAL,Default fallback: unverified chemical entity 'streptozocin' retained as CHEMICAL,valid
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,valid
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',valid
 crocins,CHEMICAL,Default fallback: unverified chemical entity 'crocins' retained as CHEMICAL,valid
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,valid
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,valid
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',valid
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',valid
 crocins,CHEMICAL,Default fallback: unverified chemical entity 'crocins' retained as CHEMICAL,valid
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,valid
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,valid
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,valid
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',valid
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',valid
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',valid
 crocin,CHEMICAL,Default fallback: unverified chemical entity 'crocin' retained as CHEMICAL,valid
 crocin,CHEMICAL,Default fallback: unverified chemical entity 'crocin' retained as CHEMICAL,valid
 crocin,CHEMICAL,Default fallback: unverified chemical entity 'crocin' retained as CHEMICAL,valid
 crocin,CHEMICAL,Default fallback: unverified chemical entity 'crocin' retained as CHEMICAL,valid
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,valid
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,valid
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',valid
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',valid
 crocin,CHEMICAL,Default fallback: unverified chemical entity 'crocin' retained as CHEMICAL,valid
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,valid
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',valid
 crocin,CHEMICAL,Default fallback: unverified chemical entity 'crocin' retained as CHEMICAL,valid
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,valid
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',valid
 tacrolimus,MEDICATION,Curated gazetteer match for approved pharmaceutical 'tacrolimus',valid
 tacrolimus,MEDICATION,Curated gazetteer match for approved pharmaceutical 'tacrolimus',valid
 tacrolimus,MEDICATION,Curated gazetteer match for approved pharmaceutical 'tacrolimus',valid
@@ -7786,13 +7786,13 @@ gold,CHEMICAL,Default fallback: unverified chemical entity 'gold' retained as CH
 D-penicillamine,CHEMICAL,Default fallback: unverified chemical entity 'd-penicillamine' retained as CHEMICAL,valid
 hexachloro-1:3-butadiene,CHEMICAL,Default fallback: unverified chemical entity 'hexachloro-1:3-butadiene' retained as CHEMICAL,valid
 HCBD,CHEMICAL,Default fallback: unverified chemical entity 'hcbd' retained as CHEMICAL,valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
 2-bromoethylamine,CHEMICAL,Default fallback: unverified chemical entity '2-bromoethylamine' retained as CHEMICAL,valid
 BEA,CHEMICAL,Default fallback: unverified chemical entity 'bea' retained as CHEMICAL,valid
 HCBD,CHEMICAL,Default fallback: unverified chemical entity 'hcbd' retained as CHEMICAL,valid
 BEA,CHEMICAL,Default fallback: unverified chemical entity 'bea' retained as CHEMICAL,valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
 HCBD,CHEMICAL,Default fallback: unverified chemical entity 'hcbd' retained as CHEMICAL,valid
 BEA,CHEMICAL,Default fallback: unverified chemical entity 'bea' retained as CHEMICAL,valid
 glucose,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'glucose',valid
@@ -8376,10 +8376,10 @@ bromocriptine,CHEMICAL,Default fallback: unverified chemical entity 'bromocripti
 risperidone,MEDICATION,Curated gazetteer match for approved pharmaceutical 'risperidone',valid
 angiotensin,CHEMICAL,Default fallback: unverified chemical entity 'angiotensin' retained as CHEMICAL,valid
 puromycin amino-nucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
 Cyclophosphamide,MEDICATION,Curated gazetteer match for approved pharmaceutical 'cyclophosphamide',valid
 cyclophosphamide,MEDICATION,Curated gazetteer match for approved pharmaceutical 'cyclophosphamide',valid
 cyclophosphamide,MEDICATION,Curated gazetteer match for approved pharmaceutical 'cyclophosphamide',valid
@@ -8489,8 +8489,8 @@ tranylcypromine,CHEMICAL,Default fallback: unverified chemical entity 'tranylcyp
 venlafaxine,CHEMICAL,Default fallback: unverified chemical entity 'venlafaxine' retained as CHEMICAL,valid
 diazepam,MEDICATION,Curated gazetteer match for approved pharmaceutical 'diazepam',valid
 L-dopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'l-dopa',valid
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,valid
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,valid
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',valid
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',valid
 L-DOPA/benserazide,MEDICATION,Pharmacological stem match (.*dopa$) in token 'dopa',valid
 dopamine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'dopamine',valid
 L-DOPA,MEDICATION,Curated gazetteer match for approved pharmaceutical 'l-dopa',valid
@@ -8767,16 +8767,16 @@ ribavirin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ribavi
 ribavirin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ribavirin',valid
 ribavirin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ribavirin',valid
 ribavirin,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ribavirin',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',valid
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',valid
 Na,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'na',valid
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
 Na,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'na',valid
 H,CHEMICAL,Default fallback: unverified chemical entity 'h' retained as CHEMICAL,valid
 Na,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'na',valid
@@ -8788,7 +8788,7 @@ Cl,CHEMICAL,Default fallback: unverified chemical entity 'cl' retained as CHEMIC
 Na,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'na',valid
 K,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'k',valid
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',valid
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,valid
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',valid
 Na,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'na',valid
 K,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'k',valid
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',valid
@@ -10490,7 +10490,7 @@ captopril,MEDICATION,Curated gazetteer match for approved pharmaceutical 'captop
 captopril,MEDICATION,Curated gazetteer match for approved pharmaceutical 'captopril',valid
 captopril,MEDICATION,Curated gazetteer match for approved pharmaceutical 'captopril',valid
 captopril,MEDICATION,Curated gazetteer match for approved pharmaceutical 'captopril',valid
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',valid
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',valid
 Captopril,MEDICATION,Curated gazetteer match for approved pharmaceutical 'captopril',valid
 sodium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'sodium',valid
 potassium,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'potassium',valid
@@ -10902,21 +10902,21 @@ CCK-8,CHEMICAL,Default fallback: unverified chemical entity 'cck-8' retained as 
 morphine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'morphine',test
 Streptozotocin,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'streptozotocin',test
 Streptozotocin,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'streptozotocin',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 nitrite,CHEMICAL,Default fallback: unverified chemical entity 'nitrite' retained as CHEMICAL,test
 Ca,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'ca',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 Memantine,CHEMICAL,Default fallback: unverified chemical entity 'memantine' retained as CHEMICAL,test
 Ibuprofen,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ibuprofen',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 nitrite,CHEMICAL,Default fallback: unverified chemical entity 'nitrite' retained as CHEMICAL,test
 Ca,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'ca',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 sodium chloride,CHEMICAL,Default fallback: unverified chemical entity 'sodium chloride' retained as CHEMICAL,test
 diltiazem,MEDICATION,Curated gazetteer match for approved pharmaceutical 'diltiazem',test
 contrast,CHEMICAL,Default fallback: unverified chemical entity 'contrast' retained as CHEMICAL,test
@@ -11339,26 +11339,26 @@ Testosterone,MEDICATION,Curated gazetteer match for approved pharmaceutical 'tes
 streptozotocin,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'streptozotocin',test
 testosterone,MEDICATION,Curated gazetteer match for approved pharmaceutical 'testosterone',test
 streptozotocin,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'streptozotocin',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 Testosterone,MEDICATION,Curated gazetteer match for approved pharmaceutical 'testosterone',test
 androgen,CHEMICAL,Default fallback: unverified chemical entity 'androgen' retained as CHEMICAL,test
 flutamide,CHEMICAL,Default fallback: unverified chemical entity 'flutamide' retained as CHEMICAL,test
 estrogen,MEDICATION,Curated gazetteer match for approved pharmaceutical 'estrogen',test
 tamoxifen,MEDICATION,Curated gazetteer match for approved pharmaceutical 'tamoxifen',test
 letrozole,CHEMICAL,Default fallback: unverified chemical entity 'letrozole' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 Testosterone,MEDICATION,Curated gazetteer match for approved pharmaceutical 'testosterone',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 flutamide,CHEMICAL,Default fallback: unverified chemical entity 'flutamide' retained as CHEMICAL,test
 letrozole,CHEMICAL,Default fallback: unverified chemical entity 'letrozole' retained as CHEMICAL,test
 tamoxifen,MEDICATION,Curated gazetteer match for approved pharmaceutical 'tamoxifen',test
 testosterone,MEDICATION,Curated gazetteer match for approved pharmaceutical 'testosterone',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 Testosterone,MEDICATION,Curated gazetteer match for approved pharmaceutical 'testosterone',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 garcinielliptone FC,CHEMICAL,Default fallback: unverified chemical entity 'garcinielliptone fc' retained as CHEMICAL,test
 pilocarpine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'pilocarpine',test
 Garcinielliptone FC,CHEMICAL,Default fallback: unverified chemical entity 'garcinielliptone fc' retained as CHEMICAL,test
@@ -12859,16 +12859,16 @@ norepinephrine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'n
 PPA,CHEMICAL,Default fallback: unverified chemical entity 'ppa' retained as CHEMICAL,test
 norepinephrine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'norepinephrine',test
 aminonucleoside,CHEMICAL,Default fallback: unverified chemical entity 'aminonucleoside' retained as CHEMICAL,test
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
 carbon,CHEMICAL,Default fallback: unverified chemical entity 'carbon' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
 nicotine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'nicotine',test
 nicotine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'nicotine',test
 nicotine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'nicotine',test
@@ -13524,17 +13524,17 @@ CD-832,CHEMICAL,Default fallback: unverified chemical entity 'cd-832' retained a
 ISO,CHEMICAL,Default fallback: unverified chemical entity 'iso' retained as CHEMICAL,test
 CD-832,CHEMICAL,Default fallback: unverified chemical entity 'cd-832' retained as CHEMICAL,test
 CD-832,CHEMICAL,Default fallback: unverified chemical entity 'cd-832' retained as CHEMICAL,test
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',test
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',test
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
 malondialdehyde,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'malondialdehyde',test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
 malondialdehyde,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'malondialdehyde',test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
 Nefiracetam,CHEMICAL,Default fallback: unverified chemical entity 'nefiracetam' retained as CHEMICAL,test
 DM-9384,CHEMICAL,Default fallback: unverified chemical entity 'dm-9384' retained as CHEMICAL,test
 apomorphine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'apomorphine',test
@@ -14226,28 +14226,28 @@ GTN,CHEMICAL,Default fallback: unverified chemical entity 'gtn' retained as CHEM
 DCF,CHEMICAL,Default fallback: unverified chemical entity 'dcf' retained as CHEMICAL,test
 Temocapril,MEDICATION,Pharmacological stem match (.*pril$) in token 'temocapril',test
 angiotensin,CHEMICAL,Default fallback: unverified chemical entity 'angiotensin' retained as CHEMICAL,test
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',test
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',test
 temocapril,MEDICATION,Pharmacological stem match (.*pril$) in token 'temocapril',test
 angiotensin,CHEMICAL,Default fallback: unverified chemical entity 'angiotensin' retained as CHEMICAL,test
-puromycin aminonucleoside,MEDICATION,Pharmacological stem match (.*mycin$) in token 'puromycin',test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
+puromycin aminonucleoside,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'puromycin aminonucleoside',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
 temocapril,MEDICATION,Pharmacological stem match (.*pril$) in token 'temocapril',test
 temocapril,MEDICATION,Pharmacological stem match (.*pril$) in token 'temocapril',test
 Temocapril,MEDICATION,Pharmacological stem match (.*pril$) in token 'temocapril',test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
 temocapril,MEDICATION,Pharmacological stem match (.*pril$) in token 'temocapril',test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
 Temocapril,MEDICATION,Pharmacological stem match (.*pril$) in token 'temocapril',test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
 temocapril,MEDICATION,Pharmacological stem match (.*pril$) in token 'temocapril',test
 temocapril,MEDICATION,Pharmacological stem match (.*pril$) in token 'temocapril',test
-PAN,CHEMICAL,Default fallback: unverified chemical entity 'pan' retained as CHEMICAL,test
+PAN,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'pan',test
 ibuprofen,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ibuprofen',test
 ibuprofen,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ibuprofen',test
 ibuprofen,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ibuprofen',test
@@ -15742,11 +15742,11 @@ carbamazepine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'ca
 carbamazepine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'carbamazepine',test
 carbamazepine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'carbamazepine',test
 carbamazepine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'carbamazepine',test
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,test
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',test
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',test
 dopamine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'dopamine',test
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',test
-MPTP,CHEMICAL,Default fallback: unverified chemical entity 'mptp' retained as CHEMICAL,test
+MPTP,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'mptp',test
 levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',test
 "1-methyl-4-phenyl-1,2,3,6-tetrahydropyridine",CHEMICAL,"Default fallback: unverified chemical entity '1-methyl-4-phenyl-1,2,3,6-tetrahydropyridine' retained as CHEMICAL",test
 Levodopa,MEDICATION,Curated gazetteer match for approved pharmaceutical 'levodopa',test
@@ -15791,13 +15791,13 @@ morphine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'morphin
 CNSB002,CHEMICAL,Default fallback: unverified chemical entity 'cnsb002' retained as CHEMICAL,test
 carrageenan,CHEMICAL,Default fallback: unverified chemical entity 'carrageenan' retained as CHEMICAL,test
 streptozotocin,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'streptozotocin',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 morphine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'morphine',test
 CNSB002,CHEMICAL,Default fallback: unverified chemical entity 'cnsb002' retained as CHEMICAL,test
 CNSB002,CHEMICAL,Default fallback: unverified chemical entity 'cnsb002' retained as CHEMICAL,test
 morphine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'morphine',test
 carrageenan,CHEMICAL,Default fallback: unverified chemical entity 'carrageenan' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 CNSB002,CHEMICAL,Default fallback: unverified chemical entity 'cnsb002' retained as CHEMICAL,test
 morphine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'morphine',test
 morphine,MEDICATION,Curated gazetteer match for approved pharmaceutical 'morphine',test
@@ -15847,9 +15847,9 @@ sulfamethoxazole,CHEMICAL,Default fallback: unverified chemical entity 'sulfamet
 streptozotocin,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'streptozotocin',test
 angiotensin,CHEMICAL,Default fallback: unverified chemical entity 'angiotensin' retained as CHEMICAL,test
 streptozotocin,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'streptozotocin',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 temsirolimus,CHEMICAL,Default fallback: unverified chemical entity 'temsirolimus' retained as CHEMICAL,test
 temsirolimus,CHEMICAL,Default fallback: unverified chemical entity 'temsirolimus' retained as CHEMICAL,test
 temsirolimus,CHEMICAL,Default fallback: unverified chemical entity 'temsirolimus' retained as CHEMICAL,test
@@ -15923,10 +15923,10 @@ galactose,CHEMICAL,Default fallback: unverified chemical entity 'galactose' reta
 galactose,CHEMICAL,Default fallback: unverified chemical entity 'galactose' retained as CHEMICAL,test
 galactose,CHEMICAL,Default fallback: unverified chemical entity 'galactose' retained as CHEMICAL,test
 streptozotocin,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'streptozotocin',test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 galactose,CHEMICAL,Default fallback: unverified chemical entity 'galactose' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
-STZ,CHEMICAL,Default fallback: unverified chemical entity 'stz' retained as CHEMICAL,test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
+STZ,CHEMICAL,Excluded: endogenous metabolite/electrolyte/toxin 'stz',test
 galactose,CHEMICAL,Default fallback: unverified chemical entity 'galactose' retained as CHEMICAL,test
 galactose,CHEMICAL,Default fallback: unverified chemical entity 'galactose' retained as CHEMICAL,test
 galactose,CHEMICAL,Default fallback: unverified chemical entity 'galactose' retained as CHEMICAL,test

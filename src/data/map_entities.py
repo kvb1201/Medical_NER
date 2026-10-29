@@ -62,11 +62,13 @@ NON_MEDICATION_EXCLUSIONS: Set[str] = {
     "na", "k", "ca", "mg", "fe", "pb", "cd", "hg", "cu", "zn",
     # Endogenous neurotransmitters/hormones when described physiologically
     "serotonin", "glutamate", "gaba", "acetylcholine", "glycine",
-    # Environmental/laboratory reagents and toxins
+    # Environmental/laboratory reagents and experimental disease-model toxins
     "carbon monoxide", "co", "carbon tetrachloride", "ccl4", "benzene", "toluene",
     "formaldehyde", "paraquat", "cyanide", "asbestos", "dimethyl sulfoxide", "dmso",
     "hydrogen peroxide", "oxygen", "ozone", "silica", "rotenone", "kainic acid",
-    "streptozotocin", "lipopolysaccharide", "lps", "bleomycin" # frequently used as animal disease models
+    "streptozotocin", "stz", "lipopolysaccharide", "lps",
+    "puromycin", "puromycin aminonucleoside", "pan",
+    "phenylhydrazine", "mptp", "dss", "dextran sulfate sodium"
 }
 
 # Curated High-Confidence Medication Gazetteers (Frequent BC5CDR Drugs)
