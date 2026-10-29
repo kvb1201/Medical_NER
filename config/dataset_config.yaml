@@ -1,0 +1,60 @@
+# Dataset Configuration for Medical NER Pipeline
+random_seed: 42
+generation_version: "1.0.0"
+
+source:
+  repo_id: "tner/bc5cdr"
+  description: "BioCreative V Chemical-Disease Relation (CDR) task dataset"
+  splits:
+    - "train"
+    - "valid"
+    - "test"
+
+schema:
+  target_labels:
+    - "O"
+    - "B-DISEASE"
+    - "I-DISEASE"
+    - "B-MEDICATION"
+    - "I-MEDICATION"
+    - "B-PATIENT_NAME"
+    - "I-PATIENT_NAME"
+    - "B-CHEMICAL"
+    - "I-CHEMICAL"
+
+synthetic:
+  counts:
+    train: 800
+    valid: 100
+    test: 100
+  template_allocation:
+    train:
+      - "admission_dx_01"
+      - "admission_dx_02"
+      - "admission_dx_03"
+      - "prescription_tx_01"
+      - "prescription_tx_02"
+      - "prescription_tx_03"
+      - "history_review_01"
+      - "history_review_02"
+      - "history_review_03"
+      - "followup_discharge_01"
+      - "referral_consult_01"
+      - "multi_entity_01"
+    valid:
+      - "admission_dx_04"
+      - "prescription_tx_04"
+      - "history_review_04"
+      - "followup_discharge_02"
+    test:
+      - "admission_dx_05"
+      - "prescription_tx_05"
+      - "referral_consult_02"
+      - "multi_entity_02"
+
+paths:
+  raw_dir: "data/raw"
+  synthetic_dir: "data/synthetic"
+  processed_dir: "data/processed"
+  reports_dir: "reports"
+

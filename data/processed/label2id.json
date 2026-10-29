@@ -1,0 +1,11 @@
+{
+  "O": 0,
+  "B-CHEMICAL": 1,
+  "B-DISEASE": 2,
+  "B-MEDICATION": 3,
+  "B-PATIENT_NAME": 4,
+  "I-CHEMICAL": 5,
+  "I-DISEASE": 6,
+  "I-MEDICATION": 7,
+  "I-PATIENT_NAME": 8
+}

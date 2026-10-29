@@ -1,0 +1,34 @@
+{
+  "repository_info": {
+    "repo_id": "tner/bc5cdr",
+    "commit_sha": "f68cdc7db924369241e7868656f583072acd4e90",
+    "homepage": "https://huggingface.co/datasets/tner/bc5cdr"
+  },
+  "label_mapping": {
+    "O": 0,
+    "B-Chemical": 1,
+    "B-Disease": 2,
+    "I-Disease": 3,
+    "I-Chemical": 4
+  },
+  "splits": {
+    "train": {
+      "sentence_count": 5228,
+      "unique_sentence_count": 5141,
+      "total_tokens": 109322,
+      "raw_file": "data/raw/bc5cdr_train.jsonl"
+    },
+    "valid": {
+      "sentence_count": 5330,
+      "unique_sentence_count": 5202,
+      "total_tokens": 108958,
+      "raw_file": "data/raw/bc5cdr_valid.jsonl"
+    },
+    "test": {
+      "sentence_count": 5865,
+      "unique_sentence_count": 5713,
+      "total_tokens": 116318,
+      "raw_file": "data/raw/bc5cdr_test.jsonl"
+    }
+  }
+}

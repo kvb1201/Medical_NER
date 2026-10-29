@@ -1,0 +1,42 @@
+{
+  "generation_version": "1.0.0",
+  "base_seed": 42,
+  "template_allocation": {
+    "train": [
+      "admission_dx_01",
+      "admission_dx_02",
+      "admission_dx_03",
+      "prescription_tx_01",
+      "prescription_tx_02",
+      "prescription_tx_03",
+      "history_review_01",
+      "history_review_02",
+      "history_review_03",
+      "followup_discharge_01",
+      "referral_consult_01",
+      "multi_entity_01"
+    ],
+    "valid": [
+      "admission_dx_04",
+      "prescription_tx_04",
+      "history_review_04",
+      "followup_discharge_02"
+    ],
+    "test": [
+      "admission_dx_05",
+      "prescription_tx_05",
+      "referral_consult_02",
+      "multi_entity_02"
+    ]
+  },
+  "counts": {
+    "train": 800,
+    "valid": 100,
+    "test": 100
+  },
+  "saved_files": {
+    "train": "data/synthetic/synthetic_train.jsonl",
+    "valid": "data/synthetic/synthetic_valid.jsonl",
+    "test": "data/synthetic/synthetic_test.jsonl"
+  }
+}

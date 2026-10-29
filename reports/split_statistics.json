@@ -1,0 +1,133 @@
+{
+  "train": {
+    "split_name": "train",
+    "total_records": 6028,
+    "unique_records": 5909,
+    "duplicates": 119,
+    "total_tokens": 119879,
+    "tag_counts": {
+      "B-MEDICATION": 2649,
+      "O": 103863,
+      "B-DISEASE": 4982,
+      "B-CHEMICAL": 2953,
+      "I-DISEASE": 3261,
+      "I-CHEMICAL": 482,
+      "I-MEDICATION": 89,
+      "B-PATIENT_NAME": 800,
+      "I-PATIENT_NAME": 800
+    },
+    "entity_mention_counts": {
+      "MEDICATION": 2649,
+      "DISEASE": 4982,
+      "CHEMICAL": 2953,
+      "PATIENT_NAME": 800
+    },
+    "sentence_prevalence_counts": {
+      "MEDICATION": 2093,
+      "DISEASE": 3461,
+      "CHEMICAL": 1890,
+      "PATIENT_NAME": 800
+    },
+    "sentence_prevalence_pct": {
+      "MEDICATION": 34.72130059721301,
+      "DISEASE": 57.41539482415396,
+      "CHEMICAL": 31.353682813536825,
+      "PATIENT_NAME": 13.271400132714001
+    },
+    "sentences_with_any_entity": 4715,
+    "pct_sentences_with_any_entity": 78.21831453218314
+  },
+  "valid": {
+    "split_name": "valid",
+    "total_records": 5430,
+    "unique_records": 5301,
+    "duplicates": 129,
+    "total_tokens": 110464,
+    "tag_counts": {
+      "B-DISEASE": 4344,
+      "I-DISEASE": 2497,
+      "O": 97488,
+      "B-MEDICATION": 2276,
+      "I-MEDICATION": 94,
+      "B-CHEMICAL": 3121,
+      "I-CHEMICAL": 444,
+      "B-PATIENT_NAME": 100,
+      "I-PATIENT_NAME": 100
+    },
+    "entity_mention_counts": {
+      "DISEASE": 4344,
+      "MEDICATION": 2276,
+      "CHEMICAL": 3121,
+      "PATIENT_NAME": 100
+    },
+    "sentence_prevalence_counts": {
+      "DISEASE": 2788,
+      "MEDICATION": 1742,
+      "CHEMICAL": 1970,
+      "PATIENT_NAME": 100
+    },
+    "sentence_prevalence_pct": {
+      "DISEASE": 51.34438305709024,
+      "MEDICATION": 32.081031307550646,
+      "CHEMICAL": 36.279926335174956,
+      "PATIENT_NAME": 1.841620626151013
+    },
+    "sentences_with_any_entity": 3989,
+    "pct_sentences_with_any_entity": 73.46224677716391
+  },
+  "test": {
+    "split_name": "test",
+    "total_records": 5965,
+    "unique_records": 5810,
+    "duplicates": 155,
+    "total_tokens": 117957,
+    "tag_counts": {
+      "B-MEDICATION": 2325,
+      "O": 104859,
+      "B-DISEASE": 4524,
+      "B-CHEMICAL": 3135,
+      "I-DISEASE": 2513,
+      "I-CHEMICAL": 316,
+      "I-MEDICATION": 85,
+      "B-PATIENT_NAME": 100,
+      "I-PATIENT_NAME": 100
+    },
+    "entity_mention_counts": {
+      "MEDICATION": 2325,
+      "DISEASE": 4524,
+      "CHEMICAL": 3135,
+      "PATIENT_NAME": 100
+    },
+    "sentence_prevalence_counts": {
+      "DISEASE": 2946,
+      "MEDICATION": 1797,
+      "CHEMICAL": 2046,
+      "PATIENT_NAME": 100
+    },
+    "sentence_prevalence_pct": {
+      "DISEASE": 49.38809723386421,
+      "MEDICATION": 30.125733445096397,
+      "CHEMICAL": 34.30008382229673,
+      "PATIENT_NAME": 1.6764459346186085
+    },
+    "sentences_with_any_entity": 4240,
+    "pct_sentences_with_any_entity": 71.081307627829
+  },
+  "leakage_analysis": {
+    "document_overlap": {
+      "train_vs_valid": 0,
+      "train_vs_test": 0,
+      "valid_vs_test": 0
+    },
+    "template_overlap": {
+      "train_vs_valid": 0,
+      "train_vs_test": 0,
+      "valid_vs_test": 0
+    },
+    "sentence_overlap": {
+      "train_vs_valid": 55,
+      "train_vs_test": 64,
+      "valid_vs_test": 55
+    }
+  }
+}
