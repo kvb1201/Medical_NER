@@ -59,7 +59,7 @@ def test_provenance_metadata():
     for r in recs:
         assert r["source"] == "synthetic"
         assert r["random_seed"] == 123
-        assert r["generation_version"] == "1.0.0"
+        assert r["generation_version"] == "2.0.0"
         assert "template_id" in r
         assert "document_id" in r
 

@@ -57,4 +57,5 @@ def test_reports_generated():
     assert os.path.exists(os.path.join(REPORTS_DIR, "label_distribution.csv"))
     assert os.path.exists(os.path.join(REPORTS_DIR, "split_statistics.json"))
     assert os.path.exists(os.path.join(REPORTS_DIR, "medication_mapping_audit.csv"))
+    assert os.path.exists(os.path.join(REPORTS_DIR, "near_duplicate_audit.csv"))
 

@@ -1,6 +1,6 @@
 # Medical NER Dataset Audit Report
 **Target Models:** Hidden Markov Model (HMM), Maximum Entropy Markov Model (MEMM), Conditional Random Field (CRF)  
-**Generation Version:** 1.0.0  
+**Generation Version:** 2.0.0  
 **Random Seed:** 42  
 **Repository Source:** [`tner/bc5cdr`](https://huggingface.co/datasets/tner/bc5cdr) (Commit SHA: `f68cdc7db924369241e7868656f583072acd4e90`)
 
@@ -10,7 +10,8 @@
 
 This dataset preparation pipeline was constructed to provide an auditable, leakage-free benchmark for statistical sequence labeling. It combines:
 1. **The gold-standard BC5CDR benchmark** (PubMed scientific abstracts annotated for chemicals and diseases).
-2. **Controlled, disjoint synthetic clinical sentences** introducing fictional patient names without corrupting authentic biomedical distributions.
+2. **5,000 controlled, disjoint synthetic clinical sentences** introducing fictional patient names without corrupting authentic biomedical distributions.
+3. **Cross-source duplicate and near-duplicate audit** with documented normalization and benchmark preservation.
 
 ### Quality Control Checklist Status
 - [x] **Token-label length equality:** 100% verified across all records (0 mismatches).
@@ -19,6 +20,8 @@ This dataset preparation pipeline was constructed to provide an auditable, leaka
 - [x] **No empty sequences:** All records contain >= 1 tokens and valid tags.
 - [x] **Source-document isolation:** 0 overlapping document IDs between train, valid, and test.
 - [x] **Synthetic template isolation:** 0 overlapping template families between splits.
+- [x] **Cross-source duplicate prevention:** Exact and near-duplicate leakage verified and audited.
+- [x] **Fixed test benchmark preservation:** BC5CDR original test partition is 100% fixed and unaltered.
 - [x] **Label vocabulary consistency:** Identical 9 classes across all splits.
 - [x] **Target entity presence:** `DISEASE`, `MEDICATION`, and `PATIENT_NAME` exist in every split.
 - [x] **Exact source preservation:** Original BC5CDR tokens and raw tags are preserved and recoverable.
@@ -27,32 +30,32 @@ This dataset preparation pipeline was constructed to provide an auditable, leaka
 
 ## 2. Reconciled Split & Token Statistics
 
-### A. Original BC5CDR Splits (PubMed Abstracts)
+### A. Original BC5CDR Splits (PubMed Abstracts - After Filtering)
 | Split Name | Source Documents | Genuine Sentences | Unique Sentences | Duplicate Sentences | Total Tokens | Median Length | Range [Min, Max] |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Train** | 500 | 5,228 | 5,141 | 87 | 109,322 | 18 | [1, 133] |
 | **Valid** | 500 | 5,330 | 5,202 | 128 | 108,958 | 18 | [1, 232] |
-| **Test** | 500 | 5,865 | 5,713 | 152 | 116,318 | 17 | [1, 135] |
+| **Test (Fixed)** | 500 | 5,865 | 5,713 | 152 | 116,318 | 17 | [1, 135] |
 | **BC5CDR Subtotal** | **1,500** | **16,423** | **16,056** | **367** | **334,598** | **18** | **[1, 232]** |
 
-### B. Synthetic Patient-Name Augmentation Splits
+### B. Synthetic Patient-Name Augmentation Splits (5,000 Sentences)
 | Split Name | Synthetic Sentences | Unique Sentences | Duplicates | Total Tokens | Fictional Patient Mentions | Disease Mentions | Medication Mentions |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Train** | 800 | 800 | 0 | 10,556 | 800 | 800 | 399 |
-| **Valid** | 100 | 100 | 0 | 1,509 | 100 | 100 | 50 |
-| **Test** | 100 | 100 | 0 | 1,628 | 100 | 100 | 75 |
-| **Synthetic Subtotal** | **1,000** | **1,000** | **0** | **13,693** | **1,000** | **1,000** | **524** |
+| **Train** | 4,000 | 4,000 | 0 | 53,017 | 4,000 | 4,000 | 2,056 |
+| **Valid** | 500 | 500 | 0 | 7,212 | 500 | 500 | 252 |
+| **Test** | 500 | 500 | 0 | 7,638 | 500 | 500 | 336 |
+| **Synthetic Subtotal** | **5,000** | **5,000** | **0** | **67,867** | **5,000** | **5,000** | **2,644** |
 
 ### C. Combined Augmented Splits (Final Benchmark)
 | Split Name | Total Sentences | Unique Sentences | Duplicate Sentences | Duplicate Rate | Total Tokens | Tokens Reconciliation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Train** | **6,028** | 5,941 | 87 | 1.44% | **119,878** | 109,322 (BC5CDR) + 10,556 (synth) = 119,878 |
-| **Valid** | **5,430** | 5,302 | 128 | 2.36% | **110,467** | 108,958 (BC5CDR) + 1,509 (synth) = 110,467 |
-| **Test** | **5,965** | 5,813 | 152 | 2.55% | **117,946** | 116,318 (BC5CDR) + 1,628 (synth) = 117,946 |
-| **TOTAL** | **17,423** | **17,056** | **367** | **2.11%** | **348,291** | **334,598 (BC5CDR) + 13,693 (synth) = 348,291** |
+| **Train** | **9,228** | 9,141 | 87 | 0.94% | **162,339** | 109,322 (BC5CDR) + 53,017 (synth) = 162,339 |
+| **Valid** | **5,830** | 5,702 | 128 | 2.20% | **116,170** | 108,958 (BC5CDR) + 7,212 (synth) = 116,170 |
+| **Test** | **6,365** | 6,213 | 152 | 2.39% | **123,956** | 116,318 (BC5CDR) + 7,638 (synth) = 123,956 |
+| **TOTAL** | **21,423** | **21,056** | **367** | **1.71%** | **402,465** | **334,598 (BC5CDR) + 67,867 (synth) = 402,465** |
 
 *Note on Uniqueness Reconciliation:*  
-In the training split, 5,141 unique BC5CDR sentences + 800 uniquely generated synthetic sentences = **5,941 unique sentences** (with zero cross-source sentence collisions). The 87 duplicates in augmented train derive entirely from the original BC5CDR abstracts (e.g. repetitive section headers such as `'METHODS:'` or `'RESULTS:'`).
+In the training split, 5,141 unique BC5CDR sentences + 4,000 uniquely generated synthetic sentences = **9,141 unique sentences** (with zero cross-source sentence collisions). The 87 duplicates in augmented train derive entirely from authentic BC5CDR PubMed abstract section headers (e.g., `'METHODS:'` or `'RESULTS:'`).
 
 ---
 
@@ -60,19 +63,19 @@ In the training split, 5,141 unique BC5CDR sentences + 800 uniquely generated sy
 
 | Entity Class | BC5CDR Mentions | Synthetic Mentions | Augmented Train | Augmented Valid | Augmented Test | Augmented Total |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `DISEASE` | 12,850 | 1,000 | 4,982 | 4,344 | 4,524 | **13,850** |
-| `MEDICATION` | 6,690 | 524 | 2,638 | 2,256 | 2,320 | **7,214** |
+| `DISEASE` | 12,850 | 5,000 | 8,182 | 4,744 | 4,924 | **17,850** |
+| `MEDICATION` | 6,690 | 2,644 | 4,295 | 2,458 | 2,581 | **9,334** |
 | `CHEMICAL` (retained) | 9,245 | 0 | 2,964 | 3,141 | 3,140 | **9,245** |
-| `PATIENT_NAME` | 0 | 1,000 | 800 | 100 | 100 | **1,000** |
-| **Total Mentions** | **28,785** | **2,524** | **11,384** | **9,841** | **10,084** | **31,309** |
+| `PATIENT_NAME` | 0 | 5,000 | 4,000 | 500 | 500 | **5,000** |
+| **Total Mentions** | **28,785** | **12,644** | **19,441** | **10,843** | **11,145** | **41,429** |
 
 *Chemical Reconciliation:*  
 - Original BC5CDR chemical mentions: **15,935**.
 - Mapped to `MEDICATION`: **6,690**.
 - Retained as `CHEMICAL`: **9,245**.
 - Check: $6,690 + 9,245 = 15,935$.
-- Synthetic addition of `MEDICATION`: **524**.
-- Final `MEDICATION` mentions in augmented dataset: $6,690 + 524 = 7,214$.
+- Synthetic addition of `MEDICATION`: **2,644**.
+- Final `MEDICATION` mentions in augmented dataset: $6,690 + 2,644 = 9,334$.
 - Final `CHEMICAL` mentions in augmented dataset: $9,245 + 0 = 9,245$.
 
 ---
@@ -81,11 +84,11 @@ In the training split, 5,141 unique BC5CDR sentences + 800 uniquely generated sy
 
 | Entity Type | Train Prevalence | Valid Prevalence | Test Prevalence | Total Augmented Sentences |
 | :--- | :--- | :--- | :--- | :--- |
-| **Any Target Entity** | **78.2%** (4,715 / 6,028) | **73.5%** (3,989 / 5,430) | **71.1%** (4,240 / 5,965) | **74.3%** (12,944 / 17,423) |
-| `DISEASE` | 57.4% (3,461) | 51.3% (2,788) | 49.4% (2,946) | 52.8% (9,195) |
-| `MEDICATION` | 34.6% (2,083) | 31.7% (1,724) | 30.1% (1,794) | 32.1% (5,601) |
-| `CHEMICAL` (retained) | 31.4% (1,893) | 36.6% (1,985) | 34.3% (2,047) | 34.0% (5,925) |
-| `PATIENT_NAME` | 13.3% (800) | 1.8% (100) | 1.7% (100) | 5.7% (1,000) |
+| **Any Target Entity** | **85.8%** (7,915 / 9,228) | **75.3%** (4,389 / 5,830) | **72.9%** (4,640 / 6,365) | **79.1%** (16,944 / 21,423) |
+| `DISEASE` | 72.2% (6,661) | 54.7% (3,188) | 52.6% (3,346) | 61.6% (13,195) |
+| `MEDICATION` | 40.5% (3,740) | 33.0% (1,926) | 32.3% (2,055) | 36.0% (7,721) |
+| `CHEMICAL` (retained) | 20.5% (1,893) | 34.0% (1,985) | 32.2% (2,047) | 27.7% (5,925) |
+| `PATIENT_NAME` | 43.3% (4,000) | 8.6% (500) | 7.9% (500) | 23.3% (5,000) |
 
 ---
 
@@ -111,13 +114,47 @@ Rather than blindly converting all chemicals to medications, `src/data/map_entit
 
 ---
 
-## 6. Synthetic Augmentation & Leakage Prevention Analysis
+## 6. Cross-Source Duplicate Leakage & Deduplication Audit
 
-- **Fictional Names Only:** 100% fictional name pairs (*John Doe, Robert Taylor, Jane Smith, etc.*), partitioned disjointly across train, valid, and test pools.
-- **Disjoint Template Allocation:**
-  - Train: 12 templates (`admission_dx_01-03`, `prescription_tx_01-03`, `history_review_01-03`, `followup_discharge_01`, `referral_consult_01`, `multi_entity_01`).
-  - Valid: 4 templates (`admission_dx_04`, `prescription_tx_04`, `history_review_04`, `followup_discharge_02`).
-  - Test: 4 templates (`admission_dx_05`, `prescription_tx_05`, `referral_consult_02`, `multi_entity_02`).
+To prevent cross-source leakage between authentic PubMed abstracts (BC5CDR) and synthetic clinical records, the pipeline enforces strict duplicate detection and benchmark preservation rules:
+
+### A. Documented Text Normalization Method
+The normalization function `src.data.deduplicate.normalize_text` performs:
+1. **Unicode NFKC normalization** to resolve composite glyphs and compatibility characters.
+2. **Case folding** (converting all tokens to lowercase).
+3. **Internal whitespace sequence collapsing** (regex `\s+` mapped to single space).
+4. **Boundary punctuation stripping** (stripping surrounding trailing periods, commas, or quotes while preserving internal hyphens, apostrophes, and chemical numbers).
+
+### B. Conservative Near-Duplicate Detection Method
+Near-duplicate candidates are evaluated using composite similarity:
+- Evaluates token-level Jaccard similarity and normalized character Levenshtein edit distance.
+- Conservative threshold: >= 0.85 (85% similarity).
+- **Preservation of Shared Entity Vocabulary (Requirement 8):** Sentences sharing verified disease or medication terms (e.g., *metformin*, *diabetes mellitus*) without sharing sentence-level syntactic framing are explicitly classified as non-leakage and preserved.
+
+### C. Partition-Specific Filtering Rules (Requirements 5 & 6)
+- **Training & Validation Partitions:** If an original record duplicates a synthetic example in the same experimental partition, the duplicate original record is removed from the processed original and augmented datasets.
+- **Fixed Test Benchmark Immutability (Requirement 6):** The human gold BC5CDR test partition is fixed and immutable. Zero original test records are removed. If a synthetic test sentence duplicates an original test record, the synthetic generator rejects and regenerates the synthetic sample immediately.
+- **Raw BC5CDR Preservation:** Raw files in `data/raw/` remain 100% untouched.
+
+### D. Reconciled Filtering Summary
+| Partition | Original Records (Before) | Confirmed Duplicate Leakage | Original Records Removed | Remaining Original Records | Synthetic Additions | Total Augmented Records |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Train** | 5,228 | 0 | **0** | 5,228 | 4,000 | **9,228** |
+| **Valid** | 5,330 | 0 | **0** | 5,330 | 500 | **5,830** |
+| **Test (Fixed)** | 5,865 | 0 (Regenerated) | **0 (Fixed Benchmark)** | 5,865 | 500 | **6,365** |
+| **TOTAL** | **16,423** | **0** | **0** | **16,423** | **5,000** | **21,423** |
+
+*Detailed record-level decisions and similarity scores are logged in `reports/near_duplicate_audit.csv`.*
+
+---
+
+## 7. Synthetic Augmentation & Leakage Prevention Analysis
+
+- **Fictional Names Only:** 120 fictional name pairs partitioned disjointly across train (60), valid (30), and test (30) pools.
+- **Disjoint Template Allocation:** 28 distinct templates across 5 clinical archetypes:
+  - Train: 16 templates (`admission_dx_01-04_tr`, `prescription_tx_01-04_tr`, `history_review_01-04_tr`, `followup_discharge_01-02_tr`, `referral_consult_01`, `multi_entity_01`).
+  - Valid: 6 templates (`admission_dx_01-02_va`, `prescription_tx_01-02_va`, `history_review_01_va`, `followup_discharge_01_va`).
+  - Test: 6 templates (`admission_dx_01-02_te`, `prescription_tx_01-02_te`, `referral_consult_01_te`, `multi_entity_01_te`).
 - **Leakage Analysis:**
   - Cross-split Document ID Overlap: **0**
   - Cross-split Synthetic Template Overlap: **0**
@@ -125,7 +162,7 @@ Rather than blindly converting all chemicals to medications, `src/data/map_entit
 
 ---
 
-## 7. Recommended Evaluation Protocol for HMM, MEMM, and CRF
+## 8. Recommended Evaluation Protocol for HMM, MEMM, and CRF
 
 To ensure methodological validity when comparing the models, evaluation must be reported along three distinct dimensions:
 
@@ -149,7 +186,7 @@ To ensure methodological validity when comparing the models, evaluation must be 
 
 ---
 
-## 8. Final Label-to-ID Mapping
+## 9. Final Label-to-ID Mapping
 
 ```json
 {

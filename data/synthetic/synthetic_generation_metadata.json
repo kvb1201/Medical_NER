@@ -1,38 +1,46 @@
 {
-  "generation_version": "1.0.0",
+  "generation_version": "2.0.0",
   "base_seed": 42,
   "template_allocation": {
     "train": [
       "admission_dx_01",
       "admission_dx_02",
       "admission_dx_03",
+      "admission_dx_04_tr",
       "prescription_tx_01",
       "prescription_tx_02",
       "prescription_tx_03",
+      "prescription_tx_04_tr",
       "history_review_01",
       "history_review_02",
       "history_review_03",
+      "history_review_04_tr",
       "followup_discharge_01",
+      "followup_discharge_02_tr",
       "referral_consult_01",
       "multi_entity_01"
     ],
     "valid": [
-      "admission_dx_04",
-      "prescription_tx_04",
-      "history_review_04",
-      "followup_discharge_02"
+      "admission_dx_01_va",
+      "admission_dx_02_va",
+      "prescription_tx_01_va",
+      "prescription_tx_02_va",
+      "history_review_01_va",
+      "followup_discharge_01_va"
     ],
     "test": [
-      "admission_dx_05",
-      "prescription_tx_05",
-      "referral_consult_02",
-      "multi_entity_02"
+      "admission_dx_01_te",
+      "admission_dx_02_te",
+      "prescription_tx_01_te",
+      "prescription_tx_02_te",
+      "referral_consult_01_te",
+      "multi_entity_01_te"
     ]
   },
   "counts": {
-    "train": 800,
-    "valid": 100,
-    "test": 100
+    "train": 4000,
+    "valid": 500,
+    "test": 500
   },
   "saved_files": {
     "train": "data/synthetic/synthetic_train.jsonl",
