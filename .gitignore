@@ -114,7 +114,7 @@ client_secret*.json
 # ------------------------------------------------------------------------------
 # 9. Machine Learning Models, Serialized Checkpoints, and Tracking
 # ------------------------------------------------------------------------------
-models/
+/models/
 checkpoints/
 *.pkl
 *.joblib
