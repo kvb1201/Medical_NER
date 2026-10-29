@@ -141,7 +141,7 @@
           "total_tokens": 116318,
           "correct_tokens": 110111
         },
-        "inference_time_sec": 0.71
+        "inference_time_sec": 0.67
       },
       "track_b_synthetic": {
         "entity_metrics": {
@@ -282,7 +282,7 @@
           "total_tokens": 123956,
           "correct_tokens": 116716
         },
-        "inference_time_sec": 0.74
+        "inference_time_sec": 0.71
       }
     }
   },
@@ -428,7 +428,7 @@
           "total_tokens": 116318,
           "correct_tokens": 111796
         },
-        "inference_time_sec": 22.87
+        "inference_time_sec": 23.14
       },
       "track_b_synthetic": {
         "entity_metrics": {
@@ -498,7 +498,7 @@
           "total_tokens": 7638,
           "correct_tokens": 7521
         },
-        "inference_time_sec": 1.64
+        "inference_time_sec": 1.71
       },
       "track_c_combined_augmented": {
         "entity_metrics": {
@@ -569,7 +569,7 @@
           "total_tokens": 123956,
           "correct_tokens": 119317
         },
-        "inference_time_sec": 24.5
+        "inference_time_sec": 24.89
       }
     }
   },
@@ -715,7 +715,7 @@
           "total_tokens": 116318,
           "correct_tokens": 112141
         },
-        "inference_time_sec": 1.42
+        "inference_time_sec": 1.4
       },
       "track_b_synthetic": {
         "entity_metrics": {
@@ -856,7 +856,7 @@
           "total_tokens": 123956,
           "correct_tokens": 119542
         },
-        "inference_time_sec": 1.38
+        "inference_time_sec": 1.4
       }
     }
   }

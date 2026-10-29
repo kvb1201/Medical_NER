@@ -4,9 +4,21 @@
 **Training Corpus:** Combined Augmented Training Set (9,228 sentences: 5,228 BC5CDR + 4,000 Synthetic)  
 **Validation Corpus:** Combined Augmented Validation Set (5,830 sentences: 5,330 BC5CDR + 500 Synthetic)  
 **Evaluation Tracks:**
-- **Track A (Pure Gold Biomedical Benchmark):** BC5CDR Original Test Slice (5,865 sentences, 100% human gold standard)
-- **Track B (Synthetic Clinical Name Benchmark):** Synthetic Test Slice (500 sentences, fictional clinical EHR templates)
-- **Track C (Combined Augmented Test Benchmark):** Joint Evaluation (6,365 sentences: 5,865 BC5CDR + 500 Synthetic)
+- **Track A (Pure Gold Biomedical Benchmark):** BC5CDR Original Test Slice (5,865 sentences, 116,318 tokens, 100% human gold standard)
+- **Track B (Synthetic Clinical Name Benchmark):** Synthetic Test Slice (500 sentences, 7,638 tokens, fictional clinical EHR templates)
+- **Track C (Combined Augmented Test Benchmark):** Joint Evaluation (6,365 sentences, 123,956 tokens: exact union of Track A + Track B)
+
+### Corpus & Evaluation Token Accounting
+
+| Evaluation Scope | Sentences | Unique Tokens | Total Token Evaluations | Scope Description |
+| :--- | :---: | :---: | :---: | :--- |
+| **Track A (BC5CDR Original Test)** | 5,865 | 116,318 | 116,318 | Authentic PubMed literature abstracts |
+| **Track B (Synthetic Clinical Test)** | 500 | 7,638 | 7,638 | Fictional clinical EHR templates |
+| **Track C (Combined Augmented Test)** | 6,365 | 123,956 | 123,956 | Exact concatenation of Track A + Track B |
+| **Aggregate Test Evaluations (Tracks A+B+C)** | — | **123,956** | **247,912** | Sum of evaluations across Tracks A, B, and C (Track C re-evaluates Tracks A & B) |
+| **Validation Partition** | 5,830 | 116,170 | 116,170 | Augmented validation split |
+| **Training Partition** | 9,228 | 162,339 | — | Augmented training split |
+| **Full Project Corpus (Train+Val+Test)** | **21,423** | **402,465** | — | Total tokens across all splits in the project |
 
 ---
 
@@ -100,7 +112,7 @@
 ---
 
 ## 4. Track C: Combined Augmented Test Benchmark
-*Evaluates joint 4-class extraction over the complete benchmark (6,365 sentences: 5,865 BC5CDR + 500 Synthetic).*
+*Evaluates joint 4-class extraction over the complete benchmark (6,365 sentences, 123,956 tokens: exact concatenation of Track A [116,318 tokens] + Track B [7,638 tokens]). Track C re-evaluates the combined test examples from Tracks A and B.*
 
 ### HMM Performance on Combined Benchmark
 | Entity Class | Precision | Recall | F1 Score | Support (Gold Spans) |
