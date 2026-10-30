@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Serve the clinical NER page and tag notes with the trained CRF.
+"""Serve the clinical NER page and tag notes with the repo's HMM, MEMM, and CRF.
 
 Run from the repository root:
 
@@ -29,30 +29,37 @@ from src.infer import extract_text  # noqa: E402
 
 HOST = "127.0.0.1"
 PORT = 8000
-MODEL_PATH = ROOT / "models" / "crf.joblib"
+# Same filenames written by src/models/train_and_evaluate.py
+MODEL_NAMES = ("hmm", "memm", "crf")
+MODELS_DIR = ROOT / "models"
 PAGE = Path(__file__).resolve().parent / "static" / "index.html"
 
-_model = None
+_models = None
 _model_error = None
 _lock = threading.Lock()
 
 
-def get_model():
-    """Load the CRF once. Returns (model, error_message)."""
-    global _model, _model_error
-    if _model is not None or _model_error is not None:
-        return _model, _model_error
+def get_models():
+    """Load HMM, MEMM, and CRF once. Returns (models, error_message)."""
+    global _models, _model_error
+    if _models is not None or _model_error is not None:
+        return _models, _model_error
     with _lock:
-        if _model is None and _model_error is None:
-            if not MODEL_PATH.exists():
+        if _models is None and _model_error is None:
+            missing = [name for name in MODEL_NAMES if not (MODELS_DIR / f"{name}.joblib").exists()]
+            if missing:
                 _model_error = (
-                    "The CRF checkpoint is not on disk. Train it with "
-                    "PYTHONPATH=. .venv/bin/python src/models/train_and_evaluate.py "
+                    "Missing checkpoints: "
+                    + ", ".join(f"models/{name}.joblib" for name in missing)
+                    + ". Create them with PYTHONPATH=. .venv/bin/python src/models/train_and_evaluate.py "
                     "and restart this server."
                 )
             else:
-                _model = joblib.load(MODEL_PATH)
-    return _model, _model_error
+                _models = [
+                    (name.upper(), joblib.load(MODELS_DIR / f"{name}.joblib"))
+                    for name in MODEL_NAMES
+                ]
+    return _models, _model_error
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -94,24 +101,25 @@ class Handler(BaseHTTPRequestHandler):
             self._json(400, {"error": "The text field must be a string."})
             return
 
-        model, error = get_model()
+        models, error = get_models()
         if error:
             self._json(503, {"error": error})
             return
+        text = payload.get("text", "")
         try:
             with _lock:
-                result = extract_text(payload.get("text", ""), model)
+                readings = [extract_text(text, model, name) for name, model in models]
         except ValueError as exc:
             self._json(400, {"error": str(exc)})
             return
         except Exception:
             self._json(500, {"error": "The tagger failed on this note."})
             return
-        self._json(200, result)
+        self._json(200, {"text": text, "models": readings})
 
 
 def main() -> None:
-    get_model()
+    get_models()
     server = ThreadingHTTPServer((HOST, PORT), Handler)
     print(f"Clinical NER is at http://{HOST}:{PORT}")
     server.serve_forever()

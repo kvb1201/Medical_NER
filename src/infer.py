@@ -53,7 +53,7 @@ def spans_from_tags(tokens: Sequence[Token], tags: Sequence[str]) -> List[Dict[s
     return spans
 
 
-def extract_text(text: str, model: Any) -> Dict[str, Any]:
+def extract_text(text: str, model: Any, model_name: str) -> Dict[str, Any]:
     """Tokenize ``text``, tag it with ``model.predict``, and return entity spans."""
     raw = text if text is not None else ""
     if len(raw) > MAX_CHARS:
@@ -61,11 +61,11 @@ def extract_text(text: str, model: Any) -> Dict[str, Any]:
 
     stripped = raw.strip()
     if not stripped:
-        return {"text": raw, "entities": [], "model": "CRF"}
+        return {"text": raw, "entities": [], "model": model_name}
 
     tokens = tokenize(raw)
     if not tokens:
-        return {"text": raw, "entities": [], "model": "CRF"}
+        return {"text": raw, "entities": [], "model": model_name}
 
     sentences = split_sentences(tokens)
     tag_sequences = model.predict([[tok for tok, _, _ in sent] for sent in sentences])
@@ -78,4 +78,4 @@ def extract_text(text: str, model: Any) -> Dict[str, Any]:
             span["text"] = raw[span["start"]:span["end"]]
             entities.append(span)
 
-    return {"text": raw, "entities": entities, "model": "CRF"}
+    return {"text": raw, "entities": entities, "model": model_name}

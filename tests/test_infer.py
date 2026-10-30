@@ -40,7 +40,7 @@ def test_extract_text_maps_a_multi_token_span():
         "pulmonary": "B-DISEASE",
         "embolism": "I-DISEASE",
     })
-    result = extract_text(text, model)
+    result = extract_text(text, model, "CRF")
     assert result["entities"] == [
         {"text": "Jane Smith", "type": "PATIENT_NAME", "start": 8, "end": 18},
         {"text": "pulmonary embolism", "type": "DISEASE", "start": 23, "end": 41},
@@ -52,4 +52,4 @@ def test_blank_note_skips_the_model():
         def predict(self, sentences):
             raise AssertionError("model should not run")
 
-    assert extract_text("   ", _Boom())["entities"] == []
+    assert extract_text("   ", _Boom(), "HMM")["entities"] == []
