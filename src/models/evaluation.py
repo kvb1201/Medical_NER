@@ -41,14 +41,13 @@ def extract_entities(tags: List[str]) -> List[Tuple[str, int, int]]:
             start_idx = idx
         elif tag.startswith("I-"):
             tag_type = tag[2:]
-            if current_entity is not None:
-                if tag_type != current_entity:
-                    # Incompatible continuation: end previous entity and start new or drop
-                    entities.append((current_entity, start_idx, idx))
-                    current_entity = None
-                    start_idx = -1
-            else:
-                # Orphan I- tag (treat as singleton entity or ignore)
+            if current_entity is not None and tag_type != current_entity:
+                # Incompatible continuation (e.g. B-DISEASE I-CHEMICAL): close the open
+                # entity and start a new one here, exactly as an orphan I- tag does
+                # (CoNLL conlleval convention), so no token is silently dropped.
+                entities.append((current_entity, start_idx, idx))
+                current_entity = None
+            if current_entity is None:
                 current_entity = tag_type
                 start_idx = idx
         else:

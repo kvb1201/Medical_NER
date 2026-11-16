@@ -47,6 +47,12 @@ def test_extract_entities_ill_formed_orphan_inside():
     assert ("DISEASE", 1, 3) in entities
 
 
+def test_extract_entities_type_switch_inside_keeps_every_token():
+    # I- of a different type closes the open entity and starts a new one (conlleval)
+    tags = ["B-DISEASE", "I-CHEMICAL", "I-CHEMICAL", "O"]
+    assert extract_entities(tags) == [("DISEASE", 0, 1), ("CHEMICAL", 1, 3)]
+
+
 def test_compute_entity_metrics_perfect():
     gold = [["B-DISEASE", "I-DISEASE", "O", "O", "B-MEDICATION"]]
     pred = [["B-DISEASE", "I-DISEASE", "O", "O", "B-MEDICATION"]]
