@@ -17,6 +17,7 @@ Implements automated quality-control and integrity checks for sequence labeling 
 """
 
 import re
+import statistics
 import logging
 from collections import Counter
 from typing import Dict, List, Set, Any, Tuple
@@ -99,9 +100,11 @@ def audit_split_integrity(
     
     sentence_contains_entity = Counter()
     sentences_with_any_entity = 0
+    sentence_lengths: List[int] = []
     
     for r in records:
         tokens = r["tokens"]
+        sentence_lengths.append(len(tokens))
         tags = r.get("ner_tags", r.get("raw_tags", []))
         rec_id = r.get("document_id", r.get("sentence_id", "unknown"))
         
@@ -153,7 +156,10 @@ def audit_split_integrity(
         "sentence_prevalence_counts": dict(sentence_contains_entity),
         "sentence_prevalence_pct": prevalence_pct,
         "sentences_with_any_entity": sentences_with_any_entity,
-        "pct_sentences_with_any_entity": (sentences_with_any_entity / total_records * 100) if total_records > 0 else 0
+        "pct_sentences_with_any_entity": (sentences_with_any_entity / total_records * 100) if total_records > 0 else 0,
+        "median_sentence_length": statistics.median(sentence_lengths) if sentence_lengths else 0,
+        "min_sentence_length": min(sentence_lengths) if sentence_lengths else 0,
+        "max_sentence_length": max(sentence_lengths) if sentence_lengths else 0
     }
 
 def check_cross_split_leakage(

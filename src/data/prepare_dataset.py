@@ -435,12 +435,14 @@ This dataset preparation pipeline was constructed to provide an auditable, leaka
 ## 2. Reconciled Split & Token Statistics
 
 ### A. Original BC5CDR Splits (PubMed Abstracts - After Filtering)
-| Split Name | Source Documents | Genuine Sentences | Unique Sentences | Duplicate Sentences | Total Tokens | Median Length | Range [Min, Max] |
+| Split Name | Source Abstracts (BC5CDR release) | Genuine Sentences | Unique Sentences | Duplicate Sentences | Total Tokens | Median Length | Range [Min, Max] |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Train** | 500 | {r_tr['total_records']:,} | {r_tr['unique_records']:,} | {r_tr['duplicates']:,} | {r_tr['total_tokens']:,} | 18 | [1, 133] |
-| **Valid** | 500 | {r_va['total_records']:,} | {r_va['unique_records']:,} | {r_va['duplicates']:,} | {r_va['total_tokens']:,} | 18 | [1, 232] |
-| **Test (Fixed)** | 500 | {r_te['total_records']:,} | {r_te['unique_records']:,} | {r_te['duplicates']:,} | {r_te['total_tokens']:,} | 17 | [1, 135] |
-| **BC5CDR Subtotal** | **1,500** | **{raw_total_sents:,}** | **{raw_total_unique:,}** | **{raw_total_dups:,}** | **{raw_total_tokens:,}** | **18** | **[1, 232]** |
+| **Train** | 500 | {r_tr['total_records']:,} | {r_tr['unique_records']:,} | {r_tr['duplicates']:,} | {r_tr['total_tokens']:,} | {r_tr['median_sentence_length']:g} | [{r_tr['min_sentence_length']}, {r_tr['max_sentence_length']}] |
+| **Valid** | 500 | {r_va['total_records']:,} | {r_va['unique_records']:,} | {r_va['duplicates']:,} | {r_va['total_tokens']:,} | {r_va['median_sentence_length']:g} | [{r_va['min_sentence_length']}, {r_va['max_sentence_length']}] |
+| **Test (Fixed)** | 500 | {r_te['total_records']:,} | {r_te['unique_records']:,} | {r_te['duplicates']:,} | {r_te['total_tokens']:,} | {r_te['median_sentence_length']:g} | [{r_te['min_sentence_length']}, {r_te['max_sentence_length']}] |
+| **BC5CDR Subtotal** | **1,500** | **{raw_total_sents:,}** | **{raw_total_unique:,}** | **{raw_total_dups:,}** | **{raw_total_tokens:,}** | — | **[{min(r['min_sentence_length'] for r in (r_tr, r_va, r_te))}, {max(r['max_sentence_length'] for r in (r_tr, r_va, r_te))}]** |
+
+*Source abstract counts are the official BC5CDR release sizes; the sentence-level files do not carry abstract IDs, so they are not recomputed here.*
 
 ### B. Synthetic Patient-Name Augmentation Splits (5,000 Sentences)
 | Split Name | Synthetic Sentences | Unique Sentences | Duplicates | Total Tokens | Fictional Patient Mentions | Disease Mentions | Medication Mentions |
@@ -500,7 +502,9 @@ In the training split, {r_tr['unique_records']:,} unique BC5CDR sentences + {s_t
 
 Rather than blindly converting all chemicals to medications, `src/data/map_entities.py` applies a verified 4-tier decision hierarchy. Every individual decision is logged in `reports/medication_mapping_audit.csv`.
 
-### Stratified Sample Audit Summary (N = 100 Sampled Mentions)
+### Manual Stratified Spot-Check (N = 100 Sampled Mentions)
+> [!NOTE]
+> The figures in this subsection come from a one-time manual review of sampled mentions. They are written into the report as-is and are **not** recomputed by this pipeline. The complete, machine-generated decision log is `reports/medication_mapping_audit.csv`.
 - **Tier 1 (Non-Medication Exclusions, N = 20 sampled):**
   - Excluded metabolites (*creatinine, urea, bilirubin, cholesterol, lactate*), minerals/electrolytes (*calcium, sodium, potassium*), and environmental toxins (*benzene, CCl4, carbon monoxide*).
   - *Precision:* **100%** (20/20 non-medications correctly retained as CHEMICAL).
