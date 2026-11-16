@@ -53,3 +53,58 @@ def test_blank_note_skips_the_model():
             raise AssertionError("model should not run")
 
     assert extract_text("   ", _Boom(), "HMM")["entities"] == []
+
+
+def _sentences(text):
+    return [[t[0] for t in sent] for sent in split_sentences(tokenize(text))]
+
+
+def test_titles_and_decimals_do_not_end_a_sentence():
+    assert _sentences("Dr. Smith gave 2.5 mg of warfarin.") == [
+        ["Dr.", "Smith", "gave", "2.5", "mg", "of", "warfarin", "."]
+    ]
+
+
+def test_hyphenated_words_split_like_bc5cdr():
+    assert [t[0] for t in tokenize("a 64-year-old man")] == ["a", "64", "-", "year", "-", "old", "man"]
+
+
+def test_non_ascii_letters_stay_in_the_token():
+    text = "Sjögren syndrome"
+    tokens = tokenize(text)
+    assert [t[0] for t in tokens] == ["Sjögren", "syndrome"]
+    assert text[tokens[0][1]:tokens[0][2]] == "Sjögren"
+
+
+def test_offsets_are_code_points_after_an_emoji():
+    text = "\U0001F600 Patient has diabetes."
+    model = _ScriptedModel({"diabetes": "B-DISEASE"})
+    entity = extract_text(text, model, "CRF")["entities"][0]
+    assert text[entity["start"]:entity["end"]] == "diabetes"
+
+
+def test_unseen_patient_titles_are_not_sent_to_the_model():
+    seen = []
+
+    class _Recorder(_ScriptedModel):
+        def predict(self, sentences):
+            seen.extend(sentences)
+            return super().predict(sentences)
+
+    text = "Mr. John Doe has asthma."
+    model = _Recorder({"John": "B-PATIENT_NAME", "Doe": "I-PATIENT_NAME"})
+    entities = extract_text(text, model, "CRF")["entities"]
+    assert seen == [["John", "Doe", "has", "asthma", "."]]
+    assert [(e["text"], e["start"]) for e in entities] == [("John Doe", 4)]
+
+
+def test_doctor_title_is_kept_because_it_appears_in_training():
+    seen = []
+
+    class _Recorder(_ScriptedModel):
+        def predict(self, sentences):
+            seen.extend(sentences)
+            return super().predict(sentences)
+
+    extract_text("Dr. Lee saw her.", _Recorder({}), "CRF")
+    assert seen == [["Dr.", "Lee", "saw", "her", "."]]

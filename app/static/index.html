@@ -339,18 +339,23 @@
     }
 
     function markedPassage(text, entities) {
+      // The server reports offsets in Unicode code points (Python string indices).
+      // JavaScript strings index UTF-16 units, so slice a code-point array instead;
+      // otherwise any emoji or other astral character shifts every later highlight.
+      const chars = Array.from(text);
+      const slice = (start, end) => chars.slice(start, end).join("");
       const ordered = [...entities].sort((a, b) => a.start - b.start || b.end - a.end);
       let html = "";
       let cursor = 0;
       const kept = [];
       for (const entity of ordered) {
         if (entity.start < cursor) continue;
-        html += escapeHtml(text.slice(cursor, entity.start));
-        html += `<mark class="${entity.type.toLowerCase()}">${escapeHtml(text.slice(entity.start, entity.end))}</mark>`;
+        html += escapeHtml(slice(cursor, entity.start));
+        html += `<mark class="${entity.type.toLowerCase()}">${escapeHtml(slice(entity.start, entity.end))}</mark>`;
         cursor = entity.end;
         kept.push(entity);
       }
-      html += escapeHtml(text.slice(cursor));
+      html += escapeHtml(slice(cursor));
       return { html, kept };
     }
 
