@@ -1,0 +1,10 @@
+# Tested with Python 3.14 on Linux; the "~=" pins allow patch/minor updates of the tested versions.
+numpy~=2.5
+scipy~=1.18
+scikit-learn~=1.9
+sklearn-crfsuite~=0.5.0
+python-crfsuite~=0.9.12
+joblib~=1.6
+huggingface_hub~=2.4
+PyYAML~=6.0
+pytest~=9.2

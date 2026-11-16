@@ -422,15 +422,15 @@ The experimental metrics below are verified from [`reports/model_metrics.json`](
 ## 11. Installation and Environment Setup
 
 ### Environment Requirements
-- **OS:** macOS or Linux (tested on macOS Darwin 24.6.0).
-- **Python:** Python 3.10 to 3.14 (tested on Python 3.14.7).
+- **OS:** macOS or Linux (tested on macOS Darwin 24.6.0 and Ubuntu Linux).
+- **Python:** Python 3.10 to 3.14 (tested on Python 3.14).
 
 ### Setup Instructions
 
 ```bash
 # 1. Clone the repository
-git clone <repository-url>
-cd nlp-project
+git clone https://github.com/kvb1201/Medical_NER.git
+cd Medical_NER
 
 # 2. Create a virtual environment
 python3 -m venv .venv
@@ -439,8 +439,8 @@ source .venv/bin/activate
 # 3. Upgrade package installer
 pip install --upgrade pip
 
-# 4. Install dependencies
-pip install scikit-learn sklearn-crfsuite python-crfsuite joblib numpy pyyaml pytest tabulate datasets huggingface_hub
+# 4. Install dependencies (versions tested with this project)
+pip install -r requirements.txt
 ```
 
 ### Verify Environment
@@ -454,7 +454,7 @@ python3 -c "import sklearn, sklearn_crfsuite, joblib, yaml; print('Environment v
 
 ### Quick Validation (Runs in ~2 seconds)
 ```bash
-# Run the complete test suite (55 automated unit & integration tests)
+# Run the complete test suite (64 automated unit & integration tests)
 PYTHONPATH=. pytest tests/ -v
 ```
 
@@ -476,14 +476,34 @@ PYTHONPATH=. python3 src/models/train_and_evaluate.py
 git status --short
 ```
 
+> [!NOTE]
+> The dataset build takes about 5 minutes and training about 6 minutes on a laptop CPU. With the fixed seeds, a fresh build reproduces the committed `reports/` exactly, apart from measured training and inference times.
+
+### Run the Web Demo
+The demo page tags a free-text note with all three trained models and shows where they agree. It needs the checkpoints in `models/` (built by the commands above).
+
+```bash
+PYTHONPATH=. python3 app/server.py            # then open http://127.0.0.1:8000
+PYTHONPATH=. python3 app/server.py --port 8080  # optional: another port (or --host to change the interface)
+```
+
+- Paste a note (up to 4,000 characters) or click an example, then press **Extract entities** or <kbd>Ctrl</kbd>+<kbd>Enter</kbd>.
+- **Model agreement** lists every entity any model found and which models found it; below it, each model's highlighted reading.
+- Free text is tokenized to match the training data: BC5CDR-style hyphen splitting, titles such as `Dr.` and decimals kept whole. `Mr.`/`Mrs.`/`Ms.` never occur in training and are not passed to the models.
+- The server listens on `127.0.0.1` only by default and is a research demo, **not** for clinical use.
+
 ---
 
 ## 13. Repository Structure
 
 ```
-nlp-project/
+Medical_NER/
 ├── .gitignore                          # Comprehensive exclusion rules (ignores /models/, .venv, *.jsonl)
 ├── README.md                           # Master documentation, architecture guide, and reproduction manual
+├── requirements.txt                    # Python dependencies (tested versions)
+├── app/
+│   ├── server.py                       # Local web demo server (HMM, MEMM, CRF side by side)
+│   └── static/index.html               # Demo page: highlighting and model-agreement view
 ├── config/
 │   └── dataset_config.yaml             # Provenance, split sizes, and template allocation configurations
 ├── data/
@@ -515,13 +535,14 @@ nlp-project/
 │   │   ├── deduplicate.py              # Exact and near-duplicate leakage detection
 │   │   ├── validate_bio.py             # 12-point BIO validation and integrity suite
 │   │   └── prepare_dataset.py          # End-to-end dataset pipeline runner
+│   ├── infer.py                        # Free-text tokenization and span extraction for the web demo
 │   └── models/
 │       ├── hmm.py                      # Supervised HMM with Laplace smoothing & Viterbi decoding
 │       ├── memm.py                     # MEMM with dense feature extraction & decomposed Viterbi
 │       ├── crf.py                      # Linear-Chain CRF wrapping sklearn-crfsuite (L-BFGS)
 │       ├── evaluation.py               # Exact entity-span evaluation engine (Micro/Macro/Accuracy)
 │       └── train_and_evaluate.py       # Unified training and 3-track evaluation pipeline
-└── tests/                              # Pytest test suite (55 automated unit & integration tests)
+└── tests/                              # Pytest test suite (64 automated unit & integration tests)
     ├── test_deduplicate.py             # Tests text normalization, similarity, and duplicate filtering
     ├── test_generate_synthetic.py      # Tests deterministic generation, template & name disjointness
     ├── test_infer.py                   # Tests free-text tokenization, sentence splitting, and span offsets
@@ -529,6 +550,7 @@ nlp-project/
     ├── test_models.py                  # Tests HMM, MEMM, CRF fitting, inference, and exact span metrics
     ├── test_pipeline_integrity.py      # Tests configuration, augmented files, and report generation
     ├── test_reporting.py               # Tests that report conclusions are computed from the results
+    ├── test_server.py                  # Tests demo server responses, including malformed requests
     └── test_validate_bio.py            # Tests sequence alignment, syntax, and cross-split leakage
 ```
 
