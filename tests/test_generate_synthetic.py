@@ -63,3 +63,28 @@ def test_provenance_metadata():
         assert "template_id" in r
         assert "document_id" in r
 
+
+
+def test_split_seed_is_stable_across_python_hash_seeds():
+    """Per-split seeds must not depend on PYTHONHASHSEED (str hash() is salted per process)."""
+    import os
+    import subprocess
+    import sys
+
+    code = (
+        "from src.data.generate_synthetic import derive_split_seed;"
+        "print([derive_split_seed(42, s) for s in ('train', 'valid', 'test')])"
+    )
+    outputs = set()
+    for hash_seed in ("0", "1", "12345"):
+        env = dict(os.environ, PYTHONHASHSEED=hash_seed, PYTHONPATH=os.getcwd())
+        result = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=env, check=True)
+        outputs.add(result.stdout.strip())
+    assert len(outputs) == 1
+
+
+def test_split_seeds_differ_between_splits():
+    from src.data.generate_synthetic import derive_split_seed
+
+    seeds = [derive_split_seed(42, s) for s in ("train", "valid", "test")]
+    assert len(set(seeds)) == 3

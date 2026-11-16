@@ -12,6 +12,7 @@ Generates controlled, deterministic synthetic clinical-style sentences containin
 import os
 import json
 import random
+import zlib
 import logging
 from typing import Dict, List, Tuple, Any, Set
 from src.data.deduplicate import normalize_text
@@ -422,6 +423,14 @@ def generate_synthetic_split(
     logger.info(f"Generated {len(records)} synthetic records for split '{split_name}' using seed {random_seed}")
     return records
 
+def derive_split_seed(base_seed: int, split_name: str) -> int:
+    """Return a per-split seed that is identical on every run and machine.
+
+    Python's built-in hash() of a str is salted per process (PYTHONHASHSEED), so it
+    must not be used here; CRC32 of the split name is stable.
+    """
+    return base_seed + zlib.crc32(split_name.encode("utf-8")) % 1000
+
 def generate_and_save_synthetic(
     output_dir: str = "data/synthetic",
     counts: Dict[str, int] = None,
@@ -446,7 +455,7 @@ def generate_and_save_synthetic(
         records = generate_synthetic_split(
             split_name,
             count,
-            random_seed=random_seed + hash(split_name) % 1000,
+            random_seed=derive_split_seed(random_seed, split_name),
             disallowed_sentences=split_disallowed
         )
 
