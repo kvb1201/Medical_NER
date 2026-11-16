@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Clinical NER</title>
+  <link rel="icon" href="/favicon.ico" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,620&family=Outfit:wght@380;500;600&display=swap" rel="stylesheet">
@@ -276,12 +277,117 @@
       color: var(--muted);
     }
 
+    .examples {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 4px 2px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .chip {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 12px;
+    }
+
+    .chip:hover { background: var(--paper); }
+    .chip:focus-visible { outline-color: var(--muted); }
+
+    .hint .over { color: var(--danger); font-weight: 500; }
+
+    kbd {
+      font: inherit;
+      font-size: 12px;
+      padding: 1px 6px;
+      border: 1px solid var(--line);
+      border-bottom-width: 2px;
+      border-radius: 6px;
+      background: var(--paper);
+    }
+
+    .reading h2 .count {
+      margin-left: 8px;
+      font-weight: 380;
+      letter-spacing: 0.04em;
+      text-transform: none;
+    }
+
+    .agreement {
+      margin-bottom: 30px;
+      padding: 16px 18px 6px;
+      background: var(--sheet);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .agreement h2 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .agreement .quiet { font-size: 14px; margin-bottom: 8px; }
+
+    .agreement table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    .agreement th,
+    .agreement td {
+      padding: 9px 6px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .agreement th {
+      border-top: 0;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .agreement th:first-child,
+    .agreement td:first-child { text-align: left; }
+
+    .agreement .pill {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      vertical-align: 1px;
+    }
+
+    .pill.disease { background: var(--disease); color: var(--disease-ink); }
+    .pill.medication { background: var(--medication); color: var(--medication-ink); }
+    .pill.chemical { background: var(--chemical); color: var(--chemical-ink); }
+    .pill.patient_name { background: var(--patient); color: var(--patient-ink); }
+
+    .yes { color: var(--button); font-weight: 600; }
+    .no { color: #b9ae9f; }
+
     @media (max-width: 640px) {
       body { padding-top: 32px; }
       header { display: block; }
       .model-mark { margin-top: 10px; }
       .row { align-items: stretch; flex-direction: column-reverse; }
       button { width: 100%; }
+      .chip { width: auto; }
+      .shortcut { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -298,13 +404,19 @@
       </div>
       <p class="model-mark">HMM · MEMM · CRF</p>
     </header>
-    <p class="lede">Paste a sentence. The three models already in this project each mark disease, medication, chemical, and patient name.</p>
+    <p class="lede">Paste a clinical sentence or short note. HMM, MEMM, and CRF each mark diseases, medications, chemicals, and patient names, so you can compare them side by side.</p>
 
     <form id="form">
       <label for="note">Clinical note</label>
       <textarea id="note" name="text" placeholder="Patient Jane Smith was admitted with pulmonary embolism and started on heparin." required></textarea>
+      <div class="examples" aria-label="Example notes">
+        <span>Try an example:</span>
+        <button type="button" class="chip" data-example="Patient Jane Smith was admitted with pulmonary embolism and started on heparin.">Admission</button>
+        <button type="button" class="chip" data-example="Mr. Robert Taylor, a 64-year-old man with type 2 diabetes mellitus and hypertension, was discharged on metformin and lisinopril.">Discharge</button>
+        <button type="button" class="chip" data-example="Carbon tetrachloride induced hepatotoxicity in rats was attenuated by silymarin.">Literature</button>
+      </div>
       <div class="row">
-        <p class="hint">One note at a time. Not for clinical use.</p>
+        <p class="hint"><span id="count">0</span> / 4,000 characters<span class="shortcut"> · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to run</span> · Not for clinical use.</p>
         <button id="submit" type="submit">Extract entities</button>
       </div>
     </form>
@@ -323,6 +435,8 @@
     const note = document.getElementById("note");
     const submit = document.getElementById("submit");
     const output = document.getElementById("output");
+    const count = document.getElementById("count");
+    const MAX_CHARS = 4000;  // must match MAX_CHARS in src/infer.py
 
     const LABELS = {
       DISEASE: "Disease",
@@ -351,7 +465,8 @@
       for (const entity of ordered) {
         if (entity.start < cursor) continue;
         html += escapeHtml(slice(cursor, entity.start));
-        html += `<mark class="${entity.type.toLowerCase()}">${escapeHtml(slice(entity.start, entity.end))}</mark>`;
+        const label = escapeHtml(LABELS[entity.type] || entity.type);
+        html += `<mark class="${entity.type.toLowerCase()}" title="${label}">${escapeHtml(slice(entity.start, entity.end))}</mark>`;
         cursor = entity.end;
         kept.push(entity);
       }
@@ -359,26 +474,85 @@
       return { html, kept };
     }
 
+    function countEntities(n) {
+      return `${n} ${n === 1 ? "entity" : "entities"}`;
+    }
+
+    function agreementTable(readings) {
+      // One row per distinct (span, type) found by any model, in reading order.
+      const rows = new Map();
+      readings.forEach((reading, column) => {
+        for (const entity of reading.entities || []) {
+          const key = `${entity.start}:${entity.end}:${entity.type}`;
+          if (!rows.has(key)) rows.set(key, { entity, found: new Set() });
+          rows.get(key).found.add(column);
+        }
+      });
+      if (!rows.size) return "";
+      const ordered = [...rows.values()].sort((a, b) => a.entity.start - b.entity.start || a.entity.end - b.entity.end);
+      const all = ordered.filter((row) => row.found.size === readings.length).length;
+      const head = readings.map((r) => `<th scope="col">${escapeHtml(r.model)}</th>`).join("");
+      const body = ordered.map(({ entity, found }) => {
+        const label = LABELS[entity.type] || entity.type;
+        const cells = readings.map((r, column) => found.has(column)
+          ? '<td><span class="yes" aria-label="found">✓</span></td>'
+          : '<td><span class="no" aria-label="not found">–</span></td>').join("");
+        return `<tr><td>${escapeHtml(entity.text)}<span class="pill ${entity.type.toLowerCase()}">${escapeHtml(label)}</span></td>${cells}</tr>`;
+      }).join("");
+      return `<section class="agreement"><h2>Model agreement</h2>`
+        + `<p class="quiet">${all} of ${countEntities(ordered.length)} found by all ${readings.length} models.</p>`
+        + `<table><thead><tr><th scope="col">Entity</th>${head}</tr></thead><tbody>${body}</tbody></table></section>`;
+    }
+
     function render(data) {
       const text = data.text;
-      const blocks = (data.models || []).map((reading) => {
+      const readings = data.models || [];
+      const blocks = readings.map((reading) => {
         const entities = reading.entities || [];
+        const heading = `<h2>${escapeHtml(reading.model)}<span class="count">${countEntities(entities.length)}</span></h2>`;
         if (!entities.length) {
-          return `<section class="reading"><h2>${escapeHtml(reading.model)}</h2><p class="quiet">No entities.</p></section>`;
+          return `<section class="reading">${heading}<p class="quiet">No entities.</p></section>`;
         }
         const passage = markedPassage(text, entities);
         const items = passage.kept.map((entity) => {
           const label = LABELS[entity.type] || entity.type;
           return `<li><span>${escapeHtml(entity.text)}</span><span class="type">${escapeHtml(label)}</span></li>`;
         }).join("");
-        return `<section class="reading"><h2>${escapeHtml(reading.model)}</h2><p class="passage">${passage.html}</p><ul class="found">${items}</ul></section>`;
+        return `<section class="reading">${heading}<p class="passage">${passage.html}</p><ul class="found">${items}</ul></section>`;
       }).join("");
-      output.innerHTML = blocks;
+      output.innerHTML = agreementTable(readings) + blocks;
+    }
+
+    function updateCount() {
+      // Count code points, as the server does, so emoji count as one character.
+      const n = Array.from(note.value).length;
+      count.textContent = n.toLocaleString("en-US");
+      count.classList.toggle("over", n > MAX_CHARS);
+    }
+
+    note.addEventListener("input", updateCount);
+    note.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        form.requestSubmit();
+      }
+    });
+    for (const chip of document.querySelectorAll("[data-example]")) {
+      chip.addEventListener("click", () => {
+        note.value = chip.dataset.example;
+        updateCount();
+        form.requestSubmit();
+      });
     }
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const text = note.value;
+      if (!text.trim()) {
+        output.innerHTML = '<p class="status">Type or paste a note first.</p>';
+        note.focus();
+        return;
+      }
       submit.disabled = true;
       submit.textContent = "Reading…";
       output.innerHTML = "";
