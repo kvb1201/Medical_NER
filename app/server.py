@@ -27,8 +27,8 @@ import joblib  # noqa: E402
 
 from src.infer import extract_text  # noqa: E402
 
-HOST = "127.0.0.1"
-PORT = 8000
+HOST = os.environ.get("HOST", "0.0.0.0")
+PORT = int(os.environ.get("PORT", 8000))
 # Same filenames written by src/models/train_and_evaluate.py
 MODEL_NAMES = ("hmm", "memm", "crf")
 MODELS_DIR = ROOT / "models"

@@ -6,6 +6,7 @@
 # 1. Python Bytecode, Caches, and Distribution Artifacts
 # ------------------------------------------------------------------------------
 
+/final_presentation
 __pycache__/
 *.py[cod]
 *$py.class
