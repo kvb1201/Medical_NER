@@ -404,7 +404,7 @@ def generate_markdown_report(
 
     content = f"""# Medical NER Dataset Audit Report
 **Target Models:** Hidden Markov Model (HMM), Maximum Entropy Markov Model (MEMM), Conditional Random Field (CRF)  
-**Generation Version:** {config.get('generation_version', '2.0.0')}  
+**Generation Version:** {config.get('generation_version', '2.1.0')}  
 **Random Seed:** {config.get('random_seed', 42)}  
 **Repository Source:** [`{config['source']['repo_id']}`](https://huggingface.co/datasets/{config['source']['repo_id']}) (Commit SHA: `{raw_meta['repository_info']['commit_sha']}`)
 

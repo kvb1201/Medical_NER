@@ -149,6 +149,22 @@ def test_hmm_unseen_token_handling(toy_dataset):
         assert tag in hmm.states
 
 
+def test_hmm_parameter_matrices_include_start_and_tokens(toy_dataset):
+    sents, tags = toy_dataset
+    hmm = HiddenMarkovModel(min_word_freq=1)
+    hmm.fit(sents, tags)
+    tokens = sents[0]
+    mats = hmm.parameter_matrices(tokens)
+    assert mats["transition"]["rows"][0] == "START"
+    assert mats["transition"]["rows"][1:] == hmm.states
+    assert mats["transition"]["cols"] == hmm.states
+    assert len(mats["transition"]["scores"]) == len(hmm.states) + 1
+    assert mats["emission"]["rows"] == tokens
+    assert mats["emission"]["cols"] == hmm.states
+    assert len(mats["emission"]["scores"]) == len(tokens)
+    assert len(mats["emission"]["sources"]) == len(tokens)
+
+
 # -----------------------------------------------------------------------------
 # 3. Maximum Entropy Markov Model (MEMM) Tests
 # -----------------------------------------------------------------------------

@@ -19,7 +19,7 @@ from src.data.deduplicate import normalize_text
 
 logger = logging.getLogger(__name__)
 
-GENERATION_VERSION = "2.0.0"
+GENERATION_VERSION = "2.1.0"
 
 # Disjoint Fictional Names Pool by Split (Guarantees zero name memorization leakage)
 FICTIONAL_NAMES = {
@@ -62,7 +62,8 @@ FICTIONAL_NAMES = {
     ]
 }
 
-# Verified clinical diseases (single and multi-token)
+# Verified clinical diseases (single and multi-token), including common
+# symptom-level mentions that appear in informal self-reports.
 VERIFIED_DISEASES = [
     ["diabetes", "mellitus"],
     ["type", "2", "diabetes"],
@@ -103,7 +104,17 @@ VERIFIED_DISEASES = [
     ["cellulitis"],
     ["glaucoma"],
     ["peripheral", "neuropathy"],
-    ["cholecystitis"]
+    ["cholecystitis"],
+    ["fever"],
+    ["high", "fever"],
+    ["cough"],
+    ["headache"],
+    ["nausea"],
+    ["fatigue"],
+    ["chest", "pain"],
+    ["shortness", "of", "breath"],
+    ["sore", "throat"],
+    ["abdominal", "pain"],
 ]
 
 # Verified clinical medications (single and multi-token)
@@ -238,6 +249,22 @@ TEMPLATES: Dict[str, List[Any]] = {
         ("treatment", "O"), ("was", "O"), ("switched", "O"), ("to", "O"),
         ("{MEDICATION}", "MEDICATION"), (".", "O")
     ],
+    # First-person / informal self-reports (train). Uses given name only so the
+    # taggers see single-token PATIENT_NAME spans, not just First+Last pairs.
+    "self_report_01_tr": [
+        ("I", "O"), ("am", "O"), ("{PATIENT_FIRST}", "PATIENT_NAME"), ("and", "O"),
+        ("I", "O"), ("am", "O"), ("suffering", "O"), ("from", "O"),
+        ("{DISEASE}", "DISEASE"), (".", "O")
+    ],
+    "self_report_02_tr": [
+        ("I", "O"), ("have", "O"), ("{DISEASE}", "DISEASE"), ("and", "O"),
+        ("my", "O"), ("name", "O"), ("is", "O"), ("{PATIENT_FIRST}", "PATIENT_NAME"),
+        (".", "O")
+    ],
+    "self_report_03_tr": [
+        ("{PATIENT_FIRST}", "PATIENT_NAME"), ("is", "O"), ("suffering", "O"),
+        ("from", "O"), ("{DISEASE}", "DISEASE"), (".", "O")
+    ],
 
     # --- VALIDATION TEMPLATES (6 disjoint templates) ---
     "admission_dx_01_va": [
@@ -270,6 +297,16 @@ TEMPLATES: Dict[str, List[Any]] = {
         ("At", "O"), ("today", "O"), ("'s", "O"), ("follow-up", "O"), ("visit", "O"), (",", "O"),
         ("{PATIENT}", "PATIENT_NAME"), ("reported", "O"), ("good", "O"), ("tolerance", "O"),
         ("to", "O"), ("{MEDICATION}", "MEDICATION"), ("with", "O"), ("improved", "O"),
+        ("{DISEASE}", "DISEASE"), (".", "O")
+    ],
+    "self_report_01_va": [
+        ("I", "O"), ("am", "O"), ("{PATIENT_FIRST}", "PATIENT_NAME"), ("and", "O"),
+        ("I", "O"), ("feel", "O"), ("ill", "O"), ("with", "O"),
+        ("{DISEASE}", "DISEASE"), (".", "O")
+    ],
+    "self_report_02_va": [
+        ("Hello", "O"), (",", "O"), ("I", "O"), ("am", "O"),
+        ("{PATIENT_FIRST}", "PATIENT_NAME"), ("experiencing", "O"),
         ("{DISEASE}", "DISEASE"), (".", "O")
     ],
 
@@ -308,6 +345,15 @@ TEMPLATES: Dict[str, List[Any]] = {
         ("{PATIENT}", "PATIENT_NAME"), ("was", "O"), ("evaluated", "O"), ("for", "O"),
         ("pre-existing", "O"), ("{DISEASE}", "DISEASE"), ("while", "O"), ("taking", "O"),
         ("{MEDICATION}", "MEDICATION"), (".", "O")
+    ],
+    "self_report_01_te": [
+        ("I", "O"), ("am", "O"), ("{PATIENT_FIRST}", "PATIENT_NAME"), ("and", "O"),
+        ("I", "O"), ("am", "O"), ("dealing", "O"), ("with", "O"),
+        ("{DISEASE}", "DISEASE"), (".", "O")
+    ],
+    "self_report_02_te": [
+        ("My", "O"), ("name", "O"), ("is", "O"), ("{PATIENT_FIRST}", "PATIENT_NAME"),
+        ("and", "O"), ("I", "O"), ("have", "O"), ("{DISEASE}", "DISEASE"), (".", "O")
     ]
 }
 
@@ -316,17 +362,20 @@ TEMPLATE_ALLOCATION = {
         "admission_dx_01", "admission_dx_02", "admission_dx_03", "admission_dx_04_tr",
         "prescription_tx_01", "prescription_tx_02", "prescription_tx_03", "prescription_tx_04_tr",
         "history_review_01", "history_review_02", "history_review_03", "history_review_04_tr",
-        "followup_discharge_01", "followup_discharge_02_tr", "referral_consult_01", "multi_entity_01"
+        "followup_discharge_01", "followup_discharge_02_tr", "referral_consult_01", "multi_entity_01",
+        "self_report_01_tr", "self_report_02_tr", "self_report_03_tr",
     ],
     "valid": [
         "admission_dx_01_va", "admission_dx_02_va",
         "prescription_tx_01_va", "prescription_tx_02_va",
-        "history_review_01_va", "followup_discharge_01_va"
+        "history_review_01_va", "followup_discharge_01_va",
+        "self_report_01_va", "self_report_02_va",
     ],
     "test": [
         "admission_dx_01_te", "admission_dx_02_te",
         "prescription_tx_01_te", "prescription_tx_02_te",
-        "referral_consult_01_te", "multi_entity_01_te"
+        "referral_consult_01_te", "multi_entity_01_te",
+        "self_report_01_te", "self_report_02_te",
     ]
 }
 
@@ -346,6 +395,10 @@ def generate_sentence_from_template(
             for idx, tok in enumerate(name_tokens):
                 out_tokens.append(tok)
                 out_tags.append(f"B-{entity_type}" if idx == 0 else f"I-{entity_type}")
+        elif token_pattern == "{PATIENT_FIRST}":
+            # Single-token given-name mention; still labeled PATIENT_NAME.
+            out_tokens.append(name_tokens[0])
+            out_tags.append(f"B-{entity_type}")
         elif token_pattern == "{DISEASE}":
             for idx, tok in enumerate(disease_tokens):
                 out_tokens.append(tok)
@@ -377,6 +430,13 @@ def generate_synthetic_split(
     rng = random.Random(random_seed)
     allowed_templates = TEMPLATE_ALLOCATION[split_name]
     names_pool = FICTIONAL_NAMES[split_name]
+    # Over-sample first-person / given-name templates so models see enough
+    # single-token PATIENT_NAME spans and B-PATIENT_NAME -> O exits (HMM cannot
+    # condition transitions on the word \"am\", only on tag bigrams).
+    weighted_templates: List[str] = []
+    for tmpl_id in allowed_templates:
+        repeats = 3 if tmpl_id.startswith("self_report_") else 1
+        weighted_templates.extend([tmpl_id] * repeats)
 
     disallowed = disallowed_sentences or set()
     seen_texts = set()
@@ -387,7 +447,7 @@ def generate_synthetic_split(
 
     while len(records) < count and attempts < max_attempts:
         attempts += 1
-        tmpl_id = allowed_templates[i % len(allowed_templates)]
+        tmpl_id = weighted_templates[i % len(weighted_templates)]
         name = rng.choice(names_pool)
         disease = rng.choice(VERIFIED_DISEASES)
         medication = rng.choice(VERIFIED_MEDICATIONS)

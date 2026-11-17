@@ -1,75 +1,75 @@
 {
   "hmm": {
     "model_name": "HMM",
-    "train_time_sec": 0.24,
+    "train_time_sec": 0.11,
     "validation": {
       "entity_metrics": {
         "per_entity": {
           "DISEASE": {
-            "precision": 0.7164,
-            "recall": 0.6998,
-            "f1": 0.708,
-            "tp": 3320,
-            "fp": 1314,
-            "fn": 1424,
+            "precision": 0.7192,
+            "recall": 0.7019,
+            "f1": 0.7105,
+            "tp": 3330,
+            "fp": 1300,
+            "fn": 1414,
             "support": 4744
           },
           "MEDICATION": {
-            "precision": 0.9447,
-            "recall": 0.8682,
-            "f1": 0.9048,
-            "tp": 2134,
-            "fp": 125,
+            "precision": 0.9472,
+            "recall": 0.8611,
+            "f1": 0.9021,
+            "tp": 2009,
+            "fp": 112,
             "fn": 324,
-            "support": 2458
+            "support": 2333
           },
           "PATIENT_NAME": {
-            "precision": 0.7407,
-            "recall": 0.04,
-            "f1": 0.0759,
-            "tp": 20,
-            "fp": 7,
-            "fn": 480,
+            "precision": 0.7732,
+            "recall": 0.484,
+            "f1": 0.5953,
+            "tp": 242,
+            "fp": 71,
+            "fn": 258,
             "support": 500
           },
           "CHEMICAL": {
-            "precision": 0.8372,
+            "precision": 0.8378,
             "recall": 0.4323,
-            "f1": 0.5702,
+            "f1": 0.5703,
             "tp": 1358,
-            "fp": 264,
+            "fp": 263,
             "fn": 1783,
             "support": 3141
           }
         },
         "micro": {
-          "precision": 0.7998,
-          "recall": 0.6301,
-          "f1": 0.7049,
-          "tp": 6832,
-          "fp": 1710,
-          "fn": 4011,
-          "support": 10843
+          "precision": 0.799,
+          "recall": 0.6474,
+          "f1": 0.7153,
+          "tp": 6939,
+          "fp": 1746,
+          "fn": 3779,
+          "support": 10718
         },
         "macro": {
-          "precision": 0.8098,
-          "recall": 0.5101,
-          "f1": 0.5647,
+          "precision": 0.8194,
+          "recall": 0.6198,
+          "f1": 0.6946,
           "active_classes": [
             "DISEASE",
             "MEDICATION",
             "PATIENT_NAME",
             "CHEMICAL"
           ],
-          "macro_all_precision": 0.8098,
-          "macro_all_recall": 0.5101,
-          "macro_all_f1": 0.5647
+          "macro_all_precision": 0.8194,
+          "macro_all_recall": 0.6198,
+          "macro_all_f1": 0.6946
         }
       },
       "token_metrics": {
-        "token_accuracy": 0.9405,
-        "total_tokens": 116196,
-        "correct_tokens": 109283
+        "token_accuracy": 0.9451,
+        "total_tokens": 115030,
+        "correct_tokens": 108714
       }
     },
     "tracks": {
@@ -77,20 +77,20 @@
         "entity_metrics": {
           "per_entity": {
             "DISEASE": {
-              "precision": 0.6729,
-              "recall": 0.6555,
-              "f1": 0.6641,
-              "tp": 2900,
-              "fp": 1410,
-              "fn": 1524,
+              "precision": 0.6739,
+              "recall": 0.6564,
+              "f1": 0.6651,
+              "tp": 2904,
+              "fp": 1405,
+              "fn": 1520,
               "support": 4424
             },
             "MEDICATION": {
-              "precision": 0.9354,
+              "precision": 0.9349,
               "recall": 0.8383,
-              "f1": 0.8842,
+              "f1": 0.884,
               "tp": 1882,
-              "fp": 130,
+              "fp": 131,
               "fn": 363,
               "support": 2245
             },
@@ -99,78 +99,78 @@
               "recall": 0.0,
               "f1": 0.0,
               "tp": 0,
-              "fp": 4,
+              "fp": 64,
               "fn": 0,
               "support": 0
             },
             "CHEMICAL": {
-              "precision": 0.8472,
-              "recall": 0.392,
-              "f1": 0.536,
-              "tp": 1231,
-              "fp": 222,
-              "fn": 1909,
+              "precision": 0.8532,
+              "recall": 0.3943,
+              "f1": 0.5393,
+              "tp": 1238,
+              "fp": 213,
+              "fn": 1902,
               "support": 3140
             }
           },
           "micro": {
-            "precision": 0.773,
-            "recall": 0.613,
-            "f1": 0.6838,
-            "tp": 6013,
-            "fp": 1766,
-            "fn": 3796,
+            "precision": 0.7687,
+            "recall": 0.6141,
+            "f1": 0.6828,
+            "tp": 6024,
+            "fp": 1813,
+            "fn": 3785,
             "support": 9809
           },
           "macro": {
-            "precision": 0.8185,
-            "recall": 0.6286,
-            "f1": 0.6948,
+            "precision": 0.8207,
+            "recall": 0.6297,
+            "f1": 0.6961,
             "active_classes": [
               "DISEASE",
               "MEDICATION",
               "CHEMICAL"
             ],
-            "macro_all_precision": 0.6139,
-            "macro_all_recall": 0.4715,
-            "macro_all_f1": 0.5211
+            "macro_all_precision": 0.6155,
+            "macro_all_recall": 0.4722,
+            "macro_all_f1": 0.5221
           }
         },
         "token_metrics": {
-          "token_accuracy": 0.9466,
+          "token_accuracy": 0.9461,
           "total_tokens": 116318,
-          "correct_tokens": 110103
+          "correct_tokens": 110046
         },
-        "inference_time_sec": 1.62
+        "inference_time_sec": 0.56
       },
       "track_b_synthetic": {
         "entity_metrics": {
           "per_entity": {
             "DISEASE": {
-              "precision": 0.966,
-              "recall": 0.966,
-              "f1": 0.966,
-              "tp": 483,
-              "fp": 17,
-              "fn": 17,
+              "precision": 0.982,
+              "recall": 0.982,
+              "f1": 0.982,
+              "tp": 491,
+              "fp": 9,
+              "fn": 9,
               "support": 500
             },
             "MEDICATION": {
               "precision": 1.0,
               "recall": 1.0,
               "f1": 1.0,
-              "tp": 339,
+              "tp": 172,
               "fp": 0,
               "fn": 0,
-              "support": 339
+              "support": 172
             },
             "PATIENT_NAME": {
-              "precision": 0.0,
-              "recall": 0.0,
-              "f1": 0.0,
-              "tp": 0,
+              "precision": 1.0,
+              "recall": 0.512,
+              "f1": 0.6772,
+              "tp": 256,
               "fp": 0,
-              "fn": 500,
+              "fn": 244,
               "support": 500
             },
             "CHEMICAL": {
@@ -184,179 +184,179 @@
             }
           },
           "micro": {
-            "precision": 0.9797,
-            "recall": 0.6139,
-            "f1": 0.7548,
-            "tp": 822,
-            "fp": 17,
-            "fn": 517,
-            "support": 1339
+            "precision": 0.9903,
+            "recall": 0.7841,
+            "f1": 0.8752,
+            "tp": 919,
+            "fp": 9,
+            "fn": 253,
+            "support": 1172
           },
           "macro": {
-            "precision": 0.6553,
-            "recall": 0.6553,
-            "f1": 0.6553,
+            "precision": 0.994,
+            "recall": 0.8313,
+            "f1": 0.8864,
             "active_classes": [
               "DISEASE",
               "MEDICATION",
               "PATIENT_NAME"
             ],
-            "macro_all_precision": 0.4915,
-            "macro_all_recall": 0.4915,
-            "macro_all_f1": 0.4915
+            "macro_all_precision": 0.7455,
+            "macro_all_recall": 0.6235,
+            "macro_all_f1": 0.6648
           }
         },
         "token_metrics": {
-          "token_accuracy": 0.8645,
-          "total_tokens": 7680,
-          "correct_tokens": 6639
+          "token_accuracy": 0.9588,
+          "total_tokens": 6411,
+          "correct_tokens": 6147
         },
-        "inference_time_sec": 0.09
+        "inference_time_sec": 0.03
       },
       "track_c_combined_augmented": {
         "entity_metrics": {
           "per_entity": {
             "DISEASE": {
-              "precision": 0.7033,
-              "recall": 0.687,
-              "f1": 0.6951,
-              "tp": 3383,
-              "fp": 1427,
-              "fn": 1541,
+              "precision": 0.706,
+              "recall": 0.6895,
+              "f1": 0.6976,
+              "tp": 3395,
+              "fp": 1414,
+              "fn": 1529,
               "support": 4924
             },
             "MEDICATION": {
-              "precision": 0.9447,
-              "recall": 0.8595,
-              "f1": 0.9001,
-              "tp": 2221,
-              "fp": 130,
+              "precision": 0.94,
+              "recall": 0.8498,
+              "f1": 0.8927,
+              "tp": 2054,
+              "fp": 131,
               "fn": 363,
-              "support": 2584
+              "support": 2417
             },
             "PATIENT_NAME": {
-              "precision": 0.0,
-              "recall": 0.0,
-              "f1": 0.0,
-              "tp": 0,
-              "fp": 4,
-              "fn": 500,
+              "precision": 0.8,
+              "recall": 0.512,
+              "f1": 0.6244,
+              "tp": 256,
+              "fp": 64,
+              "fn": 244,
               "support": 500
             },
             "CHEMICAL": {
-              "precision": 0.8472,
-              "recall": 0.392,
-              "f1": 0.536,
-              "tp": 1231,
-              "fp": 222,
-              "fn": 1909,
+              "precision": 0.8532,
+              "recall": 0.3943,
+              "f1": 0.5393,
+              "tp": 1238,
+              "fp": 213,
+              "fn": 1902,
               "support": 3140
             }
           },
           "micro": {
-            "precision": 0.7931,
-            "recall": 0.6131,
-            "f1": 0.6916,
-            "tp": 6835,
-            "fp": 1783,
-            "fn": 4313,
-            "support": 11148
+            "precision": 0.7921,
+            "recall": 0.6323,
+            "f1": 0.7032,
+            "tp": 6943,
+            "fp": 1822,
+            "fn": 4038,
+            "support": 10981
           },
           "macro": {
-            "precision": 0.6238,
-            "recall": 0.4846,
-            "f1": 0.5328,
+            "precision": 0.8248,
+            "recall": 0.6114,
+            "f1": 0.6885,
             "active_classes": [
               "DISEASE",
               "MEDICATION",
               "PATIENT_NAME",
               "CHEMICAL"
             ],
-            "macro_all_precision": 0.6238,
-            "macro_all_recall": 0.4846,
-            "macro_all_f1": 0.5328
+            "macro_all_precision": 0.8248,
+            "macro_all_recall": 0.6114,
+            "macro_all_f1": 0.6885
           }
         },
         "token_metrics": {
-          "token_accuracy": 0.9415,
-          "total_tokens": 123998,
-          "correct_tokens": 116742
+          "token_accuracy": 0.9467,
+          "total_tokens": 122729,
+          "correct_tokens": 116193
         },
-        "inference_time_sec": 1.95
+        "inference_time_sec": 0.59
       }
     }
   },
   "memm": {
     "model_name": "MEMM",
-    "train_time_sec": 63.07,
+    "train_time_sec": 9.85,
     "validation": {
       "entity_metrics": {
         "per_entity": {
           "DISEASE": {
-            "precision": 0.8223,
-            "recall": 0.7152,
-            "f1": 0.7651,
-            "tp": 3393,
-            "fp": 733,
-            "fn": 1351,
+            "precision": 0.8233,
+            "recall": 0.722,
+            "f1": 0.7693,
+            "tp": 3425,
+            "fp": 735,
+            "fn": 1319,
             "support": 4744
           },
           "MEDICATION": {
-            "precision": 0.9158,
-            "recall": 0.9199,
-            "f1": 0.9178,
-            "tp": 2261,
-            "fp": 208,
-            "fn": 197,
-            "support": 2458
+            "precision": 0.9114,
+            "recall": 0.9263,
+            "f1": 0.9188,
+            "tp": 2161,
+            "fp": 210,
+            "fn": 172,
+            "support": 2333
           },
           "PATIENT_NAME": {
-            "precision": 0.9512,
-            "recall": 0.78,
-            "f1": 0.8571,
-            "tp": 390,
-            "fp": 20,
-            "fn": 110,
+            "precision": 0.9429,
+            "recall": 0.694,
+            "f1": 0.7995,
+            "tp": 347,
+            "fp": 21,
+            "fn": 153,
             "support": 500
           },
           "CHEMICAL": {
-            "precision": 0.8635,
-            "recall": 0.6606,
-            "f1": 0.7486,
-            "tp": 2075,
+            "precision": 0.8621,
+            "recall": 0.6527,
+            "f1": 0.7429,
+            "tp": 2050,
             "fp": 328,
-            "fn": 1066,
+            "fn": 1091,
             "support": 3141
           }
         },
         "micro": {
-          "precision": 0.863,
-          "recall": 0.7488,
-          "f1": 0.8018,
-          "tp": 8119,
-          "fp": 1289,
-          "fn": 2724,
-          "support": 10843
+          "precision": 0.8605,
+          "recall": 0.7448,
+          "f1": 0.7985,
+          "tp": 7983,
+          "fp": 1294,
+          "fn": 2735,
+          "support": 10718
         },
         "macro": {
-          "precision": 0.8882,
-          "recall": 0.7689,
-          "f1": 0.8222,
+          "precision": 0.8849,
+          "recall": 0.7487,
+          "f1": 0.8076,
           "active_classes": [
             "DISEASE",
             "MEDICATION",
             "PATIENT_NAME",
             "CHEMICAL"
           ],
-          "macro_all_precision": 0.8882,
-          "macro_all_recall": 0.7689,
-          "macro_all_f1": 0.8222
+          "macro_all_precision": 0.8849,
+          "macro_all_recall": 0.7487,
+          "macro_all_f1": 0.8076
         }
       },
       "token_metrics": {
-        "token_accuracy": 0.9594,
-        "total_tokens": 116196,
-        "correct_tokens": 111477
+        "token_accuracy": 0.9595,
+        "total_tokens": 115030,
+        "correct_tokens": 110377
       }
     },
     "tracks": {
@@ -364,21 +364,21 @@
         "entity_metrics": {
           "per_entity": {
             "DISEASE": {
-              "precision": 0.8103,
-              "recall": 0.703,
-              "f1": 0.7528,
-              "tp": 3110,
-              "fp": 728,
-              "fn": 1314,
+              "precision": 0.8071,
+              "recall": 0.7075,
+              "f1": 0.754,
+              "tp": 3130,
+              "fp": 748,
+              "fn": 1294,
               "support": 4424
             },
             "MEDICATION": {
-              "precision": 0.9064,
-              "recall": 0.9234,
-              "f1": 0.9148,
-              "tp": 2073,
-              "fp": 214,
-              "fn": 172,
+              "precision": 0.9083,
+              "recall": 0.9216,
+              "f1": 0.9149,
+              "tp": 2069,
+              "fp": 209,
+              "fn": 176,
               "support": 2245
             },
             "PATIENT_NAME": {
@@ -386,78 +386,78 @@
               "recall": 0.0,
               "f1": 0.0,
               "tp": 0,
-              "fp": 22,
+              "fp": 21,
               "fn": 0,
               "support": 0
             },
             "CHEMICAL": {
-              "precision": 0.832,
-              "recall": 0.6102,
-              "f1": 0.704,
-              "tp": 1916,
-              "fp": 387,
-              "fn": 1224,
+              "precision": 0.835,
+              "recall": 0.6061,
+              "f1": 0.7023,
+              "tp": 1903,
+              "fp": 376,
+              "fn": 1237,
               "support": 3140
             }
           },
           "micro": {
-            "precision": 0.8401,
-            "recall": 0.7237,
-            "f1": 0.7776,
-            "tp": 7099,
-            "fp": 1351,
-            "fn": 2710,
+            "precision": 0.8399,
+            "recall": 0.724,
+            "f1": 0.7777,
+            "tp": 7102,
+            "fp": 1354,
+            "fn": 2707,
             "support": 9809
           },
           "macro": {
-            "precision": 0.8496,
-            "recall": 0.7455,
-            "f1": 0.7905,
+            "precision": 0.8501,
+            "recall": 0.7451,
+            "f1": 0.7904,
             "active_classes": [
               "DISEASE",
               "MEDICATION",
               "CHEMICAL"
             ],
-            "macro_all_precision": 0.6372,
-            "macro_all_recall": 0.5591,
-            "macro_all_f1": 0.5929
+            "macro_all_precision": 0.6376,
+            "macro_all_recall": 0.5588,
+            "macro_all_f1": 0.5928
           }
         },
         "token_metrics": {
-          "token_accuracy": 0.9615,
+          "token_accuracy": 0.9617,
           "total_tokens": 116318,
-          "correct_tokens": 111843
+          "correct_tokens": 111863
         },
-        "inference_time_sec": 56.54
+        "inference_time_sec": 17.97
       },
       "track_b_synthetic": {
         "entity_metrics": {
           "per_entity": {
             "DISEASE": {
-              "precision": 0.894,
-              "recall": 0.894,
-              "f1": 0.894,
-              "tp": 447,
-              "fp": 53,
-              "fn": 53,
+              "precision": 0.9519,
+              "recall": 0.95,
+              "f1": 0.951,
+              "tp": 475,
+              "fp": 24,
+              "fn": 25,
               "support": 500
             },
             "MEDICATION": {
               "precision": 1.0,
-              "recall": 0.941,
-              "f1": 0.9696,
-              "tp": 319,
+              "recall": 0.8837,
+              "f1": 0.9383,
+              "tp": 152,
               "fp": 0,
               "fn": 20,
-              "support": 339
+              "support": 172
             },
             "PATIENT_NAME": {
               "precision": 1.0,
-              "recall": 0.916,
-              "f1": 0.9562,
-              "tp": 458,
+              "recall": 0.982,
+              "f1": 0.9909,
+              "tp": 491,
               "fp": 0,
-              "fn": 42,
+              "fn": 9,
               "support": 500
             },
             "CHEMICAL": {
@@ -465,185 +465,185 @@
               "recall": 0.0,
               "f1": 0.0,
               "tp": 0,
-              "fp": 16,
+              "fp": 17,
               "fn": 0,
               "support": 0
             }
           },
           "micro": {
-            "precision": 0.9466,
-            "recall": 0.9141,
-            "f1": 0.9301,
-            "tp": 1224,
-            "fp": 69,
-            "fn": 115,
-            "support": 1339
+            "precision": 0.9646,
+            "recall": 0.9539,
+            "f1": 0.9592,
+            "tp": 1118,
+            "fp": 41,
+            "fn": 54,
+            "support": 1172
           },
           "macro": {
-            "precision": 0.9647,
-            "recall": 0.917,
-            "f1": 0.9399,
+            "precision": 0.984,
+            "recall": 0.9386,
+            "f1": 0.9601,
             "active_classes": [
               "DISEASE",
               "MEDICATION",
               "PATIENT_NAME"
             ],
-            "macro_all_precision": 0.7235,
-            "macro_all_recall": 0.6877,
-            "macro_all_f1": 0.7049
+            "macro_all_precision": 0.738,
+            "macro_all_recall": 0.7039,
+            "macro_all_f1": 0.72
           }
         },
         "token_metrics": {
-          "token_accuracy": 0.9732,
-          "total_tokens": 7680,
-          "correct_tokens": 7474
+          "token_accuracy": 0.9869,
+          "total_tokens": 6411,
+          "correct_tokens": 6327
         },
-        "inference_time_sec": 4.18
+        "inference_time_sec": 1.14
       },
       "track_c_combined_augmented": {
         "entity_metrics": {
           "per_entity": {
             "DISEASE": {
-              "precision": 0.82,
-              "recall": 0.7224,
-              "f1": 0.7681,
-              "tp": 3557,
-              "fp": 781,
-              "fn": 1367,
+              "precision": 0.8236,
+              "recall": 0.7321,
+              "f1": 0.7752,
+              "tp": 3605,
+              "fp": 772,
+              "fn": 1319,
               "support": 4924
             },
             "MEDICATION": {
-              "precision": 0.9179,
-              "recall": 0.9257,
-              "f1": 0.9218,
-              "tp": 2392,
-              "fp": 214,
-              "fn": 192,
-              "support": 2584
+              "precision": 0.914,
+              "recall": 0.9189,
+              "f1": 0.9164,
+              "tp": 2221,
+              "fp": 209,
+              "fn": 196,
+              "support": 2417
             },
             "PATIENT_NAME": {
-              "precision": 0.9542,
-              "recall": 0.916,
-              "f1": 0.9347,
-              "tp": 458,
-              "fp": 22,
-              "fn": 42,
+              "precision": 0.959,
+              "recall": 0.982,
+              "f1": 0.9704,
+              "tp": 491,
+              "fp": 21,
+              "fn": 9,
               "support": 500
             },
             "CHEMICAL": {
-              "precision": 0.8262,
-              "recall": 0.6102,
-              "f1": 0.702,
-              "tp": 1916,
-              "fp": 403,
-              "fn": 1224,
+              "precision": 0.8288,
+              "recall": 0.6061,
+              "f1": 0.7001,
+              "tp": 1903,
+              "fp": 393,
+              "fn": 1237,
               "support": 3140
             }
           },
           "micro": {
-            "precision": 0.8543,
-            "recall": 0.7466,
-            "f1": 0.7968,
-            "tp": 8323,
-            "fp": 1420,
-            "fn": 2825,
-            "support": 11148
+            "precision": 0.8549,
+            "recall": 0.7486,
+            "f1": 0.7982,
+            "tp": 8220,
+            "fp": 1395,
+            "fn": 2761,
+            "support": 10981
           },
           "macro": {
-            "precision": 0.8796,
-            "recall": 0.7936,
-            "f1": 0.8317,
+            "precision": 0.8814,
+            "recall": 0.8098,
+            "f1": 0.8405,
             "active_classes": [
               "DISEASE",
               "MEDICATION",
               "PATIENT_NAME",
               "CHEMICAL"
             ],
-            "macro_all_precision": 0.8796,
-            "macro_all_recall": 0.7936,
-            "macro_all_f1": 0.8317
+            "macro_all_precision": 0.8814,
+            "macro_all_recall": 0.8098,
+            "macro_all_f1": 0.8405
           }
         },
         "token_metrics": {
-          "token_accuracy": 0.9622,
-          "total_tokens": 123998,
-          "correct_tokens": 119317
+          "token_accuracy": 0.963,
+          "total_tokens": 122729,
+          "correct_tokens": 118190
         },
-        "inference_time_sec": 63.6
+        "inference_time_sec": 19.12
       }
     }
   },
   "crf": {
     "model_name": "CRF",
-    "train_time_sec": 46.15,
+    "train_time_sec": 20.05,
     "validation": {
       "entity_metrics": {
         "per_entity": {
           "DISEASE": {
-            "precision": 0.8381,
-            "recall": 0.7452,
-            "f1": 0.7889,
-            "tp": 3535,
-            "fp": 683,
-            "fn": 1209,
+            "precision": 0.8377,
+            "recall": 0.7485,
+            "f1": 0.7906,
+            "tp": 3551,
+            "fp": 688,
+            "fn": 1193,
             "support": 4744
           },
           "MEDICATION": {
-            "precision": 0.9284,
-            "recall": 0.9235,
-            "f1": 0.926,
-            "tp": 2270,
-            "fp": 175,
-            "fn": 188,
-            "support": 2458
+            "precision": 0.9261,
+            "recall": 0.9246,
+            "f1": 0.9254,
+            "tp": 2157,
+            "fp": 172,
+            "fn": 176,
+            "support": 2333
           },
           "PATIENT_NAME": {
-            "precision": 0.9676,
-            "recall": 0.776,
-            "f1": 0.8613,
-            "tp": 388,
-            "fp": 13,
-            "fn": 112,
+            "precision": 0.9642,
+            "recall": 0.754,
+            "f1": 0.8462,
+            "tp": 377,
+            "fp": 14,
+            "fn": 123,
             "support": 500
           },
           "CHEMICAL": {
-            "precision": 0.8584,
-            "recall": 0.6714,
-            "f1": 0.7535,
-            "tp": 2109,
-            "fp": 348,
-            "fn": 1032,
+            "precision": 0.8651,
+            "recall": 0.6718,
+            "f1": 0.7563,
+            "tp": 2110,
+            "fp": 329,
+            "fn": 1031,
             "support": 3141
           }
         },
         "micro": {
           "precision": 0.872,
-          "recall": 0.7657,
-          "f1": 0.8154,
-          "tp": 8302,
-          "fp": 1219,
-          "fn": 2541,
-          "support": 10843
+          "recall": 0.7646,
+          "f1": 0.8148,
+          "tp": 8195,
+          "fp": 1203,
+          "fn": 2523,
+          "support": 10718
         },
         "macro": {
-          "precision": 0.8981,
-          "recall": 0.779,
-          "f1": 0.8324,
+          "precision": 0.8983,
+          "recall": 0.7747,
+          "f1": 0.8296,
           "active_classes": [
             "DISEASE",
             "MEDICATION",
             "PATIENT_NAME",
             "CHEMICAL"
           ],
-          "macro_all_precision": 0.8981,
-          "macro_all_recall": 0.779,
-          "macro_all_f1": 0.8324
+          "macro_all_precision": 0.8983,
+          "macro_all_recall": 0.7747,
+          "macro_all_f1": 0.8296
         }
       },
       "token_metrics": {
-        "token_accuracy": 0.9623,
-        "total_tokens": 116196,
-        "correct_tokens": 111815
+        "token_accuracy": 0.9624,
+        "total_tokens": 115030,
+        "correct_tokens": 110709
       }
     },
     "tracks": {
@@ -651,21 +651,21 @@
         "entity_metrics": {
           "per_entity": {
             "DISEASE": {
-              "precision": 0.819,
-              "recall": 0.7344,
-              "f1": 0.7744,
-              "tp": 3249,
-              "fp": 718,
-              "fn": 1175,
+              "precision": 0.8134,
+              "recall": 0.7333,
+              "f1": 0.7713,
+              "tp": 3244,
+              "fp": 744,
+              "fn": 1180,
               "support": 4424
             },
             "MEDICATION": {
-              "precision": 0.9174,
-              "recall": 0.9256,
-              "f1": 0.9215,
-              "tp": 2078,
-              "fp": 187,
-              "fn": 167,
+              "precision": 0.9208,
+              "recall": 0.9269,
+              "f1": 0.9239,
+              "tp": 2081,
+              "fp": 179,
+              "fn": 164,
               "support": 2245
             },
             "PATIENT_NAME": {
@@ -673,78 +673,78 @@
               "recall": 0.0,
               "f1": 0.0,
               "tp": 0,
-              "fp": 19,
+              "fp": 20,
               "fn": 0,
               "support": 0
             },
             "CHEMICAL": {
-              "precision": 0.8388,
-              "recall": 0.615,
-              "f1": 0.7097,
-              "tp": 1931,
-              "fp": 371,
-              "fn": 1209,
+              "precision": 0.8346,
+              "recall": 0.6137,
+              "f1": 0.7073,
+              "tp": 1927,
+              "fp": 382,
+              "fn": 1213,
               "support": 3140
             }
           },
           "micro": {
-            "precision": 0.8486,
-            "recall": 0.7399,
-            "f1": 0.7905,
-            "tp": 7258,
-            "fp": 1295,
-            "fn": 2551,
+            "precision": 0.8455,
+            "recall": 0.7393,
+            "f1": 0.7889,
+            "tp": 7252,
+            "fp": 1325,
+            "fn": 2557,
             "support": 9809
           },
           "macro": {
-            "precision": 0.8584,
-            "recall": 0.7583,
-            "f1": 0.8019,
+            "precision": 0.8563,
+            "recall": 0.758,
+            "f1": 0.8008,
             "active_classes": [
               "DISEASE",
               "MEDICATION",
               "CHEMICAL"
             ],
-            "macro_all_precision": 0.6438,
-            "macro_all_recall": 0.5688,
-            "macro_all_f1": 0.6014
+            "macro_all_precision": 0.6422,
+            "macro_all_recall": 0.5685,
+            "macro_all_f1": 0.6006
           }
         },
         "token_metrics": {
-          "token_accuracy": 0.9643,
+          "token_accuracy": 0.964,
           "total_tokens": 116318,
-          "correct_tokens": 112162
+          "correct_tokens": 112131
         },
-        "inference_time_sec": 3.21
+        "inference_time_sec": 1.02
       },
       "track_b_synthetic": {
         "entity_metrics": {
           "per_entity": {
             "DISEASE": {
-              "precision": 0.854,
-              "recall": 0.854,
-              "f1": 0.854,
-              "tp": 427,
-              "fp": 73,
-              "fn": 73,
+              "precision": 0.9183,
+              "recall": 0.922,
+              "f1": 0.9202,
+              "tp": 461,
+              "fp": 41,
+              "fn": 39,
               "support": 500
             },
             "MEDICATION": {
               "precision": 1.0,
-              "recall": 0.8083,
-              "f1": 0.894,
-              "tp": 274,
+              "recall": 0.7733,
+              "f1": 0.8721,
+              "tp": 133,
               "fp": 0,
-              "fn": 65,
-              "support": 339
+              "fn": 39,
+              "support": 172
             },
             "PATIENT_NAME": {
               "precision": 1.0,
-              "recall": 0.952,
-              "f1": 0.9754,
-              "tp": 476,
+              "recall": 0.996,
+              "f1": 0.998,
+              "tp": 498,
               "fp": 0,
-              "fn": 24,
+              "fn": 2,
               "support": 500
             },
             "CHEMICAL": {
@@ -752,111 +752,111 @@
               "recall": 0.0,
               "f1": 0.0,
               "tp": 0,
-              "fp": 61,
+              "fp": 36,
               "fn": 0,
               "support": 0
             }
           },
           "micro": {
-            "precision": 0.8978,
-            "recall": 0.879,
-            "f1": 0.8883,
-            "tp": 1177,
-            "fp": 134,
-            "fn": 162,
-            "support": 1339
+            "precision": 0.9341,
+            "recall": 0.9317,
+            "f1": 0.9329,
+            "tp": 1092,
+            "fp": 77,
+            "fn": 80,
+            "support": 1172
           },
           "macro": {
-            "precision": 0.9513,
-            "recall": 0.8714,
-            "f1": 0.9078,
+            "precision": 0.9728,
+            "recall": 0.8971,
+            "f1": 0.9301,
             "active_classes": [
               "DISEASE",
               "MEDICATION",
               "PATIENT_NAME"
             ],
-            "macro_all_precision": 0.7135,
-            "macro_all_recall": 0.6536,
-            "macro_all_f1": 0.6808
+            "macro_all_precision": 0.7296,
+            "macro_all_recall": 0.6728,
+            "macro_all_f1": 0.6976
           }
         },
         "token_metrics": {
-          "token_accuracy": 0.9663,
-          "total_tokens": 7680,
-          "correct_tokens": 7421
+          "token_accuracy": 0.9808,
+          "total_tokens": 6411,
+          "correct_tokens": 6288
         },
-        "inference_time_sec": 0.24
+        "inference_time_sec": 0.06
       },
       "track_c_combined_augmented": {
         "entity_metrics": {
           "per_entity": {
             "DISEASE": {
-              "precision": 0.8229,
-              "recall": 0.7465,
-              "f1": 0.7829,
-              "tp": 3676,
-              "fp": 791,
-              "fn": 1248,
+              "precision": 0.8252,
+              "recall": 0.7524,
+              "f1": 0.7871,
+              "tp": 3705,
+              "fp": 785,
+              "fn": 1219,
               "support": 4924
             },
             "MEDICATION": {
-              "precision": 0.9263,
-              "recall": 0.9102,
-              "f1": 0.9182,
-              "tp": 2352,
-              "fp": 187,
-              "fn": 232,
-              "support": 2584
+              "precision": 0.9252,
+              "recall": 0.916,
+              "f1": 0.9206,
+              "tp": 2214,
+              "fp": 179,
+              "fn": 203,
+              "support": 2417
             },
             "PATIENT_NAME": {
-              "precision": 0.9616,
-              "recall": 0.952,
-              "f1": 0.9568,
-              "tp": 476,
-              "fp": 19,
-              "fn": 24,
+              "precision": 0.9614,
+              "recall": 0.996,
+              "f1": 0.9784,
+              "tp": 498,
+              "fp": 20,
+              "fn": 2,
               "support": 500
             },
             "CHEMICAL": {
-              "precision": 0.8172,
-              "recall": 0.615,
-              "f1": 0.7018,
-              "tp": 1931,
-              "fp": 432,
-              "fn": 1209,
+              "precision": 0.8217,
+              "recall": 0.6137,
+              "f1": 0.7026,
+              "tp": 1927,
+              "fp": 418,
+              "fn": 1213,
               "support": 3140
             }
           },
           "micro": {
-            "precision": 0.8551,
-            "recall": 0.7566,
-            "f1": 0.8029,
-            "tp": 8435,
-            "fp": 1429,
-            "fn": 2713,
-            "support": 11148
+            "precision": 0.8561,
+            "recall": 0.7599,
+            "f1": 0.8051,
+            "tp": 8344,
+            "fp": 1402,
+            "fn": 2637,
+            "support": 10981
           },
           "macro": {
-            "precision": 0.882,
-            "recall": 0.8059,
-            "f1": 0.8399,
+            "precision": 0.8834,
+            "recall": 0.8195,
+            "f1": 0.8472,
             "active_classes": [
               "DISEASE",
               "MEDICATION",
               "PATIENT_NAME",
               "CHEMICAL"
             ],
-            "macro_all_precision": 0.882,
-            "macro_all_recall": 0.8059,
-            "macro_all_f1": 0.8399
+            "macro_all_precision": 0.8834,
+            "macro_all_recall": 0.8195,
+            "macro_all_f1": 0.8472
           }
         },
         "token_metrics": {
-          "token_accuracy": 0.9644,
-          "total_tokens": 123998,
-          "correct_tokens": 119583
+          "token_accuracy": 0.9649,
+          "total_tokens": 122729,
+          "correct_tokens": 118419
         },
-        "inference_time_sec": 4.21
+        "inference_time_sec": 1.11
       }
     }
   }

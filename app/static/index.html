@@ -647,6 +647,52 @@
       background: #fbf8f2;
     }
 
+    .matrix-block {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .matrix-block h4 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .matrix-block .matrix-note {
+      margin: 0 0 10px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #3c3832;
+    }
+
+    .matrix-block .matrix-note .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.92em;
+    }
+
+    .matrix-scroll {
+      overflow: auto;
+      max-height: min(420px, 50vh);
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbf8f2;
+      margin-bottom: 14px;
+    }
+
+    .matrix-grid td.token .src {
+      display: block;
+      margin-top: 2px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
     .trellis-grid {
       border-collapse: separate;
       border-spacing: 0;
@@ -674,22 +720,36 @@
     }
 
     .trellis-grid th:first-child,
-    .trellis-grid td.state {
+    .trellis-grid td.token {
       position: sticky;
       left: 0;
       background: #f3eee4;
       text-align: left;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 11px;
-      color: var(--muted);
+      font-family: Fraunces, Georgia, serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
       z-index: 1;
-      min-width: 118px;
+      min-width: 108px;
+      max-width: 140px;
+      white-space: normal;
+      word-break: break-word;
     }
 
     .trellis-grid th:first-child { z-index: 3; }
 
+    .trellis-grid thead th:not(:first-child) {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 10px;
+      letter-spacing: 0;
+      white-space: normal;
+      min-width: 88px;
+      max-width: 110px;
+      vertical-align: bottom;
+    }
+
     .trellis-grid td.cell {
-      min-width: 78px;
+      min-width: 72px;
       max-width: 110px;
       padding: 10px 8px;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -956,9 +1016,9 @@
 
     function modelBlurb(kind) {
       if (kind === "viterbi") {
-        return "This grid is the Viterbi trellis the model filled while decoding. Column = token. Row = BIO state. Cell = highest log-probability of any path that ends in that state at that token. Darker = stronger within the column. The green outline is the single path Viterbi kept after backtracking — the tags used for NER.";
+        return "This grid is the Viterbi trellis the model filled while decoding. Row = token. Column = BIO state. Cell = highest log-probability of any path that ends in that state at that token. Darker = stronger within the row (states competing for the same word). The green outline is the single path Viterbi kept after backtracking — the tags used for NER.";
       }
-      return "sklearn-crfsuite does not expose Viterbi cell scores, so this CRF grid shows real forward–backward tag marginals P(y<sub>t</sub> = state | sentence). Darker = higher probability in that column. The green outline is still the Viterbi decode path the CRF used for the entity spans above — not a made-up highlight.";
+      return "sklearn-crfsuite does not expose Viterbi cell scores, so this CRF grid shows real forward–backward tag marginals P(y<sub>t</sub> = state | sentence). Darker = higher probability within each token row. The green outline is still the Viterbi decode path the CRF used for the entity spans above — not a made-up highlight.";
     }
 
     function buildPathStrip(trellis) {
@@ -977,10 +1037,11 @@
 
     function buildGrid(trellis) {
       const { tokens, states, scores, path, kind, unit } = trellis;
+      // Heat is still relative across states for the same token (now a row).
       const heats = columnStrengths(scores, kind, unit);
-      const head = tokens.map((tok, t) => `<th scope="col" data-col="${t}">${escapeHtml(tok)}</th>`).join("");
-      const body = states.map((state, s) => {
-        const cells = tokens.map((tok, t) => {
+      const head = states.map((state, s) => `<th scope="col" data-state="${s}">${escapeHtml(state)}</th>`).join("");
+      const body = tokens.map((tok, t) => {
+        const cells = states.map((state, s) => {
           const value = scores[t][s];
           const onPath = path[t] === s;
           const real = isRealScore(value, unit);
@@ -990,9 +1051,44 @@
           const dead = real ? "" : " dead";
           return `<td class="cell${onPath ? " on-path" : ""}${dead}" data-t="${t}" data-s="${s}" style="background:${bg};color:${ink}">${escapeHtml(formatScore(value, unit))}</td>`;
         }).join("");
-        return `<tr data-state-row="${s}" data-state-name="${escapeHtml(state)}"><td class="state">${escapeHtml(state)}</td>${cells}</tr>`;
+        return `<tr data-token-row="${t}" data-token="${escapeHtml(tok)}"><td class="token">${escapeHtml(tok)}</td>${cells}</tr>`;
       }).join("");
-      return `<div class="trellis-scroll"><table class="trellis-grid" data-kind="${escapeHtml(kind)}" data-unit="${escapeHtml(unit)}"><thead><tr><th scope="col">BIO state</th>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+      return `<div class="trellis-scroll"><table class="trellis-grid" data-kind="${escapeHtml(kind)}" data-unit="${escapeHtml(unit)}"><thead><tr><th scope="col">token \\ state</th>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+    }
+
+    function buildParamMatrix(matrix, cornerLabel, rowMeta) {
+      if (!matrix || !matrix.rows || !matrix.cols || !matrix.scores) return "";
+      const head = matrix.cols.map((c) => `<th scope="col">${escapeHtml(c)}</th>`).join("");
+      const body = matrix.rows.map((rowLabel, r) => {
+        const cells = matrix.cols.map((_, c) => {
+          const value = matrix.scores[r][c];
+          const real = typeof value === "number" && Number.isFinite(value);
+          return `<td class="cell${real ? "" : " dead"}">${escapeHtml(real ? value.toFixed(2) : "—")}</td>`;
+        }).join("");
+        const meta = rowMeta && rowMeta[r]
+          ? `<span class="src">${escapeHtml(rowMeta[r])}</span>`
+          : "";
+        return `<tr><td class="token">${escapeHtml(rowLabel)}${meta}</td>${cells}</tr>`;
+      }).join("");
+      return `<div class="matrix-scroll"><table class="trellis-grid matrix-grid"><thead><tr><th scope="col">${escapeHtml(cornerLabel)}</th>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+    }
+
+    function buildHmmMatrices(matrices) {
+      if (!matrices || !matrices.transition || !matrices.emission) return "";
+      const emitMeta = (matrices.emission.sources || []).map((src) => (
+        src === "vocab" ? "P(w|tag) from vocab" : `OOV → ${src}`
+      ));
+      return `<div class="matrix-block">`
+        + `<h4>HMM transition matrix (log A)</h4>`
+        + `<p class="matrix-note">Rows are <span class="mono">from</span> tags, including `
+        + `<span class="mono">START</span> (initial π). Columns are <span class="mono">to</span> tags. `
+        + `Values are log-probabilities from the fitted HMM. “—” marks illegal BIO transitions.</p>`
+        + buildParamMatrix(matrices.transition, "from \\ to", null)
+        + `<h4>HMM emission matrix (log B)</h4>`
+        + `<p class="matrix-note">Rows are tokens from this note (same order as the lattice). `
+        + `Columns are BIO tags. OOV tokens use the morphological signature listed under the word.</p>`
+        + buildParamMatrix(matrices.emission, "token \\ state", emitMeta)
+        + `</div>`;
     }
 
     function buildTrellisMarkup(reading) {
@@ -1017,7 +1113,8 @@
         + `<span class="heat-legend"><span>Weaker</span><span class="heat-bar" aria-hidden="true"></span><span>Stronger</span></span>`
         + `</div></div>`
         + buildGrid(trellis)
-        + `<div class="inspect" data-inspect>Select a token above or a cell in the lattice to read the exact score.</div>`;
+        + `<div class="inspect" data-inspect>Select a token above or a cell in the lattice to read the exact score.</div>`
+        + buildHmmMatrices(reading.hmm_matrices);
     }
 
     function trellisPanel(readings) {
@@ -1039,10 +1136,10 @@
         + `HMM and MEMM fill a Viterbi trellis and keep one best path. CRF also keeps a Viterbi path for the spans you see above; `
         + `its grid shows tag marginals because that is what the library exposes. Every number below is computed from the fitted checkpoint on this note — nothing is simulated.</p>`
         + `<div class="explain"><h3>How to read this</h3><ul>`
-        + `<li><strong>Columns</strong> are tokens from the first sentence after the same tokeniser the models were trained with.</li>`
-        + `<li><strong>Rows</strong> are BIO states: O, and B-/I- for disease, medication, chemical, and patient name.</li>`
+        + `<li><strong>Rows</strong> are tokens from the first sentence after the same tokeniser the models were trained with.</li>`
+        + `<li><strong>Columns</strong> are BIO states: O, and B-/I- for disease, medication, chemical, and patient name.</li>`
         + `<li><strong>Green outline</strong> is the decode path: one state per token. That path is exactly what produced the highlighted entities.</li>`
-        + `<li><strong>Heat</strong> is relative inside each column so you can see which states compete for that token. Absolute values stay in the cells and in the inspector.</li>`
+        + `<li><strong>Heat</strong> is relative inside each row so you can see which states compete for that token. Absolute values stay in the cells and in the inspector.</li>`
         + `</ul></div>`
         + `<div class="trellis-tabs" role="tablist" aria-label="Model lattice">${tabs}</div>${panes}</section>`;
     }
