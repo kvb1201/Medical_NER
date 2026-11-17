@@ -208,6 +208,60 @@ class HiddenMarkovModel:
             return self.log_emit_signatures[sig]
         return self.log_emit_signatures["<UNK>"]
 
+    @staticmethod
+    def _json_log(value: float) -> float | None:
+        """JSON-safe log-probability (None for non-finite / illegal masks)."""
+        if value is None or not math.isfinite(value) or value <= -1e8:
+            return None
+        return float(value)
+
+    def parameter_matrices(self, tokens: List[str]) -> Dict[str, Any]:
+        """
+        Export the real HMM log-transition and log-emission tables used in decoding.
+
+        Transition rows are ``START`` plus every BIO state (from → to).
+        Emission rows are the provided tokens (same order as the trellis), with
+        columns = BIO states. OOV tokens use the morphological signature table.
+        """
+        states = list(self.states)
+        k = len(states)
+
+        # START → s is log_init[s]; then full K×K log_trans.
+        trans_rows = ["START"] + states
+        trans_scores: List[List[float | None]] = [
+            [self._json_log(self.log_init[s]) for s in range(k)]
+        ]
+        for prev in range(k):
+            trans_scores.append([self._json_log(self.log_trans[prev][s]) for s in range(k)])
+
+        emit_scores: List[List[float | None]] = []
+        emit_sources: List[str] = []
+        for t, tok in enumerate(tokens):
+            if tok in self.log_emit:
+                source = "vocab"
+            else:
+                sig = get_word_signature(tok, t)
+                source = sig if sig in self.log_emit_signatures else "<UNK>"
+            row = self._get_token_log_emissions(tok, t)
+            emit_scores.append([self._json_log(v) for v in row])
+            emit_sources.append(source)
+
+        return {
+            "unit": "log_probability",
+            "states": states,
+            "transition": {
+                "rows": trans_rows,
+                "cols": states,
+                "scores": trans_scores,
+            },
+            "emission": {
+                "rows": list(tokens),
+                "cols": states,
+                "scores": emit_scores,
+                "sources": emit_sources,
+            },
+        }
+
     def decode_trellis(self, tokens: List[str]) -> Dict[str, Any]:
         """
         Run Viterbi and return the real trellis used for decoding.

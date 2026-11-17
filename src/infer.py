@@ -113,6 +113,9 @@ def extract_text(text: str, model: Any, model_name: str) -> Dict[str, Any]:
     trellis = _first_sentence_trellis(sentences, kept, model)
     if trellis is not None:
         result["trellis"] = trellis
+        # HMM only: surface the real transition / emission tables for the same tokens.
+        if hasattr(model, "parameter_matrices"):
+            result["hmm_matrices"] = model.parameter_matrices(trellis["tokens"])
     return result
 
 
