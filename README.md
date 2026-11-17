@@ -275,6 +275,18 @@ for token, tag in zip(sentences[0], predictions[0]):
     print(f"{token:15s} -> {tag}")
 ```
 
+To tag raw text instead of pre-tokenized sentences, use the same tokenizer and sentence splitter as the web demo:
+
+```python
+import joblib
+from src.infer import extract_text
+
+result = extract_text("Mr. John Doe was prescribed metformin for type 2 diabetes.",
+                      joblib.load("models/crf.joblib"), "CRF")
+for entity in result["entities"]:
+    print(entity["type"], entity["text"], entity["start"], entity["end"])
+```
+
 ---
 
 ## 8. Evaluation Methodology
@@ -423,7 +435,7 @@ The experimental metrics below are verified from [`reports/model_metrics.json`](
 
 ### Environment Requirements
 - **OS:** macOS or Linux (tested on macOS Darwin 24.6.0 and Ubuntu Linux).
-- **Python:** Python 3.10 to 3.14 (tested on Python 3.14).
+- **Python:** Python 3.12 to 3.14 (tested on Python 3.14; the pinned NumPy and SciPy releases need 3.12 or newer).
 
 ### Setup Instructions
 
@@ -452,13 +464,14 @@ python3 -c "import sklearn, sklearn_crfsuite, joblib, yaml; print('Environment v
 
 ## 12. Reproducibility Commands
 
-### Quick Validation (Runs in ~2 seconds)
+### Quick Validation (Runs in about 10 seconds)
 ```bash
 # Run the complete test suite (64 automated unit & integration tests)
 PYTHONPATH=. pytest tests/ -v
 ```
 
-### Evaluate Pre-Trained Models (no retraining; a few minutes on a laptop CPU)
+### Evaluate Trained Models (no retraining; a few minutes on a laptop CPU)
+Checkpoints in `models/` are not committed; create them once with the full pipeline below.
 ```bash
 # Evaluate existing serialized models and regenerate reports/
 PYTHONPATH=. python3 src/models/train_and_evaluate.py --eval-only
