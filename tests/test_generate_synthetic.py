@@ -26,6 +26,22 @@ def test_template_generation_exact_alignment():
     assert tokens[p_indices[0]] == "Jane"
     assert tokens[p_indices[1]] == "Doe"
 
+
+def test_patient_first_self_report_template():
+    tokens, tags = generate_sentence_from_template(
+        "self_report_01_tr",
+        ["Ojas", "Srivastava"],
+        ["fever"],
+        ["metformin"],
+    )
+    assert tokens == [
+        "I", "am", "Ojas", "and", "I", "am", "suffering", "from", "fever", "."
+    ]
+    assert tags[2] == "B-PATIENT_NAME"
+    assert tags.count("B-PATIENT_NAME") == 1
+    assert "I-PATIENT_NAME" not in tags
+    assert tags[8] == "B-DISEASE"
+
 def test_split_template_disjointness():
     train_tmpls = set(TEMPLATE_ALLOCATION["train"])
     valid_tmpls = set(TEMPLATE_ALLOCATION["valid"])
@@ -59,7 +75,7 @@ def test_provenance_metadata():
     for r in recs:
         assert r["source"] == "synthetic"
         assert r["random_seed"] == 123
-        assert r["generation_version"] == "2.0.0"
+        assert r["generation_version"] == "2.1.0"
         assert "template_id" in r
         assert "document_id" in r
 

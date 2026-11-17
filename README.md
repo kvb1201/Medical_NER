@@ -60,7 +60,7 @@ The repository implements a production-grade, reproducible pipeline covering dat
 
 - **Automated Dataset Acquisition:** Reproducible download and schema validation of the gold-standard BioCreative V CDR corpus (`tner/bc5cdr`) from the Hugging Face Hub.
 - **4-Tier Auditable Chemical-to-Medication Classification:** Resolves the conflation between generic chemical compounds and approved pharmacological drugs through an explicit 4-tier decision hierarchy with a 15,935-mention audit trail.
-- **Deterministic Synthetic Clinical Augmentation:** Generates 5,000 synthetic sentences featuring fictional patient names across 28 disjoint template families and 120 disjoint fictional names, ensuring zero split leakage.
+- **Deterministic Synthetic Clinical Augmentation:** Generates 5,000 synthetic sentences featuring fictional patient names across 35 disjoint template families (including first-person self-reports) and 120 disjoint fictional names, ensuring zero split leakage.
 - **Leakage Prevention & Cross-Source Deduplication:** Normalizes text and computes conservative token/character similarities to detect and isolate cross-split duplicates while strictly preserving the authentic BC5CDR test benchmark.
 - **12-Point BIO Dataset Integrity Suite:** Programmatically verifies sequence lengths, syntax conformity, continuation consistency, and cross-split disjointness.
 - **Generative Sequence Modeling (HMM):** MLE transition and emission parameter estimation with Laplace smoothing and 8-signature sub-word morphological fallbacks for Out-of-Vocabulary (OOV) tokens.
@@ -118,7 +118,7 @@ The full decision log across all 15,935 chemical mentions is recorded in [`repor
 
 ### 2. Controlled Synthetic Clinical Augmentation
 - **Motivation:** Authentic PubMed literature contains **zero patient personal names** due to peer-reviewed publication conventions. Clinical EHR systems, however, require robust detection of patient names alongside diagnoses and prescriptions for de-identification.
-- **Generation:** 5,000 synthetic sentences generated deterministically via [`src/data/generate_synthetic.py`](src/data/generate_synthetic.py) using 28 clinical templates across distinct hospital encounters (admissions, outpatient reviews, discharges).
+- **Generation:** 5,000 synthetic sentences generated deterministically via [`src/data/generate_synthetic.py`](src/data/generate_synthetic.py) using 35 clinical templates across hospital encounters and first-person self-reports (admissions, outpatient reviews, discharges, “I am … suffering from …”).
 - **Leakage Prevention:** 120 fictional names are partitioned into strictly disjoint subsets (60 train, 30 valid, 30 test; 0 overlap). The 28 template families are similarly allocated disjointly across splits (16 train, 6 valid, 6 test; 0 overlap).
 
 ### 3. Verified Corpus Partition Statistics

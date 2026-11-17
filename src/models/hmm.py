@@ -30,14 +30,20 @@ def is_valid_bio_transition(prev_tag: Optional[str], curr_tag: str) -> bool:
         return prev_tag in valid_prev
     return True
 
-def get_word_signature(word: str) -> str:
+def get_word_signature(word: str, position: int = -1) -> str:
     """
     Map an out-of-vocabulary or rare word to a morphological signature
     to preserve capitalization, digits, and suffix clues for the HMM emission model.
+
+    Title-case words at sentence start are separated from mid-sentence TitleCase
+    so OOV given names (e.g. after \"I am\") are not dominated by sentence-initial
+    openers like \"Patient\" / \"Discharge\".
     """
     if word.isupper():
         return "<UNK_ALL_CAPS>"
     elif word.istitle():
+        if position == 0:
+            return "<UNK_TITLE_START>"
         return "<UNK_TITLE>"
     elif any(c.isdigit() for c in word):
         return "<UNK_NUM>"
@@ -73,8 +79,9 @@ class HiddenMarkovModel:
         self.id2state: Dict[int, str] = {}
         self.vocab: Dict[str, int] = {}
         self.signatures: List[str] = [
-            "<UNK_ALL_CAPS>", "<UNK_TITLE>", "<UNK_NUM>", "<UNK_DASH>",
-            "<UNK_SUFFIX_DISEASE>", "<UNK_SUFFIX_DRUG>", "<UNK_LOWER>", "<UNK>"
+            "<UNK_ALL_CAPS>", "<UNK_TITLE_START>", "<UNK_TITLE>", "<UNK_NUM>",
+            "<UNK_DASH>", "<UNK_SUFFIX_DISEASE>", "<UNK_SUFFIX_DRUG>",
+            "<UNK_LOWER>", "<UNK>"
         ]
 
         # Log probability tables
@@ -131,11 +138,15 @@ class HiddenMarkovModel:
                     prev_state_id = self.state2id[tags[t - 1]]
                     trans_counts[prev_state_id][state_id] += 1
 
-                # Emission count: register word or signature
+                # Emission count: word if frequent enough, else morphological signature.
+                # Also share mid-sentence TitleCase mass into <UNK_TITLE> so OOV
+                # given names can borrow evidence from in-vocabulary patient names.
+                sig = get_word_signature(tok, t)
                 if tok in self.vocab:
                     emit_counts[tok][state_id] += 1
+                    if t > 0 and tok.istitle():
+                        emit_counts["<UNK_TITLE>"][state_id] += 1
                 else:
-                    sig = get_word_signature(tok)
                     emit_counts[sig][state_id] += 1
 
         # 4. Compute smoothed log initial probabilities
@@ -188,11 +199,11 @@ class HiddenMarkovModel:
         )
         return self
 
-    def _get_token_log_emissions(self, token: str) -> List[float]:
+    def _get_token_log_emissions(self, token: str, position: int = -1) -> List[float]:
         """Retrieve log emissions for a token, falling back to signature if OOV."""
         if token in self.log_emit:
             return self.log_emit[token]
-        sig = get_word_signature(token)
+        sig = get_word_signature(token, position)
         if sig in self.log_emit_signatures:
             return self.log_emit_signatures[sig]
         return self.log_emit_signatures["<UNK>"]
@@ -224,13 +235,13 @@ class HiddenMarkovModel:
         bp = [[0] * K for _ in range(T)]
 
         # t = 0 (Initial step)
-        first_emissions = self._get_token_log_emissions(tokens[0])
+        first_emissions = self._get_token_log_emissions(tokens[0], 0)
         for s in range(K):
             V[0][s] = self.log_init[s] + first_emissions[s]
 
         # t = 1 to T - 1 (Forward recursion)
         for t in range(1, T):
-            emissions = self._get_token_log_emissions(tokens[t])
+            emissions = self._get_token_log_emissions(tokens[t], t)
             for s in range(K):
                 best_val = -float("inf")
                 best_prev = 0

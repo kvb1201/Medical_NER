@@ -5,20 +5,20 @@
 **Validation Corpus:** Combined Augmented Validation Set (5,830 sentences: 5,330 BC5CDR + 500 Synthetic)  
 **Evaluation Tracks:**
 - **Track A (Pure Gold Biomedical Benchmark):** BC5CDR Original Test Slice (5,865 sentences, 116,318 tokens, 100% human gold standard)
-- **Track B (Synthetic Clinical Name Benchmark):** Synthetic Test Slice (500 sentences, 7,680 tokens, fictional clinical EHR templates)
-- **Track C (Combined Augmented Test Benchmark):** Joint Evaluation (6,365 sentences, 123,998 tokens: union of Track A + Track B)
+- **Track B (Synthetic Clinical Name Benchmark):** Synthetic Test Slice (500 sentences, 6,411 tokens, fictional clinical EHR templates)
+- **Track C (Combined Augmented Test Benchmark):** Joint Evaluation (6,365 sentences, 122,729 tokens: union of Track A + Track B)
 
 ### Corpus & Evaluation Token Accounting
 
 | Evaluation Scope | Sentences | Tokens | Scope Description |
 | :--- | :---: | :---: | :--- |
 | **Track A (BC5CDR Original Test)** | 5,865 | 116,318 | Authentic PubMed literature abstracts |
-| **Track B (Synthetic Clinical Test)** | 500 | 7,680 | Fictional clinical EHR templates |
-| **Track C (Combined Augmented Test)** | 6,365 | 123,998 | Concatenation of Track A + Track B |
-| **Token evaluations across Tracks A+B+C** | — | **247,996** | Track C re-evaluates the tokens of Tracks A and B |
-| **Validation Partition** | 5,830 | 116,196 | Augmented validation split |
-| **Training Partition** | 9,228 | 162,306 | Augmented training split |
-| **Full Project Corpus (Train+Val+Test)** | **21,423** | **402,500** | All tokens across the augmented splits |
+| **Track B (Synthetic Clinical Test)** | 500 | 6,411 | Fictional clinical EHR templates |
+| **Track C (Combined Augmented Test)** | 6,365 | 122,729 | Concatenation of Track A + Track B |
+| **Token evaluations across Tracks A+B+C** | — | **245,458** | Track C re-evaluates the tokens of Tracks A and B |
+| **Validation Partition** | 5,830 | 115,030 | Augmented validation split |
+| **Training Partition** | 9,228 | 156,377 | Augmented training split |
+| **Full Project Corpus (Train+Val+Test)** | **21,423** | **394,136** | All tokens across the augmented splits |
 
 ---
 
@@ -26,9 +26,9 @@
 
 | Model | Architecture Type | Training Time | Track A F1 (BC5CDR) | Track B F1 (Synthetic) | Track C F1 (Combined) | Token Accuracy (Track C) |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **HMM** | Generative (Joint MLE) | 0.24s | **0.6838** | **0.7548** | **0.6916** | 94.15% |
-| **MEMM** | Discriminative (Local Cond. MaxEnt) | 63.07s | **0.7776** | **0.9301** | **0.7968** | 96.22% |
-| **CRF** | Discriminative (Global Linear-Chain CRF) | 46.15s | **0.7905** | **0.8883** | **0.8029** | 96.44% |
+| **HMM** | Generative (Joint MLE) | 0.11s | **0.6828** | **0.8752** | **0.7032** | 94.67% |
+| **MEMM** | Discriminative (Local Cond. MaxEnt) | 9.85s | **0.7777** | **0.9592** | **0.7982** | 96.30% |
+| **CRF** | Discriminative (Global Linear-Chain CRF) | 20.05s | **0.7889** | **0.9329** | **0.8051** | 96.49% |
 
 ---
 
@@ -38,40 +38,40 @@
 ### HMM Performance on Pure BC5CDR Test Slice
 | Entity Class | Precision | Recall | F1 Score | Support (Gold Spans) | Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| `DISEASE` | 0.6729 | 0.6555 | **0.6641** | 4,424 | Active gold class |
-| `MEDICATION` | 0.9354 | 0.8383 | **0.8842** | 2,245 | Active gold class |
-| `CHEMICAL` | 0.8472 | 0.3920 | **0.5360** | 3,140 | Active gold class |
-| `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (4 false positives) |
-| **Micro-Average** | **0.7730** | **0.6130** | **0.6838** | **9,809** | Pooled span counts |
-| **Macro-Average (Active 3-Class)** | **0.8185** | **0.6286** | **0.6948** | — | Unweighted mean of active classes |
-| **Macro-Average (Full 4-Class)** | 0.6139 | 0.4715 | 0.5211 | — | All schema classes (incl. inactive) |
+| `DISEASE` | 0.6739 | 0.6564 | **0.6651** | 4,424 | Active gold class |
+| `MEDICATION` | 0.9349 | 0.8383 | **0.8840** | 2,245 | Active gold class |
+| `CHEMICAL` | 0.8532 | 0.3943 | **0.5393** | 3,140 | Active gold class |
+| `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (64 false positives) |
+| **Micro-Average** | **0.7687** | **0.6141** | **0.6828** | **9,809** | Pooled span counts |
+| **Macro-Average (Active 3-Class)** | **0.8207** | **0.6297** | **0.6961** | — | Unweighted mean of active classes |
+| **Macro-Average (Full 4-Class)** | 0.6155 | 0.4722 | 0.5221 | — | All schema classes (incl. inactive) |
 
 ### MEMM Performance on Pure BC5CDR Test Slice
 | Entity Class | Precision | Recall | F1 Score | Support (Gold Spans) | Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| `DISEASE` | 0.8103 | 0.7030 | **0.7528** | 4,424 | Active gold class |
-| `MEDICATION` | 0.9064 | 0.9234 | **0.9148** | 2,245 | Active gold class |
-| `CHEMICAL` | 0.8320 | 0.6102 | **0.7040** | 3,140 | Active gold class |
-| `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (22 false positives) |
-| **Micro-Average** | **0.8401** | **0.7237** | **0.7776** | **9,809** | Pooled span counts |
-| **Macro-Average (Active 3-Class)** | **0.8496** | **0.7455** | **0.7905** | — | Unweighted mean of active classes |
-| **Macro-Average (Full 4-Class)** | 0.6372 | 0.5591 | 0.5929 | — | All schema classes (incl. inactive) |
+| `DISEASE` | 0.8071 | 0.7075 | **0.7540** | 4,424 | Active gold class |
+| `MEDICATION` | 0.9083 | 0.9216 | **0.9149** | 2,245 | Active gold class |
+| `CHEMICAL` | 0.8350 | 0.6061 | **0.7023** | 3,140 | Active gold class |
+| `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (21 false positives) |
+| **Micro-Average** | **0.8399** | **0.7240** | **0.7777** | **9,809** | Pooled span counts |
+| **Macro-Average (Active 3-Class)** | **0.8501** | **0.7451** | **0.7904** | — | Unweighted mean of active classes |
+| **Macro-Average (Full 4-Class)** | 0.6376 | 0.5588 | 0.5928 | — | All schema classes (incl. inactive) |
 
 ### CRF Performance on Pure BC5CDR Test Slice
 | Entity Class | Precision | Recall | F1 Score | Support (Gold Spans) | Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| `DISEASE` | 0.8190 | 0.7344 | **0.7744** | 4,424 | Active gold class |
-| `MEDICATION` | 0.9174 | 0.9256 | **0.9215** | 2,245 | Active gold class |
-| `CHEMICAL` | 0.8388 | 0.6150 | **0.7097** | 3,140 | Active gold class |
-| `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (19 false positives) |
-| **Micro-Average** | **0.8486** | **0.7399** | **0.7905** | **9,809** | Pooled span counts |
-| **Macro-Average (Active 3-Class)** | **0.8584** | **0.7583** | **0.8019** | — | Unweighted mean of active classes |
-| **Macro-Average (Full 4-Class)** | 0.6438 | 0.5688 | 0.6014 | — | All schema classes (incl. inactive) |
+| `DISEASE` | 0.8134 | 0.7333 | **0.7713** | 4,424 | Active gold class |
+| `MEDICATION` | 0.9208 | 0.9269 | **0.9239** | 2,245 | Active gold class |
+| `CHEMICAL` | 0.8346 | 0.6137 | **0.7073** | 3,140 | Active gold class |
+| `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (20 false positives) |
+| **Micro-Average** | **0.8455** | **0.7393** | **0.7889** | **9,809** | Pooled span counts |
+| **Macro-Average (Active 3-Class)** | **0.8563** | **0.7580** | **0.8008** | — | Unweighted mean of active classes |
+| **Macro-Average (Full 4-Class)** | 0.6422 | 0.5685 | 0.6006 | — | All schema classes (incl. inactive) |
 
 ---
 
 ## 3. Track B: Synthetic Evaluation (Synthetic Test Slice)
-*Evaluates fictional `PATIENT_NAME` recognition alongside medical entities on unseen clinical EHR templates (500 sentences, 7,680 tokens).*
+*Evaluates fictional `PATIENT_NAME` recognition alongside medical entities on unseen clinical EHR templates (500 sentences, 6,411 tokens).*
 
 > [!WARNING]
 > **Clinical Non-Equivalence Disclaimer:** Synthetic test performance demonstrates sequence labeling on controlled syntactic structures. It must **never** be cited as real-world clinical EHR extraction accuracy on unredacted medical notes.
@@ -79,70 +79,70 @@
 ### HMM Performance on Synthetic Clinical Test Slice
 | Entity Class | Precision | Recall | F1 Score | Support (Gold Spans) | Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| `PATIENT_NAME` | 0.0000 | 0.0000 | **0.0000** | 500 | Active gold class |
-| `DISEASE` | 0.9660 | 0.9660 | **0.9660** | 500 | Active gold class |
-| `MEDICATION` | 1.0000 | 1.0000 | **1.0000** | 339 | Active gold class |
+| `PATIENT_NAME` | 1.0000 | 0.5120 | **0.6772** | 500 | Active gold class |
+| `DISEASE` | 0.9820 | 0.9820 | **0.9820** | 500 | Active gold class |
+| `MEDICATION` | 1.0000 | 1.0000 | **1.0000** | 172 | Active gold class |
 | `CHEMICAL` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (0 false positives) |
-| **Micro-Average** | **0.9797** | **0.6139** | **0.7548** | **1,339** | Pooled span counts |
-| **Macro-Average (Active 3-Class)** | **0.6553** | **0.6553** | **0.6553** | — | Unweighted mean of active classes |
-| **Macro-Average (Full 4-Class)** | 0.4915 | 0.4915 | 0.4915 | — | All schema classes (incl. inactive) |
+| **Micro-Average** | **0.9903** | **0.7841** | **0.8752** | **1,172** | Pooled span counts |
+| **Macro-Average (Active 3-Class)** | **0.9940** | **0.8313** | **0.8864** | — | Unweighted mean of active classes |
+| **Macro-Average (Full 4-Class)** | 0.7455 | 0.6235 | 0.6648 | — | All schema classes (incl. inactive) |
 
 ### MEMM Performance on Synthetic Clinical Test Slice
 | Entity Class | Precision | Recall | F1 Score | Support (Gold Spans) | Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| `PATIENT_NAME` | 1.0000 | 0.9160 | **0.9562** | 500 | Active gold class |
-| `DISEASE` | 0.8940 | 0.8940 | **0.8940** | 500 | Active gold class |
-| `MEDICATION` | 1.0000 | 0.9410 | **0.9696** | 339 | Active gold class |
-| `CHEMICAL` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (16 false positives) |
-| **Micro-Average** | **0.9466** | **0.9141** | **0.9301** | **1,339** | Pooled span counts |
-| **Macro-Average (Active 3-Class)** | **0.9647** | **0.9170** | **0.9399** | — | Unweighted mean of active classes |
-| **Macro-Average (Full 4-Class)** | 0.7235 | 0.6877 | 0.7049 | — | All schema classes (incl. inactive) |
+| `PATIENT_NAME` | 1.0000 | 0.9820 | **0.9909** | 500 | Active gold class |
+| `DISEASE` | 0.9519 | 0.9500 | **0.9510** | 500 | Active gold class |
+| `MEDICATION` | 1.0000 | 0.8837 | **0.9383** | 172 | Active gold class |
+| `CHEMICAL` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (17 false positives) |
+| **Micro-Average** | **0.9646** | **0.9539** | **0.9592** | **1,172** | Pooled span counts |
+| **Macro-Average (Active 3-Class)** | **0.9840** | **0.9386** | **0.9601** | — | Unweighted mean of active classes |
+| **Macro-Average (Full 4-Class)** | 0.7380 | 0.7039 | 0.7200 | — | All schema classes (incl. inactive) |
 
 ### CRF Performance on Synthetic Clinical Test Slice
 | Entity Class | Precision | Recall | F1 Score | Support (Gold Spans) | Notes |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| `PATIENT_NAME` | 1.0000 | 0.9520 | **0.9754** | 500 | Active gold class |
-| `DISEASE` | 0.8540 | 0.8540 | **0.8540** | 500 | Active gold class |
-| `MEDICATION` | 1.0000 | 0.8083 | **0.8940** | 339 | Active gold class |
-| `CHEMICAL` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (61 false positives) |
-| **Micro-Average** | **0.8978** | **0.8790** | **0.8883** | **1,339** | Pooled span counts |
-| **Macro-Average (Active 3-Class)** | **0.9513** | **0.8714** | **0.9078** | — | Unweighted mean of active classes |
-| **Macro-Average (Full 4-Class)** | 0.7135 | 0.6536 | 0.6808 | — | All schema classes (incl. inactive) |
+| `PATIENT_NAME` | 1.0000 | 0.9960 | **0.9980** | 500 | Active gold class |
+| `DISEASE` | 0.9183 | 0.9220 | **0.9202** | 500 | Active gold class |
+| `MEDICATION` | 1.0000 | 0.7733 | **0.8721** | 172 | Active gold class |
+| `CHEMICAL` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (36 false positives) |
+| **Micro-Average** | **0.9341** | **0.9317** | **0.9329** | **1,172** | Pooled span counts |
+| **Macro-Average (Active 3-Class)** | **0.9728** | **0.8971** | **0.9301** | — | Unweighted mean of active classes |
+| **Macro-Average (Full 4-Class)** | 0.7296 | 0.6728 | 0.6976 | — | All schema classes (incl. inactive) |
 
 ---
 
 ## 4. Track C: Combined Augmented Test Benchmark
-*Evaluates joint 4-class extraction over the complete benchmark (6,365 sentences, 123,998 tokens: concatenation of Track A [116,318 tokens] + Track B [7,680 tokens]). Track C re-evaluates the combined test examples from Tracks A and B.*
+*Evaluates joint 4-class extraction over the complete benchmark (6,365 sentences, 122,729 tokens: concatenation of Track A [116,318 tokens] + Track B [6,411 tokens]). Track C re-evaluates the combined test examples from Tracks A and B.*
 
 ### HMM Performance on Combined Benchmark
 | Entity Class | Precision | Recall | F1 Score | Support (Gold Spans) |
 | :--- | :---: | :---: | :---: | :---: |
-| `DISEASE` | 0.7033 | 0.6870 | **0.6951** | 4,924 |
-| `MEDICATION` | 0.9447 | 0.8595 | **0.9001** | 2,584 |
-| `PATIENT_NAME` | 0.0000 | 0.0000 | **0.0000** | 500 |
-| `CHEMICAL` | 0.8472 | 0.3920 | **0.5360** | 3,140 |
-| **Micro-Average** | **0.7931** | **0.6131** | **0.6916** | **11,148** |
-| **Macro-Average (4-Class)** | **0.6238** | **0.4846** | **0.5328** | — |
+| `DISEASE` | 0.7060 | 0.6895 | **0.6976** | 4,924 |
+| `MEDICATION` | 0.9400 | 0.8498 | **0.8927** | 2,417 |
+| `PATIENT_NAME` | 0.8000 | 0.5120 | **0.6244** | 500 |
+| `CHEMICAL` | 0.8532 | 0.3943 | **0.5393** | 3,140 |
+| **Micro-Average** | **0.7921** | **0.6323** | **0.7032** | **10,981** |
+| **Macro-Average (4-Class)** | **0.8248** | **0.6114** | **0.6885** | — |
 
 ### MEMM Performance on Combined Benchmark
 | Entity Class | Precision | Recall | F1 Score | Support (Gold Spans) |
 | :--- | :---: | :---: | :---: | :---: |
-| `DISEASE` | 0.8200 | 0.7224 | **0.7681** | 4,924 |
-| `MEDICATION` | 0.9179 | 0.9257 | **0.9218** | 2,584 |
-| `PATIENT_NAME` | 0.9542 | 0.9160 | **0.9347** | 500 |
-| `CHEMICAL` | 0.8262 | 0.6102 | **0.7020** | 3,140 |
-| **Micro-Average** | **0.8543** | **0.7466** | **0.7968** | **11,148** |
-| **Macro-Average (4-Class)** | **0.8796** | **0.7936** | **0.8317** | — |
+| `DISEASE` | 0.8236 | 0.7321 | **0.7752** | 4,924 |
+| `MEDICATION` | 0.9140 | 0.9189 | **0.9164** | 2,417 |
+| `PATIENT_NAME` | 0.9590 | 0.9820 | **0.9704** | 500 |
+| `CHEMICAL` | 0.8288 | 0.6061 | **0.7001** | 3,140 |
+| **Micro-Average** | **0.8549** | **0.7486** | **0.7982** | **10,981** |
+| **Macro-Average (4-Class)** | **0.8814** | **0.8098** | **0.8405** | — |
 
 ### CRF Performance on Combined Benchmark
 | Entity Class | Precision | Recall | F1 Score | Support (Gold Spans) |
 | :--- | :---: | :---: | :---: | :---: |
-| `DISEASE` | 0.8229 | 0.7465 | **0.7829** | 4,924 |
-| `MEDICATION` | 0.9263 | 0.9102 | **0.9182** | 2,584 |
-| `PATIENT_NAME` | 0.9616 | 0.9520 | **0.9568** | 500 |
-| `CHEMICAL` | 0.8172 | 0.6150 | **0.7018** | 3,140 |
-| **Micro-Average** | **0.8551** | **0.7566** | **0.8029** | **11,148** |
-| **Macro-Average (4-Class)** | **0.8820** | **0.8059** | **0.8399** | — |
+| `DISEASE` | 0.8252 | 0.7524 | **0.7871** | 4,924 |
+| `MEDICATION` | 0.9252 | 0.9160 | **0.9206** | 2,417 |
+| `PATIENT_NAME` | 0.9614 | 0.9960 | **0.9784** | 500 |
+| `CHEMICAL` | 0.8217 | 0.6137 | **0.7026** | 3,140 |
+| **Micro-Average** | **0.8561** | **0.7599** | **0.8051** | **10,981** |
+| **Macro-Average (4-Class)** | **0.8834** | **0.8195** | **0.8472** | — |
 
 ---
 

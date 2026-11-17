@@ -1,6 +1,6 @@
 # Medical NER Dataset Audit Report
 **Target Models:** Hidden Markov Model (HMM), Maximum Entropy Markov Model (MEMM), Conditional Random Field (CRF)  
-**Generation Version:** 2.0.0  
+**Generation Version:** 2.1.0  
 **Random Seed:** 42  
 **Repository Source:** [`tner/bc5cdr`](https://huggingface.co/datasets/tner/bc5cdr) (Commit SHA: `f68cdc7db924369241e7868656f583072acd4e90`)
 
@@ -43,18 +43,18 @@ This dataset preparation pipeline was constructed to provide an auditable, leaka
 ### B. Synthetic Patient-Name Augmentation Splits (5,000 Sentences)
 | Split Name | Synthetic Sentences | Unique Sentences | Duplicates | Total Tokens | Fictional Patient Mentions | Disease Mentions | Medication Mentions |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Train** | 4,000 | 4,000 | 0 | 52,984 | 4,000 | 4,000 | 2,055 |
-| **Valid** | 500 | 500 | 0 | 7,238 | 500 | 500 | 252 |
-| **Test** | 500 | 500 | 0 | 7,680 | 500 | 500 | 339 |
-| **Synthetic Subtotal** | **5,000** | **5,000** | **0** | **67,902** | **5,000** | **5,000** | **2,646** |
+| **Train** | 4,000 | 4,000 | 0 | 47,055 | 4,000 | 4,000 | 1,330 |
+| **Valid** | 500 | 500 | 0 | 6,072 | 500 | 500 | 127 |
+| **Test** | 500 | 500 | 0 | 6,411 | 500 | 500 | 172 |
+| **Synthetic Subtotal** | **5,000** | **5,000** | **0** | **59,538** | **5,000** | **5,000** | **1,629** |
 
 ### C. Combined Augmented Splits (Final Benchmark)
 | Split Name | Total Sentences | Unique Sentences | Duplicate Sentences | Duplicate Rate | Total Tokens | Tokens Reconciliation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Train** | **9,228** | 9,141 | 87 | 0.94% | **162,306** | 109,322 (BC5CDR) + 52,984 (synth) = 162,306 |
-| **Valid** | **5,830** | 5,702 | 128 | 2.20% | **116,196** | 108,958 (BC5CDR) + 7,238 (synth) = 116,196 |
-| **Test** | **6,365** | 6,213 | 152 | 2.39% | **123,998** | 116,318 (BC5CDR) + 7,680 (synth) = 123,998 |
-| **TOTAL** | **21,423** | **21,056** | **367** | **1.71%** | **402,500** | **334,598 (BC5CDR) + 67,902 (synth) = 402,500** |
+| **Train** | **9,228** | 9,141 | 87 | 0.94% | **156,377** | 109,322 (BC5CDR) + 47,055 (synth) = 156,377 |
+| **Valid** | **5,830** | 5,702 | 128 | 2.20% | **115,030** | 108,958 (BC5CDR) + 6,072 (synth) = 115,030 |
+| **Test** | **6,365** | 6,213 | 152 | 2.39% | **122,729** | 116,318 (BC5CDR) + 6,411 (synth) = 122,729 |
+| **TOTAL** | **21,423** | **21,056** | **367** | **1.71%** | **394,136** | **334,598 (BC5CDR) + 59,538 (synth) = 394,136** |
 
 *Note on Uniqueness Reconciliation:*  
 In the training split, 5,141 unique BC5CDR sentences + 4,000 uniquely generated synthetic sentences = **9,141 unique sentences** (with zero cross-source sentence collisions). The 87 duplicates in augmented train derive entirely from authentic BC5CDR PubMed abstract section headers (e.g., `'METHODS:'` or `'RESULTS:'`).
@@ -66,18 +66,18 @@ In the training split, 5,141 unique BC5CDR sentences + 4,000 uniquely generated 
 | Entity Class | BC5CDR Mentions | Synthetic Mentions | Augmented Train | Augmented Valid | Augmented Test | Augmented Total |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `DISEASE` | 12,850 | 5,000 | 8,182 | 4,744 | 4,924 | **17,850** |
-| `MEDICATION` | 6,690 | 2,646 | 4,294 | 2,458 | 2,584 | **9,336** |
+| `MEDICATION` | 6,690 | 1,629 | 3,569 | 2,333 | 2,417 | **8,319** |
 | `CHEMICAL` (retained) | 9,245 | 0 | 2,964 | 3,141 | 3,140 | **9,245** |
 | `PATIENT_NAME` | 0 | 5,000 | 4,000 | 500 | 500 | **5,000** |
-| **Total Mentions** | **28,785** | **12,646** | **19,440** | **10,843** | **11,148** | **41,431** |
+| **Total Mentions** | **28,785** | **11,629** | **18,715** | **10,718** | **10,981** | **40,414** |
 
 *Chemical Reconciliation:*  
 - Original BC5CDR chemical mentions: **15,935**.
 - Mapped to `MEDICATION`: **6,690**.
 - Retained as `CHEMICAL`: **9,245**.
 - Check: $6,690 + 9,245 = 15,935$.
-- Synthetic addition of `MEDICATION`: **2,646**.
-- Final `MEDICATION` mentions in augmented dataset: $6,690 + 2,646 = 9,336$.
+- Synthetic addition of `MEDICATION`: **1,629**.
+- Final `MEDICATION` mentions in augmented dataset: $6,690 + 1,629 = 8,319$.
 - Final `CHEMICAL` mentions in augmented dataset: $9,245 + 0 = 9,245$.
 
 ---
@@ -88,7 +88,7 @@ In the training split, 5,141 unique BC5CDR sentences + 4,000 uniquely generated 
 | :--- | :--- | :--- | :--- | :--- |
 | **Any Target Entity** | **85.8%** (7,915 / 9,228) | **75.3%** (4,389 / 5,830) | **72.9%** (4,640 / 6,365) | **79.1%** (16,944 / 21,423) |
 | `DISEASE` | 72.2% (6,661) | 54.7% (3,188) | 52.6% (3,346) | 61.6% (13,195) |
-| `MEDICATION` | 40.5% (3,739) | 33.0% (1,926) | 32.3% (2,058) | 36.1% (7,723) |
+| `MEDICATION` | 32.7% (3,014) | 30.9% (1,801) | 29.7% (1,891) | 31.3% (6,706) |
 | `CHEMICAL` (retained) | 20.5% (1,893) | 34.0% (1,985) | 32.2% (2,047) | 27.7% (5,925) |
 | `PATIENT_NAME` | 43.3% (4,000) | 8.6% (500) | 7.9% (500) | 23.3% (5,000) |
 
