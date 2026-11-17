@@ -13,6 +13,20 @@ class _ScriptedModel:
             sequences.append([self.tag_map.get(tok, "O") for tok in sent])
         return sequences
 
+    def decode_trellis(self, tokens):
+        tags = [self.tag_map.get(tok, "O") for tok in tokens]
+        states = sorted(set(tags) | {"O"})
+        state2id = {s: i for i, s in enumerate(states)}
+        return {
+            "kind": "viterbi",
+            "unit": "log_probability",
+            "tokens": list(tokens),
+            "states": states,
+            "scores": [[0.0 if state2id[tag] == s else None for s in range(len(states))] for tag in tags],
+            "path": [state2id[tag] for tag in tags],
+            "tags": tags,
+        }
+
 
 def test_tokenize_keeps_character_offsets():
     text = "Started heparin."
@@ -45,6 +59,7 @@ def test_extract_text_maps_a_multi_token_span():
         {"text": "Jane Smith", "type": "PATIENT_NAME", "start": 8, "end": 18},
         {"text": "pulmonary embolism", "type": "DISEASE", "start": 23, "end": 41},
     ]
+    assert result["trellis"]["tags"][:4] == ["O", "B-PATIENT_NAME", "I-PATIENT_NAME", "O"]
 
 
 def test_blank_note_skips_the_model():

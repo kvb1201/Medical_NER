@@ -197,13 +197,24 @@ class HiddenMarkovModel:
             return self.log_emit_signatures[sig]
         return self.log_emit_signatures["<UNK>"]
 
-    def decode_sentence(self, tokens: List[str]) -> List[str]:
+    def decode_trellis(self, tokens: List[str]) -> Dict[str, Any]:
         """
-        Viterbi algorithm in log space to decode the most likely tag sequence
-        for a sequence of tokens, respecting BIO constraints.
+        Run Viterbi and return the real trellis used for decoding.
+
+        ``scores[t][s]`` is the max log-probability of any path ending in state
+        ``s`` at token ``t``. ``path`` is the backtracked argmax sequence.
+        Impossible / empty cells are returned as ``None`` (JSON-safe).
         """
         if not tokens:
-            return []
+            return {
+                "kind": "viterbi",
+                "unit": "log_probability",
+                "tokens": [],
+                "states": list(self.states),
+                "scores": [],
+                "path": [],
+                "tags": [],
+            }
 
         T = len(tokens)
         K = len(self.states)
@@ -247,7 +258,26 @@ class HiddenMarkovModel:
             best_path.append(curr)
 
         best_path.reverse()
-        return [self.id2state[s] for s in best_path]
+        path = [int(s) for s in best_path]
+        return {
+            "kind": "viterbi",
+            "unit": "log_probability",
+            "tokens": list(tokens),
+            "states": list(self.states),
+            "scores": [
+                [None if not math.isfinite(v) else float(v) for v in row]
+                for row in V
+            ],
+            "path": path,
+            "tags": [self.id2state[s] for s in path],
+        }
+
+    def decode_sentence(self, tokens: List[str]) -> List[str]:
+        """
+        Viterbi algorithm in log space to decode the most likely tag sequence
+        for a sequence of tokens, respecting BIO constraints.
+        """
+        return self.decode_trellis(tokens)["tags"]
 
     def predict(self, sentences: List[List[str]]) -> List[List[str]]:
         """Predict BIO tag sequences for a batch of sentences."""

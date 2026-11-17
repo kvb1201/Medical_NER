@@ -28,6 +28,8 @@ _SENTENCE_END = {".", "!", "?"}
 _UNSEEN_TITLES = {"Mr.", "Mrs.", "Ms."}
 
 MAX_CHARS = 4000
+# Trellis payload is for the first sentence only; keep it short for the page.
+MAX_TRELLIS_TOKENS = 40
 
 Token = Tuple[str, int, int]
 
@@ -107,4 +109,26 @@ def extract_text(text: str, model: Any, model_name: str) -> Dict[str, Any]:
             span["text"] = raw[span["start"]:span["end"]]
             entities.append(span)
 
-    return {"text": raw, "entities": entities, "model": model_name}
+    result: Dict[str, Any] = {"text": raw, "entities": entities, "model": model_name}
+    trellis = _first_sentence_trellis(sentences, kept, model)
+    if trellis is not None:
+        result["trellis"] = trellis
+    return result
+
+
+def _first_sentence_trellis(
+    sentences: Sequence[Sequence[Token]],
+    kept: Sequence[Sequence[int]],
+    model: Any,
+) -> Dict[str, Any] | None:
+    """Ask the model for the real decoding lattice of the first sentence it sees."""
+    if not hasattr(model, "decode_trellis"):
+        return None
+    for sent, idx in zip(sentences, kept):
+        if not idx:
+            continue
+        tokens = [sent[i][0] for i in idx]
+        if len(tokens) > MAX_TRELLIS_TOKENS:
+            return None
+        return model.decode_trellis(tokens)
+    return None

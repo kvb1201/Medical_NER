@@ -1,6 +1,6 @@
-# Medical Named Entity Recognition (HMM, MEMM, CRF)
+# Named Entity Recognition for Healthcare (HMM, MEMM, CRF)
 
-A rigorous, reproducible sequence-labeling project comparing three classical statistical sequence models—**Hidden Markov Models (HMM)**, **Maximum Entropy Markov Models (MEMM)**, and **Linear-Chain Conditional Random Fields (CRF)**—for Named Entity Recognition (NER) across authentic biomedical literature and structured clinical templates.
+A rigorous, reproducible sequence-labeling project comparing three classical statistical sequence models—**Hidden Markov Models (HMM)**, **Maximum Entropy Markov Models (MEMM)**, and **Linear-Chain Conditional Random Fields (CRF)**—for Named Entity Recognition for Healthcare across authentic biomedical literature and structured clinical templates.
 
 > [!IMPORTANT]
 > **Classical Statistical NLP Scope:** This project deliberately investigates classical statistical sequence-labeling algorithms grounded in probabilistic graphical models and convex optimization. It does **not** employ transformer-based neural language models (such as BERT or RoBERTa).

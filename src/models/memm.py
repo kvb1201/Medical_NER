@@ -194,13 +194,23 @@ class MaximumEntropyMarkovModel:
         logger.info("MEMM: Parameter estimation and weight decomposition completed successfully.")
         return self
 
-    def decode_sentence(self, tokens: List[str]) -> List[str]:
+    def decode_trellis(self, tokens: List[str]) -> Dict[str, Any]:
         """
-        Viterbi algorithm over conditional log-probabilities log P(y_t | X, t, y_{t-1}).
-        Enforces strict BIO transition constraints.
+        Run Viterbi and return the real trellis used for decoding.
+
+        ``scores[t][s]`` is the max path log-probability ending in state ``s``
+        at token ``t``. Impossible cells are ``None``.
         """
         if not tokens:
-            return []
+            return {
+                "kind": "viterbi",
+                "unit": "log_probability",
+                "tokens": [],
+                "states": list(self.states),
+                "scores": [],
+                "path": [],
+                "tags": [],
+            }
 
         T = len(tokens)
         K = len(self.states)
@@ -263,7 +273,30 @@ class MaximumEntropyMarkovModel:
             best_path.append(curr)
 
         best_path.reverse()
-        return [self.id2state[s] for s in best_path]
+        scores = []
+        for t in range(T):
+            row = []
+            for s in range(K):
+                val = float(V[t, s])
+                row.append(None if val <= -1e8 else val)
+            scores.append(row)
+        path = [int(s) for s in best_path]
+        return {
+            "kind": "viterbi",
+            "unit": "log_probability",
+            "tokens": list(tokens),
+            "states": list(self.states),
+            "scores": scores,
+            "path": path,
+            "tags": [self.id2state[s] for s in path],
+        }
+
+    def decode_sentence(self, tokens: List[str]) -> List[str]:
+        """
+        Viterbi algorithm over conditional log-probabilities log P(y_t | X, t, y_{t-1}).
+        Enforces strict BIO transition constraints.
+        """
+        return self.decode_trellis(tokens)["tags"]
 
     def predict(self, sentences: List[List[str]]) -> List[List[str]]:
         """Decode BIO tag sequences for a batch of sentences."""

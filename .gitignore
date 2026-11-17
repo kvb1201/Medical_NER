@@ -145,3 +145,9 @@ data/synthetic/*.jsonl
 !data/processed/label2id.json
 !data/processed/id2label.json
 
+# ------------------------------------------------------------------------------
+# 11. Local presentation / viva materials
+# ------------------------------------------------------------------------------
+Medical_NER_Three_Member_Presentation_and_Viva_Guide.pdf
+Medical_NER_Complete_Approach_and_Results.pdf
+
