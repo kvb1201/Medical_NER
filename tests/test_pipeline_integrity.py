@@ -26,10 +26,17 @@ def test_label_mappings_exist(label2id):
 def test_augmented_files_integrity(label2id):
     valid_tags = set(label2id.keys())
     
-    for split in ["train", "valid", "test"]:
-        file_path = os.path.join(PROCESSED_DIR, f"bc5cdr_augmented_{split}.jsonl")
-        assert os.path.exists(file_path), f"Missing file: {file_path}"
-        
+    paths = [os.path.join(PROCESSED_DIR, f"bc5cdr_augmented_{s}.jsonl") for s in ["train", "valid", "test"]]
+    missing = [p for p in paths if not os.path.exists(p)]
+    if missing:
+        # The JSONL splits are gitignored, so a fresh clone does not have them yet.
+        pytest.skip(
+            f"Dataset not built ({', '.join(missing)} missing); "
+            "run PYTHONPATH=. python3 src/data/prepare_dataset.py first."
+        )
+
+    for split, file_path in zip(["train", "valid", "test"], paths):
+
         count = 0
         with open(file_path, "r", encoding="utf-8") as f:
             for idx, line in enumerate(f):

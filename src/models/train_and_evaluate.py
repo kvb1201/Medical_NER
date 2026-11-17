@@ -7,9 +7,9 @@ Unified training and comparative evaluation runner for statistical sequence labe
   3. Conditional Random Field (CRF)
 
 Evaluates on three distinct benchmark tracks:
-  - Track A: Pure Gold Evaluation (BC5CDR Original Test Slice, 5,865 sentences)
-  - Track B: Synthetic Evaluation (Synthetic Test Slice, 500 sentences)
-  - Track C: Mixed-Source Evaluation (Combined Augmented Test Set, 6,365 sentences)
+  - Track A: Pure Gold Evaluation (BC5CDR Original Test Slice)
+  - Track B: Synthetic Evaluation (Synthetic Test Slice)
+  - Track C: Mixed-Source Evaluation (Combined Augmented Test Set)
 
 Exports:
   - reports/model_comparison_report.md
@@ -51,6 +51,80 @@ def load_jsonl_dataset(file_path: str) -> Tuple[List[List[str]], List[List[str]]
             tag_sequences.append(rec["ner_tags"])
     return sentences, tag_sequences
 
+def compute_corpus_stats() -> Dict[str, Dict[str, int]]:
+    """Count sentences and tokens (and the BC5CDR/synthetic mix) of every split used here."""
+    def stats(path: str) -> Dict[str, int]:
+        out = {"sentences": 0, "tokens": 0, "bc5cdr": 0, "synthetic": 0}
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                rec = json.loads(line)
+                out["sentences"] += 1
+                out["tokens"] += len(rec["tokens"])
+                if rec.get("source") == "synthetic":
+                    out["synthetic"] += 1
+                else:
+                    out["bc5cdr"] += 1
+        return out
+
+    return {
+        "train": stats(os.path.join(PROCESSED_DIR, "bc5cdr_augmented_train.jsonl")),
+        "valid": stats(os.path.join(PROCESSED_DIR, "bc5cdr_augmented_valid.jsonl")),
+        "track_a": stats(os.path.join(PROCESSED_DIR, "bc5cdr_original_test.jsonl")),
+        "track_b": stats(os.path.join(SYNTHETIC_DIR, "synthetic_test.jsonl")),
+        "track_c": stats(os.path.join(PROCESSED_DIR, "bc5cdr_augmented_test.jsonl")),
+    }
+
+def load_previous_results(path: str = os.path.join(REPORTS_DIR, "model_metrics.json")) -> Dict[str, Any]:
+    """Return results from the last exported model_metrics.json, or {} if unavailable."""
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        logger.warning(f"Could not read previous results from {path}; ignoring them.")
+        return {}
+    return data if isinstance(data, dict) else {}
+
+def format_train_time(seconds: Any) -> str:
+    """Render a training time, or an em dash when it was never measured."""
+    return f"{seconds}s" if isinstance(seconds, (int, float)) else "—"
+
+def best_models_by_track(results: Dict[str, Any]) -> Dict[str, List[str]]:
+    """Return, for each evaluation track, the model name(s) with the highest micro F1."""
+    winners: Dict[str, List[str]] = {}
+    tracks = sorted({t for r in results.values() for t in r.get("tracks", {})})
+    for track in tracks:
+        scores = {
+            m: r["tracks"][track]["entity_metrics"]["micro"]["f1"]
+            for m, r in results.items() if track in r.get("tracks", {})
+        }
+        top = max(scores.values())
+        winners[track] = [m.upper() for m, f1 in scores.items() if f1 == top]
+    return winners
+
+TRACK_LABELS = {
+    "track_a_bc5cdr_original": "Track A (BC5CDR)",
+    "track_b_synthetic": "Track B (Synthetic)",
+    "track_c_combined_augmented": "Track C (Combined)",
+}
+
+def describe_empirical_findings(results: Dict[str, Any]) -> str:
+    """Summarize which model wins each track, computed from the results themselves."""
+    winners = best_models_by_track(results)
+    if not winners:
+        return "No evaluation results were available."
+    parts = [
+        f"{TRACK_LABELS.get(track, track)}: **{' / '.join(names)}**"
+        for track, names in winners.items()
+    ]
+    overall = {n for names in winners.values() for n in names}
+    if len(overall) == 1 and len(winners) > 1:
+        lead = f"{next(iter(overall))} achieves the highest entity-level micro F1 on every evaluation track."
+    else:
+        lead = "No single model achieves the highest entity-level micro F1 on every evaluation track."
+    return f"{lead} Best micro F1 per track: " + "; ".join(parts) + "."
+
 def train_and_evaluate_pipeline(
     selected_models: List[str] = None,
     save_models: bool = True,
@@ -74,6 +148,7 @@ def train_and_evaluate_pipeline(
         "track_c_combined_augmented": load_jsonl_dataset(os.path.join(PROCESSED_DIR, "bc5cdr_augmented_test.jsonl"))
     }
 
+    previous_results = load_previous_results()
     results = {}
 
     # 2. Iterate through models
@@ -86,7 +161,9 @@ def train_and_evaluate_pipeline(
         if eval_only and os.path.exists(model_path):
             logger.info(f"Loading pre-trained {model_name.upper()} from {model_path} (eval_only mode)...")
             model = joblib.load(model_path)
-            train_time = 0.06 if model_name == "hmm" else (14.24 if model_name == "memm" else 27.58)
+            # Training did not run, so reuse the time measured when this checkpoint was
+            # trained (if recorded) instead of reporting a number that was never measured.
+            train_time = previous_results.get(model_name, {}).get("train_time_sec")
         else:
             # Initialize model
             if model_name == "hmm":
@@ -147,11 +224,19 @@ def train_and_evaluate_pipeline(
             "tracks": track_evaluations
         }
 
+    # Keep results for models that were not re-run (e.g. `--model crf`) so the
+    # exported reports always cover every model that has been evaluated.
+    for name, prev in previous_results.items():
+        if name not in results:
+            logger.info(f"Keeping previously recorded results for {name.upper()} (not re-run).")
+            results[name] = prev
+    results = {m: results[m] for m in ["hmm", "memm", "crf"] if m in results}
+
     # 3. Export JSON and CSV metrics
     export_metrics_reports(results)
 
     # 4. Generate Markdown Comparison Report
-    generate_comparison_markdown_report(results)
+    generate_comparison_markdown_report(results, compute_corpus_stats())
 
     logger.info("=" * 70)
     logger.info("ALL MODEL EXPERIMENTS COMPLETED SUCCESSFULLY.")
@@ -229,31 +314,37 @@ def export_metrics_reports(results: Dict[str, Any]):
                 })
     logger.info(f"Saved CSV metrics to {csv_path}")
 
-def generate_comparison_markdown_report(results: Dict[str, Any]):
+def generate_comparison_markdown_report(results: Dict[str, Any], corpus: Dict[str, Any] = None):
     """Generate comprehensive Markdown report comparing HMM, MEMM, and CRF."""
     report_path = os.path.join(REPORTS_DIR, "model_comparison_report.md")
+
+    c = corpus if corpus is not None else compute_corpus_stats()
+    tr, va, ta, tb, tc = c["train"], c["valid"], c["track_a"], c["track_b"], c["track_c"]
+    all_sents = tr["sentences"] + va["sentences"] + tc["sentences"]
+    all_tokens = tr["tokens"] + va["tokens"] + tc["tokens"]
+    eval_tokens = ta["tokens"] + tb["tokens"] + tc["tokens"]
 
     content = f"""# Medical NER Model Comparison Report: HMM vs. MEMM vs. CRF
 
 **Evaluation Target:** 4-Entity Sequence Labeling (`DISEASE`, `MEDICATION`, `PATIENT_NAME`, `CHEMICAL`)  
-**Training Corpus:** Combined Augmented Training Set (9,228 sentences: 5,228 BC5CDR + 4,000 Synthetic)  
-**Validation Corpus:** Combined Augmented Validation Set (5,830 sentences: 5,330 BC5CDR + 500 Synthetic)  
+**Training Corpus:** Combined Augmented Training Set ({tr['sentences']:,} sentences: {tr['bc5cdr']:,} BC5CDR + {tr['synthetic']:,} Synthetic)  
+**Validation Corpus:** Combined Augmented Validation Set ({va['sentences']:,} sentences: {va['bc5cdr']:,} BC5CDR + {va['synthetic']:,} Synthetic)  
 **Evaluation Tracks:**
-- **Track A (Pure Gold Biomedical Benchmark):** BC5CDR Original Test Slice (5,865 sentences, 116,318 tokens, 100% human gold standard)
-- **Track B (Synthetic Clinical Name Benchmark):** Synthetic Test Slice (500 sentences, 7,638 tokens, fictional clinical EHR templates)
-- **Track C (Combined Augmented Test Benchmark):** Joint Evaluation (6,365 sentences, 123,956 tokens: exact union of Track A + Track B)
+- **Track A (Pure Gold Biomedical Benchmark):** BC5CDR Original Test Slice ({ta['sentences']:,} sentences, {ta['tokens']:,} tokens, 100% human gold standard)
+- **Track B (Synthetic Clinical Name Benchmark):** Synthetic Test Slice ({tb['sentences']:,} sentences, {tb['tokens']:,} tokens, fictional clinical EHR templates)
+- **Track C (Combined Augmented Test Benchmark):** Joint Evaluation ({tc['sentences']:,} sentences, {tc['tokens']:,} tokens: union of Track A + Track B)
 
 ### Corpus & Evaluation Token Accounting
 
-| Evaluation Scope | Sentences | Unique Tokens | Total Token Evaluations | Scope Description |
-| :--- | :---: | :---: | :---: | :--- |
-| **Track A (BC5CDR Original Test)** | 5,865 | 116,318 | 116,318 | Authentic PubMed literature abstracts |
-| **Track B (Synthetic Clinical Test)** | 500 | 7,638 | 7,638 | Fictional clinical EHR templates |
-| **Track C (Combined Augmented Test)** | 6,365 | 123,956 | 123,956 | Exact concatenation of Track A + Track B |
-| **Aggregate Test Evaluations (Tracks A+B+C)** | — | **123,956** | **247,912** | Sum of evaluations across Tracks A, B, and C (Track C re-evaluates Tracks A & B) |
-| **Validation Partition** | 5,830 | 116,170 | 116,170 | Augmented validation split |
-| **Training Partition** | 9,228 | 162,339 | — | Augmented training split |
-| **Full Project Corpus (Train+Val+Test)** | **21,423** | **402,465** | — | Total tokens across all splits in the project |
+| Evaluation Scope | Sentences | Tokens | Scope Description |
+| :--- | :---: | :---: | :--- |
+| **Track A (BC5CDR Original Test)** | {ta['sentences']:,} | {ta['tokens']:,} | Authentic PubMed literature abstracts |
+| **Track B (Synthetic Clinical Test)** | {tb['sentences']:,} | {tb['tokens']:,} | Fictional clinical EHR templates |
+| **Track C (Combined Augmented Test)** | {tc['sentences']:,} | {tc['tokens']:,} | Concatenation of Track A + Track B |
+| **Token evaluations across Tracks A+B+C** | — | **{eval_tokens:,}** | Track C re-evaluates the tokens of Tracks A and B |
+| **Validation Partition** | {va['sentences']:,} | {va['tokens']:,} | Augmented validation split |
+| **Training Partition** | {tr['sentences']:,} | {tr['tokens']:,} | Augmented training split |
+| **Full Project Corpus (Train+Val+Test)** | **{all_sents:,}** | **{all_tokens:,}** | All tokens across the augmented splits |
 
 ---
 
@@ -270,13 +361,13 @@ def generate_comparison_markdown_report(results: Dict[str, Any]):
             t_c = r["tracks"]["track_c_combined_augmented"]["entity_metrics"]["micro"]["f1"]
             acc_c = r["tracks"]["track_c_combined_augmented"]["token_metrics"]["token_accuracy"]
             arch = "Generative (Joint MLE)" if m == "hmm" else ("Discriminative (Local Cond. MaxEnt)" if m == "memm" else "Discriminative (Global Linear-Chain CRF)")
-            content += f"| **{m.upper()}** | {arch} | {r['train_time_sec']}s | **{t_a:.4f}** | **{t_b:.4f}** | **{t_c:.4f}** | {acc_c*100:.2f}% |\n"
+            content += f"| **{m.upper()}** | {arch} | {format_train_time(r['train_time_sec'])} | **{t_a:.4f}** | **{t_b:.4f}** | **{t_c:.4f}** | {acc_c*100:.2f}% |\n"
 
-    content += """
+    content += f"""
 ---
 
 ## 2. Track A: Pure Gold Evaluation (BC5CDR Original Test Partition)
-*Evaluates model generalization strictly on authentic PubMed scientific literature abstracts (5,865 sentences, 116,318 tokens).*
+*Evaluates model generalization strictly on authentic PubMed scientific literature abstracts ({ta['sentences']:,} sentences, {ta['tokens']:,} tokens).*
 
 """
     for m in ["hmm", "memm", "crf"]:
@@ -298,10 +389,10 @@ def generate_comparison_markdown_report(results: Dict[str, Any]):
             content += f"| **Macro-Average (Active 3-Class)** | **{macro['precision']:.4f}** | **{macro['recall']:.4f}** | **{macro['f1']:.4f}** | — | Unweighted mean of active classes |\n"
             content += f"| **Macro-Average (Full 4-Class)** | {macro['macro_all_precision']:.4f} | {macro['macro_all_recall']:.4f} | {macro['macro_all_f1']:.4f} | — | All schema classes (incl. inactive) |\n\n"
 
-    content += """---
+    content += f"""---
 
 ## 3. Track B: Synthetic Evaluation (Synthetic Test Slice)
-*Evaluates fictional `PATIENT_NAME` recognition alongside medical entities on unseen clinical EHR templates (500 sentences, 7,638 tokens).*
+*Evaluates fictional `PATIENT_NAME` recognition alongside medical entities on unseen clinical EHR templates ({tb['sentences']:,} sentences, {tb['tokens']:,} tokens).*
 
 > [!WARNING]
 > **Clinical Non-Equivalence Disclaimer:** Synthetic test performance demonstrates sequence labeling on controlled syntactic structures. It must **never** be cited as real-world clinical EHR extraction accuracy on unredacted medical notes.
@@ -326,10 +417,10 @@ def generate_comparison_markdown_report(results: Dict[str, Any]):
             content += f"| **Macro-Average (Active 3-Class)** | **{macro['precision']:.4f}** | **{macro['recall']:.4f}** | **{macro['f1']:.4f}** | — | Unweighted mean of active classes |\n"
             content += f"| **Macro-Average (Full 4-Class)** | {macro['macro_all_precision']:.4f} | {macro['macro_all_recall']:.4f} | {macro['macro_all_f1']:.4f} | — | All schema classes (incl. inactive) |\n\n"
 
-    content += """---
+    content += f"""---
 
 ## 4. Track C: Combined Augmented Test Benchmark
-*Evaluates joint 4-class extraction over the complete benchmark (6,365 sentences, 123,956 tokens: exact concatenation of Track A [116,318 tokens] + Track B [7,638 tokens]). Track C re-evaluates the combined test examples from Tracks A and B.*
+*Evaluates joint 4-class extraction over the complete benchmark ({tc['sentences']:,} sentences, {tc['tokens']:,} tokens: concatenation of Track A [{ta['tokens']:,} tokens] + Track B [{tb['tokens']:,} tokens]). Track C re-evaluates the combined test examples from Tracks A and B.*
 
 """
     for m in ["hmm", "memm", "crf"]:
@@ -348,7 +439,7 @@ def generate_comparison_markdown_report(results: Dict[str, Any]):
             content += f"| **Micro-Average** | **{micro['precision']:.4f}** | **{micro['recall']:.4f}** | **{micro['f1']:.4f}** | **{micro['support']:,}** |\n"
             content += f"| **Macro-Average (4-Class)** | **{macro['precision']:.4f}** | **{macro['recall']:.4f}** | **{macro['f1']:.4f}** | — |\n\n"
 
-    content += """---
+    content += ("""---
 
 ## 5. Architectural Comparison & In-Depth Discussion
 
@@ -364,8 +455,10 @@ def generate_comparison_markdown_report(results: Dict[str, Any]):
 
 ### C. Linear-Chain Conditional Random Field (CRF)
 - **Global Normalization:** Models $P(Y \\mid X) = \\frac{1}{Z(X)} \\exp\\left(\\sum_t \\sum_k w_k f_k(y_{t-1}, y_t, X, t)\\right)$.
-- **Strengths:** Resolves the label bias problem through global partition function normalization. Achieves superior precision and recall by balancing state and transition features simultaneously across the complete sentence.
-- **Empirical Findings:** The CRF achieves the highest entity-level F1 across all three evaluation tracks, proving its architectural superiority for clinical sequence labeling.
+- **Strengths:** Resolves the label bias problem through global partition function normalization. Typically improves precision and recall over locally normalized models by balancing state and transition features jointly across the complete sentence.
+
+### D. Empirical Findings (computed from this run)
+{findings}
 
 ---
 
@@ -378,7 +471,7 @@ PYTHONPATH=. .venv/bin/python3 src/models/train_and_evaluate.py
 # Run model test suite
 PYTHONPATH=. .venv/bin/pytest tests/test_models.py -v
 ```
-"""
+""").replace("{findings}", describe_empirical_findings(results))
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(content.strip() + "\n")
     logger.info(f"Saved model comparison report to {report_path}")

@@ -7,11 +7,29 @@ from typing import Any, Dict, List, Sequence, Tuple
 
 from src.models.evaluation import extract_entities
 
-# Words, including internal hyphens and apostrophes, or a single punctuation mark.
-_TOKEN = re.compile(r"[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)*|[^\s\w]", re.UNICODE)
+# Tokenization mirrors the training data so the models see familiar token shapes:
+#   * BC5CDR splits most hyphenated words ("67 - year - old", "anti - inflammatory").
+#   * The synthetic notes keep courtesy titles ("Dr.") and hyphenated surnames
+#     ("Nelson-Cole") as single tokens.
+# Alternatives are tried in order at each position.
+_LETTERS = r"[^\W\d_]"  # any Unicode letter
+_TOKEN = re.compile(
+    r"(?<![^\W_])(?:Dr|Mr|Mrs|Ms|Prof)\."               # courtesy titles, kept with their period
+    r"|(?<![^\W_])(?:e\.g|i\.e)\."                      # common abbreviations
+    r"|\d+(?:[.,]\d+)+"                                 # decimals and grouped numbers: 2.5, 1,000
+    r"|[A-Z]" + _LETTERS + r"*(?:-[A-Z]" + _LETTERS + r"*)+"  # hyphenated proper names: Nelson-Cole
+    r"|[^\W_]+(?:'[^\W_]+)*"                            # words and numbers, internal apostrophes kept
+    r"|[^\s\w]|_"                                       # any other single symbol, including "-"
+)
 _SENTENCE_END = {".", "!", "?"}
+# "Dr." appears in the synthetic training notes (before clinicians' names) and is kept.
+# These titles never appear in training; feeding them to the models cut patient-name
+# recall on title-prefixed synthetic test sentences from ~0.92-0.95 to ~0.39-0.69.
+_UNSEEN_TITLES = {"Mr.", "Mrs.", "Ms."}
 
 MAX_CHARS = 4000
+# Trellis payload is for the first sentence only; keep it short for the page.
+MAX_TRELLIS_TOKENS = 40
 
 Token = Tuple[str, int, int]
 
@@ -68,9 +86,22 @@ def extract_text(text: str, model: Any, model_name: str) -> Dict[str, Any]:
         return {"text": raw, "entities": [], "model": model_name}
 
     sentences = split_sentences(tokens)
-    tag_sequences = model.predict([[tok for tok, _, _ in sent] for sent in sentences])
-    if len(tag_sequences) != len(sentences):
-        raise RuntimeError("Model returned a different number of sentences than it was given.")
+    # Patient courtesy titles never occur in the training data, so they are left out of
+    # the model input (tagged "O"); character offsets still refer to the original text.
+    kept = [[i for i, tok in enumerate(sent) if tok[0] not in _UNSEEN_TITLES] for sent in sentences]
+    to_tag = [[sent[i][0] for i in idx] for sent, idx in zip(sentences, kept) if idx]
+    predicted = iter(model.predict(to_tag) if to_tag else [])
+
+    tag_sequences: List[List[str]] = []
+    for sent, idx in zip(sentences, kept):
+        tags = ["O"] * len(sent)
+        if idx:
+            sub_tags = next(predicted, None)
+            if sub_tags is None or len(sub_tags) != len(idx):
+                raise RuntimeError("Model output does not line up with the sentences it was given.")
+            for i, tag in zip(idx, sub_tags):
+                tags[i] = tag
+        tag_sequences.append(tags)
 
     entities: List[Dict[str, Any]] = []
     for sent, tags in zip(sentences, tag_sequences):
@@ -78,4 +109,26 @@ def extract_text(text: str, model: Any, model_name: str) -> Dict[str, Any]:
             span["text"] = raw[span["start"]:span["end"]]
             entities.append(span)
 
-    return {"text": raw, "entities": entities, "model": model_name}
+    result: Dict[str, Any] = {"text": raw, "entities": entities, "model": model_name}
+    trellis = _first_sentence_trellis(sentences, kept, model)
+    if trellis is not None:
+        result["trellis"] = trellis
+    return result
+
+
+def _first_sentence_trellis(
+    sentences: Sequence[Sequence[Token]],
+    kept: Sequence[Sequence[int]],
+    model: Any,
+) -> Dict[str, Any] | None:
+    """Ask the model for the real decoding lattice of the first sentence it sees."""
+    if not hasattr(model, "decode_trellis"):
+        return None
+    for sent, idx in zip(sentences, kept):
+        if not idx:
+            continue
+        tokens = [sent[i][0] for i in idx]
+        if len(tokens) > MAX_TRELLIS_TOKENS:
+            return None
+        return model.decode_trellis(tokens)
+    return None

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Clinical NER</title>
+  <link rel="icon" href="/favicon.ico" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,620&family=Outfit:wght@380;500;600&display=swap" rel="stylesheet">
@@ -47,7 +48,7 @@
     }
 
     main {
-      width: min(720px, 100%);
+      width: min(960px, 100%);
     }
 
     header {
@@ -276,12 +277,501 @@
       color: var(--muted);
     }
 
+    .examples {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 4px 2px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .chip {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 12px;
+    }
+
+    .chip:hover { background: var(--paper); }
+    .chip:focus-visible { outline-color: var(--muted); }
+
+    .hint .over { color: var(--danger); font-weight: 500; }
+
+    kbd {
+      font: inherit;
+      font-size: 12px;
+      padding: 1px 6px;
+      border: 1px solid var(--line);
+      border-bottom-width: 2px;
+      border-radius: 6px;
+      background: var(--paper);
+    }
+
+    .reading h2 .count {
+      margin-left: 8px;
+      font-weight: 380;
+      letter-spacing: 0.04em;
+      text-transform: none;
+    }
+
+    .agreement {
+      margin-bottom: 30px;
+      padding: 16px 18px 6px;
+      background: var(--sheet);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .agreement h2 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .agreement .quiet { font-size: 14px; margin-bottom: 8px; }
+
+    .agreement table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    .agreement th,
+    .agreement td {
+      padding: 9px 6px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .agreement th {
+      border-top: 0;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .agreement th:first-child,
+    .agreement td:first-child { text-align: left; }
+
+    .agreement .pill {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      vertical-align: 1px;
+    }
+
+    .pill.disease { background: var(--disease); color: var(--disease-ink); }
+    .pill.medication { background: var(--medication); color: var(--medication-ink); }
+    .pill.chemical { background: var(--chemical); color: var(--chemical-ink); }
+    .pill.patient_name { background: var(--patient); color: var(--patient-ink); }
+
+    .yes { color: var(--button); font-weight: 600; }
+    .no { color: #b9ae9f; }
+
+    .trellis {
+      margin: 28px 0 8px;
+      padding: 22px;
+      background: var(--sheet);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 14px 36px rgba(48, 36, 18, 0.05);
+    }
+
+    .trellis > h2 {
+      margin: 0 0 6px;
+      font-family: Fraunces, Georgia, serif;
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-transform: none;
+    }
+
+    .trellis-intro {
+      margin: 0 0 18px;
+      max-width: 62ch;
+      font-size: 15px;
+      line-height: 1.55;
+      color: #3c3832;
+    }
+
+    .explain {
+      display: grid;
+      gap: 10px;
+      margin: 0 0 18px;
+      padding: 14px 16px;
+      background: #fbf8f2;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .explain h3 {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .explain ul {
+      margin: 0;
+      padding-left: 1.15em;
+      color: #3c3832;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .explain li + li { margin-top: 6px; }
+
+    .trellis-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .trellis-tabs button {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .trellis-tabs button[aria-selected="true"] {
+      background: var(--button);
+      color: var(--button-ink);
+      border-color: var(--button);
+    }
+
+    .pane-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px 18px;
+      margin-bottom: 12px;
+    }
+
+    .pane-head h3 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #e7efe9;
+      color: var(--button);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .badge.marginals {
+      background: #efe8da;
+      color: #6a4d18;
+    }
+
+    .pane-blurb {
+      margin: 0 0 16px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #3c3832;
+    }
+
+    .path-board {
+      margin: 0 0 16px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fffdf8;
+    }
+
+    .path-board .label-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .path-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .path-controls button {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .path-controls button:hover { background: var(--paper); }
+
+    .path-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .path-step {
+      flex: 0 0 auto;
+      width: 108px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--sheet);
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .path-step.active {
+      border-color: var(--button);
+      box-shadow: 0 0 0 2px rgba(29, 60, 52, 0.18);
+    }
+
+    .path-step .tok {
+      display: block;
+      margin-bottom: 8px;
+      font-family: Fraunces, Georgia, serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      word-break: break-word;
+    }
+
+    .path-step .tag {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    .path-step .score {
+      display: block;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .tag.o { color: var(--muted); }
+    .tag.disease { color: var(--disease-ink); }
+    .tag.medication { color: var(--medication-ink); }
+    .tag.chemical { color: var(--chemical-ink); }
+    .tag.patient_name { color: var(--patient-ink); }
+
+    .grid-tools {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 10px;
+    }
+
+    .grid-tools h4 {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .grid-tools label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: 0;
+      text-transform: none;
+      color: #3c3832;
+      cursor: pointer;
+    }
+
+    .heat-legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .heat-bar {
+      width: 88px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(251,248,242,0.9), rgba(29,60,52,0.85));
+      border: 1px solid var(--line);
+    }
+
+    .trellis-scroll {
+      overflow: auto;
+      max-height: min(560px, 70vh);
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbf8f2;
+    }
+
+    .trellis-grid {
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 12px;
+      min-width: 100%;
+    }
+
+    .trellis-grid th,
+    .trellis-grid td {
+      padding: 10px 8px;
+      text-align: center;
+      border-right: 1px solid rgba(216, 208, 195, 0.75);
+      border-bottom: 1px solid rgba(216, 208, 195, 0.75);
+      white-space: nowrap;
+    }
+
+    .trellis-grid th {
+      position: sticky;
+      top: 0;
+      background: #f3eee4;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      z-index: 2;
+    }
+
+    .trellis-grid th:first-child,
+    .trellis-grid td.state {
+      position: sticky;
+      left: 0;
+      background: #f3eee4;
+      text-align: left;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px;
+      color: var(--muted);
+      z-index: 1;
+      min-width: 118px;
+    }
+
+    .trellis-grid th:first-child { z-index: 3; }
+
+    .trellis-grid td.cell {
+      min-width: 78px;
+      max-width: 110px;
+      padding: 10px 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #2f2a24;
+      cursor: pointer;
+      text-shadow: 0 0 1px rgba(255, 253, 248, 0.55);
+    }
+
+    .trellis-grid td.cell.dead {
+      font-weight: 500;
+      opacity: 0.72;
+      cursor: default;
+    }
+
+    .trellis-grid td.cell:hover {
+      outline: 1px solid rgba(29, 60, 52, 0.35);
+      outline-offset: -1px;
+    }
+
+    .trellis-grid td.cell.on-path {
+      outline: 2px solid var(--button);
+      outline-offset: -2px;
+      font-weight: 700;
+      box-shadow: inset 0 0 0 999px rgba(29, 60, 52, 0.08);
+    }
+
+    .trellis-grid td.cell.current {
+      outline: 3px solid #c45c26;
+      outline-offset: -3px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .trellis-grid td.cell.dim {
+      opacity: 0.58;
+      filter: saturate(0.55);
+    }
+
+    .trellis-grid td.cell.reveal {
+      animation: pathPulse 420ms ease;
+    }
+
+    @keyframes pathPulse {
+      from { box-shadow: inset 0 0 0 999px rgba(29, 60, 52, 0.32); }
+      to { box-shadow: inset 0 0 0 999px rgba(29, 60, 52, 0.1); }
+    }
+
+    .inspect {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fffdf8;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #3c3832;
+      min-height: 4.5em;
+    }
+
+    .inspect strong { color: var(--ink); font-weight: 600; }
+
+    .mono,
+    .inspect .mono,
+    .trellis-intro .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.92em;
+    }
+
     @media (max-width: 640px) {
       body { padding-top: 32px; }
       header { display: block; }
       .model-mark { margin-top: 10px; }
       .row { align-items: stretch; flex-direction: column-reverse; }
       button { width: 100%; }
+      .chip { width: auto; }
+      .shortcut { display: none; }
+      .path-step { width: 96px; }
+      .trellis > h2 { font-size: 22px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -298,13 +788,19 @@
       </div>
       <p class="model-mark">HMM · MEMM · CRF</p>
     </header>
-    <p class="lede">Paste a sentence. The three models already in this project each mark disease, medication, chemical, and patient name.</p>
+    <p class="lede">Paste a clinical sentence. HMM, MEMM, and CRF mark diseases, medications, chemicals, and patient names. Then open the decoding lattice: it is the real score table each model used to pick a BIO tag for every token.</p>
 
     <form id="form">
       <label for="note">Clinical note</label>
       <textarea id="note" name="text" placeholder="Patient Jane Smith was admitted with pulmonary embolism and started on heparin." required></textarea>
+      <div class="examples" aria-label="Example notes">
+        <span>Try an example:</span>
+        <button type="button" class="chip" data-example="Patient Jane Smith was admitted with pulmonary embolism and started on heparin.">Admission</button>
+        <button type="button" class="chip" data-example="Mr. Robert Taylor, a 64-year-old man with type 2 diabetes mellitus and hypertension, was discharged on metformin and lisinopril.">Discharge</button>
+        <button type="button" class="chip" data-example="Carbon tetrachloride induced hepatotoxicity in rats was attenuated by silymarin.">Literature</button>
+      </div>
       <div class="row">
-        <p class="hint">One note at a time. Not for clinical use.</p>
+        <p class="hint"><span id="count">0</span> / 4,000 characters<span class="shortcut"> · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to run</span> · Not for clinical use.</p>
         <button id="submit" type="submit">Extract entities</button>
       </div>
     </form>
@@ -323,6 +819,8 @@
     const note = document.getElementById("note");
     const submit = document.getElementById("submit");
     const output = document.getElementById("output");
+    const count = document.getElementById("count");
+    const MAX_CHARS = 4000;  // must match MAX_CHARS in src/infer.py
 
     const LABELS = {
       DISEASE: "Disease",
@@ -339,41 +837,398 @@
     }
 
     function markedPassage(text, entities) {
+      // The server reports offsets in Unicode code points (Python string indices).
+      // JavaScript strings index UTF-16 units, so slice a code-point array instead;
+      // otherwise any emoji or other astral character shifts every later highlight.
+      const chars = Array.from(text);
+      const slice = (start, end) => chars.slice(start, end).join("");
       const ordered = [...entities].sort((a, b) => a.start - b.start || b.end - a.end);
       let html = "";
       let cursor = 0;
       const kept = [];
       for (const entity of ordered) {
         if (entity.start < cursor) continue;
-        html += escapeHtml(text.slice(cursor, entity.start));
-        html += `<mark class="${entity.type.toLowerCase()}">${escapeHtml(text.slice(entity.start, entity.end))}</mark>`;
+        html += escapeHtml(slice(cursor, entity.start));
+        const label = escapeHtml(LABELS[entity.type] || entity.type);
+        html += `<mark class="${entity.type.toLowerCase()}" title="${label}">${escapeHtml(slice(entity.start, entity.end))}</mark>`;
         cursor = entity.end;
         kept.push(entity);
       }
-      html += escapeHtml(text.slice(cursor));
+      html += escapeHtml(slice(cursor));
       return { html, kept };
+    }
+
+    function countEntities(n) {
+      return `${n} ${n === 1 ? "entity" : "entities"}`;
+    }
+
+    function agreementTable(readings) {
+      // One row per distinct (span, type) found by any model, in reading order.
+      const rows = new Map();
+      readings.forEach((reading, column) => {
+        for (const entity of reading.entities || []) {
+          const key = `${entity.start}:${entity.end}:${entity.type}`;
+          if (!rows.has(key)) rows.set(key, { entity, found: new Set() });
+          rows.get(key).found.add(column);
+        }
+      });
+      if (!rows.size) return "";
+      const ordered = [...rows.values()].sort((a, b) => a.entity.start - b.entity.start || a.entity.end - b.entity.end);
+      const all = ordered.filter((row) => row.found.size === readings.length).length;
+      const head = readings.map((r) => `<th scope="col">${escapeHtml(r.model)}</th>`).join("");
+      const body = ordered.map(({ entity, found }) => {
+        const label = LABELS[entity.type] || entity.type;
+        const cells = readings.map((r, column) => found.has(column)
+          ? '<td><span class="yes" aria-label="found">✓</span></td>'
+          : '<td><span class="no" aria-label="not found">–</span></td>').join("");
+        return `<tr><td>${escapeHtml(entity.text)}<span class="pill ${entity.type.toLowerCase()}">${escapeHtml(label)}</span></td>${cells}</tr>`;
+      }).join("");
+      return `<section class="agreement"><h2>Model agreement</h2>`
+        + `<p class="quiet">${all} of ${countEntities(ordered.length)} found by all ${readings.length} models.</p>`
+        + `<table><thead><tr><th scope="col">Entity</th>${head}</tr></thead><tbody>${body}</tbody></table></section>`;
+    }
+
+    function heatColor(strength) {
+      const t = Math.max(0, Math.min(1, strength));
+      // Soft ramp so numbers stay legible even on the strongest cells.
+      const r = Math.round(247 - t * (247 - 58));
+      const g = Math.round(242 - t * (242 - 110));
+      const b = Math.round(232 - t * (232 - 96));
+      const a = 0.22 + t * 0.55;
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    }
+
+    function cellInk(strength, onPath) {
+      // Switch to light ink once the fill is dark enough to bury brown text.
+      const t = Math.max(0, Math.min(1, strength + (onPath ? 0.1 : 0)));
+      return t >= 0.48 ? "#f8f4eb" : "#1f1b16";
+    }
+
+    // Backend marks impossible Viterbi cells with ~-1e9; keep those out of heat + display.
+    const IMPOSSIBLE_LOG = -1e8;
+
+    function isRealScore(value, unit) {
+      if (typeof value !== "number" || Number.isNaN(value)) return false;
+      if (unit === "probability") return value >= 0 && Number.isFinite(value);
+      return Number.isFinite(value) && value > IMPOSSIBLE_LOG;
+    }
+
+    function columnStrengths(scores, kind, unit) {
+      return scores.map((row) => {
+        const nums = row.filter((v) => isRealScore(v, unit));
+        if (!nums.length) return row.map(() => 0);
+        if (kind === "marginals") {
+          const max = Math.max(...nums, 1e-12);
+          return row.map((v) => (isRealScore(v, unit) ? v / max : 0));
+        }
+        const max = Math.max(...nums);
+        const min = Math.min(...nums);
+        const span = Math.max(max - min, 1e-9);
+        return row.map((v) => (isRealScore(v, unit) ? (v - min) / span : 0));
+      });
+    }
+
+    function formatScore(value, unit) {
+      if (!isRealScore(value, unit)) return "—";
+      if (unit === "probability") return value.toFixed(3);
+      return value.toFixed(2);
+    }
+
+    function scoreUnitLabel(unit) {
+      return unit === "probability" ? "probability" : "log-probability";
+    }
+
+    function tagClass(tag) {
+      if (!tag || tag === "O") return "o";
+      if (tag.includes("DISEASE")) return "disease";
+      if (tag.includes("MEDICATION")) return "medication";
+      if (tag.includes("CHEMICAL")) return "chemical";
+      if (tag.includes("PATIENT")) return "patient_name";
+      return "o";
+    }
+
+    function prettyTag(tag) {
+      if (tag === "O") return "O · outside";
+      const [bio, type] = tag.split("-");
+      const label = LABELS[type] || type;
+      return `${bio}-${label}`;
+    }
+
+    function modelBlurb(kind) {
+      if (kind === "viterbi") {
+        return "This grid is the Viterbi trellis the model filled while decoding. Column = token. Row = BIO state. Cell = highest log-probability of any path that ends in that state at that token. Darker = stronger within the column. The green outline is the single path Viterbi kept after backtracking — the tags used for NER.";
+      }
+      return "sklearn-crfsuite does not expose Viterbi cell scores, so this CRF grid shows real forward–backward tag marginals P(y<sub>t</sub> = state | sentence). Darker = higher probability in that column. The green outline is still the Viterbi decode path the CRF used for the entity spans above — not a made-up highlight.";
+    }
+
+    function buildPathStrip(trellis) {
+      const { tokens, tags, path, scores, unit } = trellis;
+      return tokens.map((tok, t) => {
+        const s = path[t];
+        const tag = tags[t];
+        const value = scores[t][s];
+        return `<button type="button" class="path-step" data-step="${t}" aria-label="Token ${escapeHtml(tok)} tagged ${escapeHtml(tag)}">`
+          + `<span class="tok">${escapeHtml(tok)}</span>`
+          + `<span class="tag ${tagClass(tag)}">${escapeHtml(prettyTag(tag))}</span>`
+          + `<span class="score">${escapeHtml(formatScore(value, unit))} ${escapeHtml(unit === "probability" ? "P" : "log p")}</span>`
+          + `</button>`;
+      }).join("");
+    }
+
+    function buildGrid(trellis) {
+      const { tokens, states, scores, path, kind, unit } = trellis;
+      const heats = columnStrengths(scores, kind, unit);
+      const head = tokens.map((tok, t) => `<th scope="col" data-col="${t}">${escapeHtml(tok)}</th>`).join("");
+      const body = states.map((state, s) => {
+        const cells = tokens.map((tok, t) => {
+          const value = scores[t][s];
+          const onPath = path[t] === s;
+          const real = isRealScore(value, unit);
+          const heat = heats[t][s];
+          const bg = real ? heatColor(heat) : "transparent";
+          const ink = real ? cellInk(heat, onPath) : "#9a9184";
+          const dead = real ? "" : " dead";
+          return `<td class="cell${onPath ? " on-path" : ""}${dead}" data-t="${t}" data-s="${s}" style="background:${bg};color:${ink}">${escapeHtml(formatScore(value, unit))}</td>`;
+        }).join("");
+        return `<tr data-state-row="${s}" data-state-name="${escapeHtml(state)}"><td class="state">${escapeHtml(state)}</td>${cells}</tr>`;
+      }).join("");
+      return `<div class="trellis-scroll"><table class="trellis-grid" data-kind="${escapeHtml(kind)}" data-unit="${escapeHtml(unit)}"><thead><tr><th scope="col">BIO state</th>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+    }
+
+    function buildTrellisMarkup(reading) {
+      const trellis = reading.trellis;
+      const kind = trellis.kind;
+      const badge = kind === "viterbi"
+        ? '<span class="badge">Viterbi path scores</span>'
+        : '<span class="badge marginals">Tag marginals + Viterbi path</span>';
+      return `<div class="pane-head"><h3>${escapeHtml(reading.model)} lattice on the first sentence</h3>${badge}</div>`
+        + `<p class="pane-blurb">${modelBlurb(kind)}</p>`
+        + `<div class="path-board">`
+        + `<div class="label-row"><span>Chosen decode path</span><span>Click a step · Play walks the real path</span></div>`
+        + `<div class="path-strip">${buildPathStrip(trellis)}</div>`
+        + `<div class="path-controls" style="margin-top:12px">`
+        + `<button type="button" data-act="prev">Previous</button>`
+        + `<button type="button" data-act="play">Play path</button>`
+        + `<button type="button" data-act="next">Next</button>`
+        + `</div></div>`
+        + `<div class="grid-tools"><h4>Full score lattice</h4>`
+        + `<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">`
+        + `<label><input type="checkbox" data-act="path-only"> Dim cells off the path</label>`
+        + `<span class="heat-legend"><span>Weaker</span><span class="heat-bar" aria-hidden="true"></span><span>Stronger</span></span>`
+        + `</div></div>`
+        + buildGrid(trellis)
+        + `<div class="inspect" data-inspect>Select a token above or a cell in the lattice to read the exact score.</div>`;
+    }
+
+    function trellisPanel(readings) {
+      const withTrellis = readings.filter((r) => r.trellis && r.trellis.tokens && r.trellis.tokens.length);
+      if (!withTrellis.length) {
+        return `<section class="trellis"><h2>How the tagger decides</h2>`
+          + `<p class="trellis-intro">No lattice for this note (empty text, or the first sentence is longer than 40 tokens).</p></section>`;
+      }
+      const tabs = withTrellis.map((r, i) =>
+        `<button type="button" role="tab" aria-selected="${i === 0}" data-trellis="${i}">${escapeHtml(r.model)}</button>`
+      ).join("");
+      const panes = withTrellis.map((r, i) =>
+        `<div class="trellis-pane" data-pane="${i}" ${i === 0 ? "" : "hidden"}>${buildTrellisMarkup(r)}</div>`
+      ).join("");
+      return `<section class="trellis" id="trellis">`
+        + `<h2>How the tagger decides</h2>`
+        + `<p class="trellis-intro">Named-entity recognition here is sequence labelling: every token gets a BIO tag `
+        + `(<span class="mono">B-</span>egin, <span class="mono">I-</span>nside, <span class="mono">O</span>utside). `
+        + `HMM and MEMM fill a Viterbi trellis and keep one best path. CRF also keeps a Viterbi path for the spans you see above; `
+        + `its grid shows tag marginals because that is what the library exposes. Every number below is computed from the fitted checkpoint on this note — nothing is simulated.</p>`
+        + `<div class="explain"><h3>How to read this</h3><ul>`
+        + `<li><strong>Columns</strong> are tokens from the first sentence after the same tokeniser the models were trained with.</li>`
+        + `<li><strong>Rows</strong> are BIO states: O, and B-/I- for disease, medication, chemical, and patient name.</li>`
+        + `<li><strong>Green outline</strong> is the decode path: one state per token. That path is exactly what produced the highlighted entities.</li>`
+        + `<li><strong>Heat</strong> is relative inside each column so you can see which states compete for that token. Absolute values stay in the cells and in the inspector.</li>`
+        + `</ul></div>`
+        + `<div class="trellis-tabs" role="tablist" aria-label="Model lattice">${tabs}</div>${panes}</section>`;
+    }
+
+    function describeCell(trellis, t, s) {
+      const token = trellis.tokens[t];
+      const state = trellis.states[s];
+      const value = trellis.scores[t][s];
+      const onPath = trellis.path[t] === s;
+      const chosen = trellis.tags[t];
+      const unit = scoreUnitLabel(trellis.unit);
+      if (trellis.kind === "viterbi") {
+        return `<strong>Token</strong> “${escapeHtml(token)}” · <strong>state</strong> <span class="mono">${escapeHtml(state)}</span><br>`
+          + `Viterbi cell score = <strong>${escapeHtml(formatScore(value, trellis.unit))}</strong> (${escapeHtml(unit)}): `
+          + `best path log-probability ending here.`
+          + (!isRealScore(value, trellis.unit)
+            ? ` This transition is treated as impossible / empty.`
+            : "")
+          + `<br>`
+          + (onPath
+            ? `This cell <strong>is on the kept path</strong>, so the model tagged “${escapeHtml(token)}” as <span class="mono">${escapeHtml(chosen)}</span>.`
+            : `Not on the kept path. Viterbi chose <span class="mono">${escapeHtml(chosen)}</span> for this token instead.`);
+      }
+      return `<strong>Token</strong> “${escapeHtml(token)}” · <strong>state</strong> <span class="mono">${escapeHtml(state)}</span><br>`
+        + `CRF marginal = <strong>${escapeHtml(formatScore(value, trellis.unit))}</strong> `
+        + `(P(y<sub>${t}</sub> = ${escapeHtml(state)} | sentence)). `
+        + `These come from forward–backward, not from inventing a Viterbi score matrix.<br>`
+        + (onPath
+          ? `The Viterbi decode still picked this state, so “${escapeHtml(token)}” is tagged <span class="mono">${escapeHtml(chosen)}</span> in the NER output.`
+          : `Viterbi did not pick this state; it tagged the token <span class="mono">${escapeHtml(chosen)}</span>.`);
+    }
+
+    function wirePane(pane, trellis) {
+      let cursor = 0;
+      let timer = null;
+      const inspect = pane.querySelector("[data-inspect]");
+      const steps = [...pane.querySelectorAll(".path-step")];
+      const cells = [...pane.querySelectorAll("td.cell")];
+      const table = pane.querySelector(".trellis-grid");
+
+      const clearCurrent = () => {
+        pane.querySelectorAll(".path-step.active").forEach((el) => el.classList.remove("active"));
+        pane.querySelectorAll("td.cell.current").forEach((el) => el.classList.remove("current"));
+      };
+
+      const showStep = (t) => {
+        cursor = Math.max(0, Math.min(trellis.tokens.length - 1, t));
+        clearCurrent();
+        const step = pane.querySelector(`.path-step[data-step="${cursor}"]`);
+        if (step) {
+          step.classList.add("active");
+          step.scrollIntoView({ inline: "nearest", block: "nearest", behavior: "smooth" });
+        }
+        const s = trellis.path[cursor];
+        const cell = pane.querySelector(`td.cell[data-t="${cursor}"][data-s="${s}"]`);
+        if (cell) {
+          cell.classList.add("current", "reveal");
+          cell.scrollIntoView({ inline: "nearest", block: "nearest", behavior: "smooth" });
+        }
+        inspect.innerHTML = describeCell(trellis, cursor, s);
+      };
+
+      const stopPlay = () => {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+      };
+      pane._stopTrellisPlay = stopPlay;
+
+      steps.forEach((step) => step.addEventListener("click", () => {
+        stopPlay();
+        showStep(Number(step.dataset.step));
+      }));
+
+      cells.forEach((cell) => cell.addEventListener("click", () => {
+        stopPlay();
+        const t = Number(cell.dataset.t);
+        const s = Number(cell.dataset.s);
+        cursor = t;
+        clearCurrent();
+        const step = pane.querySelector(`.path-step[data-step="${t}"]`);
+        if (step) step.classList.add("active");
+        cell.classList.add("current");
+        inspect.innerHTML = describeCell(trellis, t, s);
+      }));
+
+      pane.querySelector('[data-act="prev"]').addEventListener("click", () => {
+        stopPlay();
+        showStep(cursor - 1);
+      });
+      pane.querySelector('[data-act="next"]').addEventListener("click", () => {
+        stopPlay();
+        showStep(cursor + 1);
+      });
+      pane.querySelector('[data-act="play"]').addEventListener("click", () => {
+        stopPlay();
+        showStep(0);
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        let t = 0;
+        timer = window.setInterval(() => {
+          t += 1;
+          if (t >= trellis.tokens.length) {
+            stopPlay();
+            return;
+          }
+          showStep(t);
+        }, 550);
+      });
+
+      const pathOnly = pane.querySelector('[data-act="path-only"]');
+      pathOnly.addEventListener("change", () => {
+        table.querySelectorAll("td.cell").forEach((cell) => {
+          cell.classList.toggle("dim", pathOnly.checked && !cell.classList.contains("on-path"));
+        });
+      });
+
+      showStep(0);
+    }
+
+    function wireTrellis(root, readings) {
+      const panel = root.querySelector("#trellis");
+      if (!panel) return;
+      const withTrellis = readings.filter((r) => r.trellis && r.trellis.tokens && r.trellis.tokens.length);
+      const tabs = [...panel.querySelectorAll("[data-trellis]")];
+      const panes = [...panel.querySelectorAll("[data-pane]")];
+      panes.forEach((pane, i) => wirePane(pane, withTrellis[i].trellis));
+      const show = (index) => {
+        panes.forEach((pane) => { if (pane._stopTrellisPlay) pane._stopTrellisPlay(); });
+        tabs.forEach((tab, i) => tab.setAttribute("aria-selected", String(i === index)));
+        panes.forEach((pane, i) => { pane.hidden = i !== index; });
+      };
+      tabs.forEach((tab) => tab.addEventListener("click", () => show(Number(tab.dataset.trellis))));
+      show(0);
     }
 
     function render(data) {
       const text = data.text;
-      const blocks = (data.models || []).map((reading) => {
+      const readings = data.models || [];
+      const blocks = readings.map((reading) => {
         const entities = reading.entities || [];
+        const heading = `<h2>${escapeHtml(reading.model)}<span class="count">${countEntities(entities.length)}</span></h2>`;
         if (!entities.length) {
-          return `<section class="reading"><h2>${escapeHtml(reading.model)}</h2><p class="quiet">No entities.</p></section>`;
+          return `<section class="reading">${heading}<p class="quiet">No entities.</p></section>`;
         }
         const passage = markedPassage(text, entities);
         const items = passage.kept.map((entity) => {
           const label = LABELS[entity.type] || entity.type;
           return `<li><span>${escapeHtml(entity.text)}</span><span class="type">${escapeHtml(label)}</span></li>`;
         }).join("");
-        return `<section class="reading"><h2>${escapeHtml(reading.model)}</h2><p class="passage">${passage.html}</p><ul class="found">${items}</ul></section>`;
+        return `<section class="reading">${heading}<p class="passage">${passage.html}</p><ul class="found">${items}</ul></section>`;
       }).join("");
-      output.innerHTML = blocks;
+      output.innerHTML = agreementTable(readings) + trellisPanel(readings) + blocks;
+      wireTrellis(output, readings);
+    }
+
+    function updateCount() {
+      // Count code points, as the server does, so emoji count as one character.
+      const n = Array.from(note.value).length;
+      count.textContent = n.toLocaleString("en-US");
+      count.classList.toggle("over", n > MAX_CHARS);
+    }
+
+    note.addEventListener("input", updateCount);
+    note.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        form.requestSubmit();
+      }
+    });
+    for (const chip of document.querySelectorAll("[data-example]")) {
+      chip.addEventListener("click", () => {
+        note.value = chip.dataset.example;
+        updateCount();
+        form.requestSubmit();
+      });
     }
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const text = note.value;
+      if (!text.trim()) {
+        output.innerHTML = '<p class="status">Type or paste a note first.</p>';
+        note.focus();
+        return;
+      }
       submit.disabled = true;
       submit.textContent = "Reading…";
       output.innerHTML = "";

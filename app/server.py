@@ -3,13 +3,14 @@
 
 Run from the repository root:
 
-    PYTHONPATH=. .venv/bin/python app/server.py
+    PYTHONPATH=. .venv/bin/python app/server.py [--host 127.0.0.1] [--port 8000]
 
 Then open http://127.0.0.1:8000
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import sys
@@ -33,6 +34,13 @@ PORT = int(os.environ.get("PORT", 8000))
 MODEL_NAMES = ("hmm", "memm", "crf")
 MODELS_DIR = ROOT / "models"
 PAGE = Path(__file__).resolve().parent / "static" / "index.html"
+MAX_BODY_BYTES = 100_000
+FAVICON = (
+    b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">'
+    b'<rect width="32" height="32" rx="8" fill="#1d3c34"/>'
+    b'<rect x="7" y="10" width="18" height="4" rx="2" fill="#f4d4ce"/>'
+    b'<rect x="7" y="18" width="11" height="4" rx="2" fill="#d5ebe3"/></svg>'
+)
 
 _models = None
 _model_error = None
@@ -78,7 +86,11 @@ class Handler(BaseHTTPRequestHandler):
         self._send(status, json.dumps(payload).encode("utf-8"), "application/json; charset=utf-8")
 
     def do_GET(self) -> None:  # noqa: N802
-        if self.path.split("?", 1)[0] not in ("/", "/index.html"):
+        path = self.path.split("?", 1)[0]
+        if path == "/favicon.ico":
+            self._send(200, FAVICON, "image/svg+xml")
+            return
+        if path not in ("/", "/index.html"):
             self._json(404, {"error": "Not found."})
             return
         self._send(200, PAGE.read_bytes(), "text/html; charset=utf-8")
@@ -88,14 +100,20 @@ class Handler(BaseHTTPRequestHandler):
             self._json(404, {"error": "Not found."})
             return
 
-        length = int(self.headers.get("Content-Length", "0") or 0)
-        if length > 100_000:
+        raw_length = (self.headers.get("Content-Length") or "0").strip()
+        if not (raw_length.isascii() and raw_length.isdigit()):
+            # Rejects non-numeric and negative values; a negative length would make
+            # rfile.read() block until the client closes the connection.
+            self._json(400, {"error": "Content-Length must be a non-negative integer."})
+            return
+        length = int(raw_length)
+        if length > MAX_BODY_BYTES:
             self._json(413, {"error": "Request is too large."})
             return
         try:
             payload = json.loads(self.rfile.read(length).decode("utf-8") or "{}")
-        except json.JSONDecodeError:
-            self._json(400, {"error": "Send a JSON object with a text field."})
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            self._json(400, {"error": "Send a UTF-8 JSON object with a text field."})
             return
         if not isinstance(payload, dict) or not isinstance(payload.get("text", ""), str):
             self._json(400, {"error": "The text field must be a string."})
@@ -119,10 +137,22 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main() -> None:
-    get_models()
-    server = ThreadingHTTPServer((HOST, PORT), Handler)
-    print(f"Clinical NER is at http://{HOST}:{PORT}")
-    server.serve_forever()
+    parser = argparse.ArgumentParser(description="Serve the clinical NER demo page.")
+    parser.add_argument("--host", default=HOST, help=f"Interface to bind (default: {HOST}).")
+    parser.add_argument("--port", type=int, default=PORT, help=f"Port to listen on (default: {PORT}).")
+    args = parser.parse_args()
+
+    _, error = get_models()
+    if error:
+        print(f"Warning: {error}", file=sys.stderr)
+    server = ThreadingHTTPServer((args.host, args.port), Handler)
+    print(f"Clinical NER is at http://{args.host}:{args.port}")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
-# Medical Named Entity Recognition (HMM, MEMM, CRF)
+# Named Entity Recognition for Healthcare (HMM, MEMM, CRF)
 
-A rigorous, reproducible sequence-labeling project comparing three classical statistical sequence models—**Hidden Markov Models (HMM)**, **Maximum Entropy Markov Models (MEMM)**, and **Linear-Chain Conditional Random Fields (CRF)**—for Named Entity Recognition (NER) across authentic biomedical literature and structured clinical templates.
+A rigorous, reproducible sequence-labeling project comparing three classical statistical sequence models—**Hidden Markov Models (HMM)**, **Maximum Entropy Markov Models (MEMM)**, and **Linear-Chain Conditional Random Fields (CRF)**—for Named Entity Recognition for Healthcare across authentic biomedical literature and structured clinical templates.
 
 > [!IMPORTANT]
 > **Classical Statistical NLP Scope:** This project deliberately investigates classical statistical sequence-labeling algorithms grounded in probabilistic graphical models and convex optimization. It does **not** employ transformer-based neural language models (such as BERT or RoBERTa).
@@ -128,15 +128,15 @@ All counts below were verified directly from the JSONL files:
 | Partition / Split | Sentences | Unique Sentences | Duplicates | Total Tokens | `DISEASE` | `MEDICATION` | `CHEMICAL` | `PATIENT_NAME` | Total Mentions |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **BC5CDR Raw Train** | 5,228 | 5,141 | 87 | 109,322 | 4,182 | 2,239 | 2,964 | 0 | 9,385 |
-| **Synthetic Train** | 4,000 | 4,000 | 0 | 53,017 | 4,000 | 2,056 | 0 | 4,000 | 10,056 |
-| **Augmented Train (Total)** | **9,228** | **9,141** | **87** | **162,339** | **8,182** | **4,295** | **2,964** | **4,000** | **19,441** |
+| **Synthetic Train** | 4,000 | 4,000 | 0 | 52,984 | 4,000 | 2,055 | 0 | 4,000 | 10,055 |
+| **Augmented Train (Total)** | **9,228** | **9,141** | **87** | **162,306** | **8,182** | **4,294** | **2,964** | **4,000** | **19,440** |
 | **BC5CDR Raw Valid** | 5,330 | 5,202 | 128 | 108,958 | 4,244 | 2,206 | 3,141 | 0 | 9,591 |
-| **Synthetic Valid** | 500 | 500 | 0 | 7,212 | 500 | 252 | 0 | 500 | 1,252 |
-| **Augmented Valid (Total)** | **5,830** | **5,702** | **128** | **116,170** | **4,744** | **2,458** | **3,141** | **500** | **10,843** |
+| **Synthetic Valid** | 500 | 500 | 0 | 7,238 | 500 | 252 | 0 | 500 | 1,252 |
+| **Augmented Valid (Total)** | **5,830** | **5,702** | **128** | **116,196** | **4,744** | **2,458** | **3,141** | **500** | **10,843** |
 | **BC5CDR Original Test (Fixed)** | 5,865 | 5,713 | 152 | 116,318 | 4,424 | 2,245 | 3,140 | 0 | 9,809 |
-| **Synthetic Test** | 500 | 500 | 0 | 7,638 | 500 | 336 | 0 | 500 | 1,336 |
-| **Augmented Test (Total)** | **6,365** | **6,213** | **152** | **123,956** | **4,924** | **2,581** | **3,140** | **500** | **11,145** |
-| **GRAND TOTAL CORPUS** | **21,423** | **21,056** | **367** | **402,465** | **17,850** | **9,334** | **9,245** | **5,000** | **41,429** |
+| **Synthetic Test** | 500 | 500 | 0 | 7,680 | 500 | 339 | 0 | 500 | 1,339 |
+| **Augmented Test (Total)** | **6,365** | **6,213** | **152** | **123,998** | **4,924** | **2,584** | **3,140** | **500** | **11,148** |
+| **GRAND TOTAL CORPUS** | **21,423** | **21,056** | **367** | **402,500** | **17,850** | **9,336** | **9,245** | **5,000** | **41,431** |
 
 *Note on BC5CDR duplicates:* The 367 duplicate sentences within BC5CDR are verbatim repeated standard section headers and study phrases (e.g., `'METHODS:'` or `'RESULTS:'`). They are authentic to biomedical literature abstracts and are preserved in the gold data.
 
@@ -204,7 +204,7 @@ The original BC5CDR test partition ([`data/processed/bc5cdr_original_test.jsonl`
 - **Out-of-Vocabulary (OOV) Handling:** Words with training frequency $< 2$ are mapped during training and inference to 8 morphological signatures: `<UNK_TITLE>`, `<UNK_ALL_CAPS>`, `<UNK_NUM>`, `<UNK_DASH>`, `<UNK_SUFFIX_DISEASE>`, `<UNK_SUFFIX_DRUG>`, `<UNK_LOWER>`, and `<UNK>`.
 - **Decoding:** Exact Viterbi trellis dynamic programming in log-space with strict BIO transition penalty masks ($-\infty$ assigned to illegal transitions such as `O -> I-*`).
 - **Hyperparameters:** $\alpha_{\text{trans}} = 0.01$, $\alpha_{\text{emit}} = 0.001$, $\alpha_{\text{init}} = 0.01$, $\text{min\_word\_freq} = 2$.
-- **Strengths & Weaknesses:** Trains in **0.06 seconds**. However, it cannot incorporate multi-token context or overlapping linguistic features and scores $F_1 = 0.0000$ on unseen patient names.
+- **Strengths & Weaknesses:** Trains in well under a second (**0.24 s** in the latest run). However, it cannot incorporate multi-token context or overlapping linguistic features and scores $F_1 = 0.0000$ on unseen patient names.
 
 ---
 
@@ -239,7 +239,7 @@ The original BC5CDR test partition ([`data/processed/bc5cdr_original_test.jsonl`
 ## 7. Model Training and Inference Workflow
 
 ### Training Procedure
-All three models are trained on the combined augmented training set ([`data/processed/bc5cdr_augmented_train.jsonl`](data/processed/bc5cdr_augmented_train.jsonl), 9,228 sentences, 162,339 tokens):
+All three models are trained on the combined augmented training set ([`data/processed/bc5cdr_augmented_train.jsonl`](data/processed/bc5cdr_augmented_train.jsonl), 9,228 sentences, 162,306 tokens):
 
 ```bash
 # Train all three models and evaluate across all three tracks
@@ -275,6 +275,18 @@ for token, tag in zip(sentences[0], predictions[0]):
     print(f"{token:15s} -> {tag}")
 ```
 
+To tag raw text instead of pre-tokenized sentences, use the same tokenizer and sentence splitter as the web demo:
+
+```python
+import joblib
+from src.infer import extract_text
+
+result = extract_text("Mr. John Doe was prescribed metformin for type 2 diabetes.",
+                      joblib.load("models/crf.joblib"), "CRF")
+for entity in result["entities"]:
+    print(entity["type"], entity["text"], entity["start"], entity["end"])
+```
+
 ---
 
 ## 8. Evaluation Methodology
@@ -294,11 +306,11 @@ Partial overlaps receive no credit.
 
 ### 3. Three Distinct Evaluation Tracks
 - **Track A (Pure Gold Biomedical Benchmark):** Evaluates strictly on the original BC5CDR test partition (5,865 sentences, 116,318 tokens). Gold classes: `DISEASE`, `MEDICATION`, `CHEMICAL`.
-- **Track B (Synthetic Clinical Name Benchmark):** Evaluates strictly on the synthetic test partition (500 sentences, 7,638 tokens). Gold classes: `PATIENT_NAME`, `DISEASE`, `MEDICATION`.
-- **Track C (Combined Augmented Test Benchmark):** Joint evaluation over the entire augmented test partition (6,365 sentences, 123,956 tokens: exact concatenation of Track A + Track B). All 4 classes active.
+- **Track B (Synthetic Clinical Name Benchmark):** Evaluates strictly on the synthetic test partition (500 sentences, 7,680 tokens). Gold classes: `PATIENT_NAME`, `DISEASE`, `MEDICATION`.
+- **Track C (Combined Augmented Test Benchmark):** Joint evaluation over the entire augmented test partition (6,365 sentences, 123,998 tokens: exact concatenation of Track A + Track B). All 4 classes active.
 
 > [!WARNING]
-> **Track Composition Note:** Track C evaluates the exact union of Track A and Track B. Therefore, results from Track C are **not** independent of Tracks A and B. Across all three tracks, exactly **247,912 token evaluations** are executed over **123,956 unique test tokens**.
+> **Track Composition Note:** Track C evaluates the exact union of Track A and Track B. Therefore, results from Track C are **not** independent of Tracks A and B. Across all three tracks, exactly **247,996 token evaluations** are executed over **123,998 test tokens**.
 
 ---
 
@@ -310,9 +322,9 @@ The experimental metrics below are verified from [`reports/model_metrics.json`](
 
 | Model | Architecture Type | Training Time | Track A Micro F1 | Track A Active Macro F1 | Track B Micro F1 | Track B Active Macro F1 | Track C Micro F1 | Track C 4-Class Macro F1 | Token Accuracy (Track C) |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **HMM** | Generative (Joint MLE) | **0.06s** | 0.6838 | 0.6948 | 0.7578 | 0.6580 | 0.6920 | 0.5330 | 94.16% |
-| **MEMM** | Discriminative (Local MaxEnt) | 14.24s | 0.7749 | 0.7882 | **0.9542** | **0.9624** | 0.7976 | 0.8346 | 96.26% |
-| **CRF** | Discriminative (Global CRF) | 27.58s | **0.7890** | **0.8010** | 0.8909 | 0.9104 | **0.8019** | **0.8412** | **96.44%** |
+| **HMM** | Generative (Joint MLE) | **0.24s** | 0.6838 | 0.6948 | 0.7548 | 0.6553 | 0.6916 | 0.5328 | 94.15% |
+| **MEMM** | Discriminative (Local MaxEnt) | 63.07s | 0.7776 | 0.7905 | **0.9301** | **0.9399** | 0.7968 | 0.8317 | 96.22% |
+| **CRF** | Discriminative (Global CRF) | 46.15s | **0.7905** | **0.8019** | 0.8883 | 0.9078 | **0.8029** | **0.8399** | **96.44%** |
 
 ---
 
@@ -322,77 +334,77 @@ The experimental metrics below are verified from [`reports/model_metrics.json`](
 
 | Model | Class | Precision | Recall | F1 Score | Support (Gold Spans) | Notes |
 | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **HMM** | `DISEASE` | 0.6729 | 0.6557 | **0.6642** | 4,424 | Active gold class |
+| **HMM** | `DISEASE` | 0.6729 | 0.6555 | **0.6641** | 4,424 | Active gold class |
 | | `MEDICATION` | 0.9354 | 0.8383 | **0.8842** | 2,245 | Active gold class |
 | | `CHEMICAL` | 0.8472 | 0.3920 | **0.5360** | 3,140 | Active gold class |
 | | `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (4 false positives) |
-| | **Micro-Average** | **0.7730** | **0.6131** | **0.6838** | **9,809** | Pooled span counts |
-| | **Active Macro F1 (3-Class)** | **0.8185** | **0.6287** | **0.6948** | — | Mean of active classes |
+| | **Micro-Average** | **0.7730** | **0.6130** | **0.6838** | **9,809** | Pooled span counts |
+| | **Active Macro F1 (3-Class)** | **0.8185** | **0.6286** | **0.6948** | — | Mean of active classes |
 | | **Full Macro F1 (4-Class)** | 0.6139 | 0.4715 | 0.5211 | — | Fixed $|C|=4$ schema |
-| **MEMM** | `DISEASE` | 0.8070 | 0.6976 | **0.7483** | 4,424 | Active gold class |
-| | `MEDICATION` | 0.9077 | 0.9243 | **0.9159** | 2,245 | Active gold class |
-| | `CHEMICAL` | 0.8378 | 0.6019 | **0.7005** | 3,140 | Active gold class |
-| | `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (24 false positives) |
-| | **Micro-Average** | **0.8404** | **0.7188** | **0.7749** | **9,809** | Pooled span counts |
-| | **Active Macro F1 (3-Class)** | **0.8508** | **0.7413** | **0.7882** | — | Mean of active classes |
-| | **Full Macro F1 (4-Class)** | 0.6381 | 0.5560 | 0.5912 | — | Fixed $|C|=4$ schema |
-| **CRF** | `DISEASE` | 0.8150 | 0.7330 | **0.7719** | 4,424 | Active gold class |
-| | `MEDICATION` | 0.9211 | 0.9252 | **0.9231** | 2,245 | Active gold class |
-| | `CHEMICAL` | 0.8361 | 0.6140 | **0.7080** | 3,140 | Active gold class |
-| | `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (23 false positives) |
-| | **Micro-Average** | **0.8464** | **0.7389** | **0.7890** | **9,809** | Pooled span counts |
-| | **Active Macro F1 (3-Class)** | **0.8574** | **0.7574** | **0.8010** | — | Mean of active classes: $\frac{0.7719+0.9231+0.7080}{3}$ |
-| | **Full Macro F1 (4-Class)** | 0.6431 | 0.5680 | 0.6008 | — | Fixed $|C|=4$ schema: $\frac{2.4030+0}{4}$ |
+| **MEMM** | `DISEASE` | 0.8103 | 0.7030 | **0.7528** | 4,424 | Active gold class |
+| | `MEDICATION` | 0.9064 | 0.9234 | **0.9148** | 2,245 | Active gold class |
+| | `CHEMICAL` | 0.8320 | 0.6102 | **0.7040** | 3,140 | Active gold class |
+| | `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (22 false positives) |
+| | **Micro-Average** | **0.8401** | **0.7237** | **0.7776** | **9,809** | Pooled span counts |
+| | **Active Macro F1 (3-Class)** | **0.8496** | **0.7455** | **0.7905** | — | Mean of active classes |
+| | **Full Macro F1 (4-Class)** | 0.6372 | 0.5591 | 0.5929 | — | Fixed $|C|=4$ schema |
+| **CRF** | `DISEASE` | 0.8190 | 0.7344 | **0.7744** | 4,424 | Active gold class |
+| | `MEDICATION` | 0.9174 | 0.9256 | **0.9215** | 2,245 | Active gold class |
+| | `CHEMICAL` | 0.8388 | 0.6150 | **0.7097** | 3,140 | Active gold class |
+| | `PATIENT_NAME` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (19 false positives) |
+| | **Micro-Average** | **0.8486** | **0.7399** | **0.7905** | **9,809** | Pooled span counts |
+| | **Active Macro F1 (3-Class)** | **0.8584** | **0.7583** | **0.8019** | — | Mean of active classes: $\frac{0.7744+0.9215+0.7097}{3}$ |
+| | **Full Macro F1 (4-Class)** | 0.6438 | 0.5688 | 0.6014 | — | Fixed $|C|=4$ schema: $\frac{2.4056+0}{4}$ |
 
 ---
 
-#### Track B: Synthetic Evaluation (Synthetic Test Partition, 500 Sentences, 7,638 Tokens)
+#### Track B: Synthetic Evaluation (Synthetic Test Partition, 500 Sentences, 7,680 Tokens)
 
 | Model | Class | Precision | Recall | F1 Score | Support (Gold Spans) | Notes |
 | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
 | **HMM** | `PATIENT_NAME` | 0.0000 | 0.0000 | **0.0000** | 500 | Unseen names fallback to OOV |
-| | `DISEASE` | 0.9740 | 0.9740 | **0.9740** | 500 | Active gold class |
-| | `MEDICATION` | 1.0000 | 1.0000 | **1.0000** | 336 | Active gold class |
+| | `DISEASE` | 0.9660 | 0.9660 | **0.9660** | 500 | Active gold class |
+| | `MEDICATION` | 1.0000 | 1.0000 | **1.0000** | 339 | Active gold class |
 | | `CHEMICAL` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (0 false positives) |
-| | **Micro-Average** | **0.9844** | **0.6160** | **0.7578** | **1,336** | Pooled span counts |
-| | **Active Macro F1 (3-Class)** | **0.6580** | **0.6580** | **0.6580** | — | Mean of active classes |
-| **MEMM** | `PATIENT_NAME` | 1.0000 | 0.9460 | **0.9723** | 500 | Contextual features resolve names |
-| | `DISEASE` | 0.9520 | 0.9520 | **0.9520** | 500 | Active gold class |
-| | `MEDICATION` | 1.0000 | 0.9286 | **0.9630** | 336 | Active gold class |
-| | `CHEMICAL` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (22 false positives) |
-| | **Micro-Average** | **0.9648** | **0.9439** | **0.9542** | **1,336** | Pooled span counts |
-| | **Active Macro F1 (3-Class)** | **0.9840** | **0.9422** | **0.9624** | — | Mean of active classes |
-| **CRF** | `PATIENT_NAME` | 1.0000 | 0.9760 | **0.9879** | 500 | Global optimization of name spans |
+| | **Micro-Average** | **0.9797** | **0.6139** | **0.7548** | **1,339** | Pooled span counts |
+| | **Active Macro F1 (3-Class)** | **0.6553** | **0.6553** | **0.6553** | — | Mean of active classes |
+| **MEMM** | `PATIENT_NAME` | 1.0000 | 0.9160 | **0.9562** | 500 | Contextual features resolve names |
+| | `DISEASE` | 0.8940 | 0.8940 | **0.8940** | 500 | Active gold class |
+| | `MEDICATION` | 1.0000 | 0.9410 | **0.9696** | 339 | Active gold class |
+| | `CHEMICAL` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (16 false positives) |
+| | **Micro-Average** | **0.9466** | **0.9141** | **0.9301** | **1,339** | Pooled span counts |
+| | **Active Macro F1 (3-Class)** | **0.9647** | **0.9170** | **0.9399** | — | Mean of active classes |
+| **CRF** | `PATIENT_NAME` | 1.0000 | 0.9520 | **0.9754** | 500 | Global optimization of name spans |
 | | `DISEASE` | 0.8540 | 0.8540 | **0.8540** | 500 | Active gold class |
-| | `MEDICATION` | 1.0000 | 0.8006 | **0.8893** | 336 | Active gold class |
-| | `CHEMICAL` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (65 false positives) |
-| | **Micro-Average** | **0.8956** | **0.8862** | **0.8909** | **1,336** | Pooled span counts |
-| | **Active Macro F1 (3-Class)** | **0.9513** | **0.8769** | **0.9104** | — | Mean of active classes |
+| | `MEDICATION` | 1.0000 | 0.8083 | **0.8940** | 339 | Active gold class |
+| | `CHEMICAL` | 0.0000 | 0.0000 | 0.0000 | 0 | Inactive class (61 false positives) |
+| | **Micro-Average** | **0.8978** | **0.8790** | **0.8883** | **1,339** | Pooled span counts |
+| | **Active Macro F1 (3-Class)** | **0.9513** | **0.8714** | **0.9078** | — | Mean of active classes |
 
 ---
 
-#### Track C: Combined Augmented Test Benchmark (6,365 Sentences, 123,956 Tokens)
+#### Track C: Combined Augmented Test Benchmark (6,365 Sentences, 123,998 Tokens)
 
 | Model | Class | Precision | Recall | F1 Score | Support (Gold Spans) | Token Accuracy |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **HMM** | `DISEASE` | 0.7042 | 0.6881 | **0.6960** | 4,924 | **94.16%** |
-| | `MEDICATION` | 0.9446 | 0.8594 | **0.9000** | 2,581 | |
+| **HMM** | `DISEASE` | 0.7033 | 0.6870 | **0.6951** | 4,924 | **94.15%** |
+| | `MEDICATION` | 0.9447 | 0.8595 | **0.9001** | 2,584 | |
 | | `PATIENT_NAME` | 0.0000 | 0.0000 | **0.0000** | 500 | |
 | | `CHEMICAL` | 0.8472 | 0.3920 | **0.5360** | 3,140 | |
-| | **Micro-Average** | **0.7935** | **0.6135** | **0.6920** | **11,145** | |
-| | **Macro F1 (4-Class)** | 0.6240 | 0.4849 | 0.5330 | — | |
-| **MEMM** | `DISEASE` | 0.8238 | 0.7234 | **0.7703** | 4,924 | **96.26%** |
-| | `MEDICATION` | 0.9188 | 0.9248 | **0.9218** | 2,581 | |
-| | `PATIENT_NAME` | 0.9517 | 0.9460 | **0.9488** | 500 | |
-| | `CHEMICAL` | 0.8297 | 0.6019 | **0.6977** | 3,140 | |
-| | **Micro-Average** | **0.8572** | **0.7458** | **0.7976** | **11,145** | |
-| | **Macro F1 (4-Class)** | 0.8810 | 0.7990 | 0.8346 | — | |
-| **CRF** | `DISEASE` | 0.8194 | 0.7453 | **0.7806** | 4,924 | **96.44%** |
-| | `MEDICATION` | 0.9295 | 0.9090 | **0.9191** | 2,581 | |
-| | `PATIENT_NAME` | 0.9550 | 0.9760 | **0.9654** | 500 | |
-| | `CHEMICAL` | 0.8132 | 0.6140 | **0.6997** | 3,140 | |
-| | **Micro-Average** | **0.8530** | **0.7566** | **0.8019** | **11,145** | |
-| | **Macro F1 (4-Class)** | **0.8793** | **0.8111** | **0.8412** | — | |
+| | **Micro-Average** | **0.7931** | **0.6131** | **0.6916** | **11,148** | |
+| | **Macro F1 (4-Class)** | 0.6238 | 0.4846 | 0.5328 | — | |
+| **MEMM** | `DISEASE` | 0.8200 | 0.7224 | **0.7681** | 4,924 | **96.22%** |
+| | `MEDICATION` | 0.9179 | 0.9257 | **0.9218** | 2,584 | |
+| | `PATIENT_NAME` | 0.9542 | 0.9160 | **0.9347** | 500 | |
+| | `CHEMICAL` | 0.8262 | 0.6102 | **0.7020** | 3,140 | |
+| | **Micro-Average** | **0.8543** | **0.7466** | **0.7968** | **11,148** | |
+| | **Macro F1 (4-Class)** | 0.8796 | 0.7936 | 0.8317 | — | |
+| **CRF** | `DISEASE` | 0.8229 | 0.7465 | **0.7829** | 4,924 | **96.44%** |
+| | `MEDICATION` | 0.9263 | 0.9102 | **0.9182** | 2,584 | |
+| | `PATIENT_NAME` | 0.9616 | 0.9520 | **0.9568** | 500 | |
+| | `CHEMICAL` | 0.8172 | 0.6150 | **0.7018** | 3,140 | |
+| | **Micro-Average** | **0.8551** | **0.7566** | **0.8029** | **11,148** | |
+| | **Macro F1 (4-Class)** | **0.8820** | **0.8059** | **0.8399** | — | |
 
 ---
 
@@ -400,16 +412,18 @@ The experimental metrics below are verified from [`reports/model_metrics.json`](
 
 1. **Why HMM Fails on `PATIENT_NAME` ($F_1 = 0.0000$):**
    The HMM emission distribution $P(x_t \mid y_t)$ assumes that token generation depends strictly on the current state. Because test patient names are strictly disjoint from training names, they map to `<UNK_TITLE>`. Without surrounding lexical context (e.g., *Patient*, *Mr.*, *was admitted*), the generative model cannot distinguish an unseen proper noun from non-entity capitalized words.
-2. **Why MEMM and CRF Succeed on Names ($F_1 \ge 0.9488$):**
+2. **Why MEMM and CRF Succeed on Names ($F_1 \ge 0.9347$):**
    By conditioning on observation features across a 5-token context window ($w_{-2} \ldots w_{+2}$), discriminative models learn that capitalized words preceded by *Patient* or followed by verbs like *presented* indicate patient names, regardless of vocabulary novelty.
 3. **Why CRF Outperforms MEMM on Authentic Biomedical Text:**
-   The Linear-Chain CRF achieves the highest Track A Micro $F_1$ (**0.7890** vs MEMM's **0.7749**) and Track C Micro $F_1$ (**0.8019** vs MEMM's **0.7976**). Global sequence normalization prevents the label bias problem, allowing transition penalties and observation potentials to optimize jointly over complete sentence paths.
+   The Linear-Chain CRF achieves the highest Track A Micro $F_1$ (**0.7905** vs MEMM's **0.7776**) and Track C Micro $F_1$ (**0.8029** vs MEMM's **0.7968**). Global sequence normalization prevents the label bias problem, allowing transition penalties and observation potentials to optimize jointly over complete sentence paths.
+4. **Why MEMM Leads on the Synthetic Track:**
+   MEMM has the highest Track B Micro $F_1$ (**0.9301** vs CRF's **0.8883**). CRF is better on `PATIENT_NAME` ($0.9754$ vs $0.9562$), but MEMM scores higher on `DISEASE` ($0.8940$ vs $0.8540$) and `MEDICATION` ($0.9696$ vs $0.8940$), and CRF produces more spurious `CHEMICAL` spans on the clinical templates (61 vs 16 false positives). Track B contains only 500 template-generated sentences, so this gap should not be read as a general ranking of the two models.
 
 ---
 
 ## 10. Limitations and Responsible Use
 
-- **Synthetic Data Non-Equivalence:** High performance on Track B (`PATIENT_NAME` $F_1 = 0.9879$) reflects accuracy on controlled clinical templates. It must **never** be cited as real-world de-identification accuracy on unredacted, unstructured clinical notes.
+- **Synthetic Data Non-Equivalence:** High performance on Track B (`PATIENT_NAME` $F_1 = 0.9754$) reflects accuracy on controlled clinical templates. It must **never** be cited as real-world de-identification accuracy on unredacted, unstructured clinical notes.
 - **Biomedical Literature vs. Clinical Records:** Authentic BC5CDR text consists of published PubMed abstracts. It does not contain clinical shorthand, transcription errors, or doctor notes.
 - **Chemical Mapping Uncertainty:** The 4-tier chemical-to-medication classification is rule- and gazetteer-based. While audited across 15,935 mentions, edge cases between active metabolites and pharmaceutical drugs remain subject to domain definition.
 - **Vocabulary Bottlenecks:** Classical Markov models lack dense sub-word contextual embeddings (e.g., Byte-Pair Encoding in transformers), resulting in lower recall on rare, hyphenated chemical compounds.
@@ -420,15 +434,15 @@ The experimental metrics below are verified from [`reports/model_metrics.json`](
 ## 11. Installation and Environment Setup
 
 ### Environment Requirements
-- **OS:** macOS or Linux (tested on macOS Darwin 24.6.0).
-- **Python:** Python 3.10 to 3.14 (tested on Python 3.14.7).
+- **OS:** macOS or Linux (tested on macOS Darwin 24.6.0 and Ubuntu Linux).
+- **Python:** Python 3.12 to 3.14 (tested on Python 3.14; the pinned NumPy and SciPy releases need 3.12 or newer).
 
 ### Setup Instructions
 
 ```bash
 # 1. Clone the repository
-git clone <repository-url>
-cd nlp-project
+git clone https://github.com/kvb1201/Medical_NER.git
+cd Medical_NER
 
 # 2. Create a virtual environment
 python3 -m venv .venv
@@ -437,8 +451,8 @@ source .venv/bin/activate
 # 3. Upgrade package installer
 pip install --upgrade pip
 
-# 4. Install dependencies
-pip install scikit-learn sklearn-crfsuite python-crfsuite joblib numpy pyyaml pytest tabulate datasets huggingface_hub
+# 4. Install dependencies (versions tested with this project)
+pip install -r requirements.txt
 ```
 
 ### Verify Environment
@@ -450,13 +464,14 @@ python3 -c "import sklearn, sklearn_crfsuite, joblib, yaml; print('Environment v
 
 ## 12. Reproducibility Commands
 
-### Quick Validation (Runs in ~2 seconds)
+### Quick Validation (Runs in about 10 seconds)
 ```bash
-# Run the complete test suite (39 automated unit & integration tests)
+# Run the complete test suite (64 automated unit & integration tests)
 PYTHONPATH=. pytest tests/ -v
 ```
 
-### Evaluate Pre-Trained Models (Runs in ~45 seconds, no retraining)
+### Evaluate Trained Models (no retraining; a few minutes on a laptop CPU)
+Checkpoints in `models/` are not committed; create them once with the full pipeline below.
 ```bash
 # Evaluate existing serialized models and regenerate reports/
 PYTHONPATH=. python3 src/models/train_and_evaluate.py --eval-only
@@ -467,21 +482,41 @@ PYTHONPATH=. python3 src/models/train_and_evaluate.py --eval-only
 # 1. Download BC5CDR, generate synthetic notes, deduplicate, and assemble datasets
 PYTHONPATH=. python3 src/data/prepare_dataset.py
 
-# 2. Train HMM, MEMM, and CRF from scratch and evaluate all tracks (~45 seconds)
+# 2. Train HMM, MEMM, and CRF from scratch and evaluate all tracks (~6 minutes on a laptop CPU)
 PYTHONPATH=. python3 src/models/train_and_evaluate.py
 
 # 3. Inspect git status (verify no binaries are staged)
 git status --short
 ```
 
+> [!NOTE]
+> The dataset build takes about 5 minutes and training about 6 minutes on a laptop CPU. With the fixed seeds, a fresh build reproduces the committed `reports/` exactly, apart from measured training and inference times.
+
+### Run the Web Demo
+The demo page tags a free-text note with all three trained models and shows where they agree. It needs the checkpoints in `models/` (built by the commands above).
+
+```bash
+PYTHONPATH=. python3 app/server.py            # then open http://127.0.0.1:8000
+PYTHONPATH=. python3 app/server.py --port 8080  # optional: another port (or --host to change the interface)
+```
+
+- Paste a note (up to 4,000 characters) or click an example, then press **Extract entities** or <kbd>Ctrl</kbd>+<kbd>Enter</kbd>.
+- **Model agreement** lists every entity any model found and which models found it; below it, each model's highlighted reading.
+- Free text is tokenized to match the training data: BC5CDR-style hyphen splitting, titles such as `Dr.` and decimals kept whole. `Mr.`/`Mrs.`/`Ms.` never occur in training and are not passed to the models.
+- The server listens on `127.0.0.1` only by default and is a research demo, **not** for clinical use.
+
 ---
 
 ## 13. Repository Structure
 
 ```
-nlp-project/
+Medical_NER/
 ├── .gitignore                          # Comprehensive exclusion rules (ignores /models/, .venv, *.jsonl)
 ├── README.md                           # Master documentation, architecture guide, and reproduction manual
+├── requirements.txt                    # Python dependencies (tested versions)
+├── app/
+│   ├── server.py                       # Local web demo server (HMM, MEMM, CRF side by side)
+│   └── static/index.html               # Demo page: highlighting and model-agreement view
 ├── config/
 │   └── dataset_config.yaml             # Provenance, split sizes, and template allocation configurations
 ├── data/
@@ -513,18 +548,22 @@ nlp-project/
 │   │   ├── deduplicate.py              # Exact and near-duplicate leakage detection
 │   │   ├── validate_bio.py             # 12-point BIO validation and integrity suite
 │   │   └── prepare_dataset.py          # End-to-end dataset pipeline runner
+│   ├── infer.py                        # Free-text tokenization and span extraction for the web demo
 │   └── models/
 │       ├── hmm.py                      # Supervised HMM with Laplace smoothing & Viterbi decoding
 │       ├── memm.py                     # MEMM with dense feature extraction & decomposed Viterbi
 │       ├── crf.py                      # Linear-Chain CRF wrapping sklearn-crfsuite (L-BFGS)
 │       ├── evaluation.py               # Exact entity-span evaluation engine (Micro/Macro/Accuracy)
 │       └── train_and_evaluate.py       # Unified training and 3-track evaluation pipeline
-└── tests/                              # Pytest test suite (39 automated unit & integration tests)
+└── tests/                              # Pytest test suite (64 automated unit & integration tests)
     ├── test_deduplicate.py             # Tests text normalization, similarity, and duplicate filtering
     ├── test_generate_synthetic.py      # Tests deterministic generation, template & name disjointness
+    ├── test_infer.py                   # Tests free-text tokenization, sentence splitting, and span offsets
     ├── test_map_entities.py            # Tests 4-tier chemical mapping and suffix rules
     ├── test_models.py                  # Tests HMM, MEMM, CRF fitting, inference, and exact span metrics
     ├── test_pipeline_integrity.py      # Tests configuration, augmented files, and report generation
+    ├── test_reporting.py               # Tests that report conclusions are computed from the results
+    ├── test_server.py                  # Tests demo server responses, including malformed requests
     └── test_validate_bio.py            # Tests sequence alignment, syntax, and cross-split leakage
 ```
 

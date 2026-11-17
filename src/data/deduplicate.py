@@ -183,6 +183,16 @@ def detect_near_duplicates(
             if len(common_tokens) < 3:
                 continue
 
+            # Exact pruning: skip the O(n*m) Levenshtein when neither similarity can reach
+            # the threshold. Edit similarity is at most 1 - |len1 - len2| / max_len, and the
+            # token Jaccard here equals compute_token_jaccard() for these token sets.
+            max_len = max(len(orig_norm), len(syn_norm))
+            if max_len > 0:
+                edit_upper_bound = 1.0 - abs(len(orig_norm) - len(syn_norm)) / max_len
+                tok_jaccard = len(common_tokens) / len(orig_tok_set | syn_tok_set)
+                if edit_upper_bound < threshold and tok_jaccard < threshold:
+                    continue
+
             # Check conservative similarity
             sim = compute_conservative_similarity(orig_tokens, syn_tokens)
             if sim >= threshold:

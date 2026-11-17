@@ -13,7 +13,7 @@ Implements:
 
 import re
 import logging
-from typing import List, Dict, Tuple, Any, Optional
+from typing import List, Dict, Any
 import sklearn_crfsuite
 
 from src.models.memm import extract_token_observation_features
@@ -69,4 +69,42 @@ class LinearChainCRF:
         """Predict BIO tag sequences for a batch of sentences."""
         X = [sentence_to_features(sent) for sent in sentences]
         return self.model.predict(X)
+
+    def decode_trellis(self, tokens: List[str]) -> Dict[str, Any]:
+        """
+        Return the CRF Viterbi path plus real forward-backward tag marginals.
+
+        sklearn-crfsuite does not expose the internal Viterbi cell scores, so
+        ``scores[t][s]`` here is P(y_t = s | x) from ``predict_marginals``, not
+        a Viterbi path score. ``path`` / ``tags`` still come from Viterbi
+        (``predict``), so the highlighted path is the exact decoding used for NER.
+        """
+        if not tokens:
+            states = list(self.states) if self.states else sorted(self.model.classes_)
+            return {
+                "kind": "marginals",
+                "unit": "probability",
+                "tokens": [],
+                "states": states,
+                "scores": [],
+                "path": [],
+                "tags": [],
+            }
+
+        feats = sentence_to_features(tokens)
+        tags = [str(tag) for tag in self.model.predict([feats])[0]]
+        marginals = self.model.predict_marginals([feats])[0]
+        states = [str(s) for s in sorted(self.model.classes_)]
+        state2id = {s: i for i, s in enumerate(states)}
+        scores = [[float(token_marg.get(state, 0.0)) for state in states] for token_marg in marginals]
+        path = [int(state2id[tag]) for tag in tags]
+        return {
+            "kind": "marginals",
+            "unit": "probability",
+            "tokens": list(tokens),
+            "states": states,
+            "scores": scores,
+            "path": path,
+            "tags": tags,
+        }
 

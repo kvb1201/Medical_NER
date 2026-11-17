@@ -31,28 +31,30 @@ This dataset preparation pipeline was constructed to provide an auditable, leaka
 ## 2. Reconciled Split & Token Statistics
 
 ### A. Original BC5CDR Splits (PubMed Abstracts - After Filtering)
-| Split Name | Source Documents | Genuine Sentences | Unique Sentences | Duplicate Sentences | Total Tokens | Median Length | Range [Min, Max] |
+| Split Name | Source Abstracts (BC5CDR release) | Genuine Sentences | Unique Sentences | Duplicate Sentences | Total Tokens | Median Length | Range [Min, Max] |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Train** | 500 | 5,228 | 5,141 | 87 | 109,322 | 18 | [1, 133] |
 | **Valid** | 500 | 5,330 | 5,202 | 128 | 108,958 | 18 | [1, 232] |
 | **Test (Fixed)** | 500 | 5,865 | 5,713 | 152 | 116,318 | 17 | [1, 135] |
-| **BC5CDR Subtotal** | **1,500** | **16,423** | **16,056** | **367** | **334,598** | **18** | **[1, 232]** |
+| **BC5CDR Subtotal** | **1,500** | **16,423** | **16,056** | **367** | **334,598** | — | **[1, 232]** |
+
+*Source abstract counts are the official BC5CDR release sizes; the sentence-level files do not carry abstract IDs, so they are not recomputed here.*
 
 ### B. Synthetic Patient-Name Augmentation Splits (5,000 Sentences)
 | Split Name | Synthetic Sentences | Unique Sentences | Duplicates | Total Tokens | Fictional Patient Mentions | Disease Mentions | Medication Mentions |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Train** | 4,000 | 4,000 | 0 | 53,017 | 4,000 | 4,000 | 2,056 |
-| **Valid** | 500 | 500 | 0 | 7,212 | 500 | 500 | 252 |
-| **Test** | 500 | 500 | 0 | 7,638 | 500 | 500 | 336 |
-| **Synthetic Subtotal** | **5,000** | **5,000** | **0** | **67,867** | **5,000** | **5,000** | **2,644** |
+| **Train** | 4,000 | 4,000 | 0 | 52,984 | 4,000 | 4,000 | 2,055 |
+| **Valid** | 500 | 500 | 0 | 7,238 | 500 | 500 | 252 |
+| **Test** | 500 | 500 | 0 | 7,680 | 500 | 500 | 339 |
+| **Synthetic Subtotal** | **5,000** | **5,000** | **0** | **67,902** | **5,000** | **5,000** | **2,646** |
 
 ### C. Combined Augmented Splits (Final Benchmark)
 | Split Name | Total Sentences | Unique Sentences | Duplicate Sentences | Duplicate Rate | Total Tokens | Tokens Reconciliation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Train** | **9,228** | 9,141 | 87 | 0.94% | **162,339** | 109,322 (BC5CDR) + 53,017 (synth) = 162,339 |
-| **Valid** | **5,830** | 5,702 | 128 | 2.20% | **116,170** | 108,958 (BC5CDR) + 7,212 (synth) = 116,170 |
-| **Test** | **6,365** | 6,213 | 152 | 2.39% | **123,956** | 116,318 (BC5CDR) + 7,638 (synth) = 123,956 |
-| **TOTAL** | **21,423** | **21,056** | **367** | **1.71%** | **402,465** | **334,598 (BC5CDR) + 67,867 (synth) = 402,465** |
+| **Train** | **9,228** | 9,141 | 87 | 0.94% | **162,306** | 109,322 (BC5CDR) + 52,984 (synth) = 162,306 |
+| **Valid** | **5,830** | 5,702 | 128 | 2.20% | **116,196** | 108,958 (BC5CDR) + 7,238 (synth) = 116,196 |
+| **Test** | **6,365** | 6,213 | 152 | 2.39% | **123,998** | 116,318 (BC5CDR) + 7,680 (synth) = 123,998 |
+| **TOTAL** | **21,423** | **21,056** | **367** | **1.71%** | **402,500** | **334,598 (BC5CDR) + 67,902 (synth) = 402,500** |
 
 *Note on Uniqueness Reconciliation:*  
 In the training split, 5,141 unique BC5CDR sentences + 4,000 uniquely generated synthetic sentences = **9,141 unique sentences** (with zero cross-source sentence collisions). The 87 duplicates in augmented train derive entirely from authentic BC5CDR PubMed abstract section headers (e.g., `'METHODS:'` or `'RESULTS:'`).
@@ -64,18 +66,18 @@ In the training split, 5,141 unique BC5CDR sentences + 4,000 uniquely generated 
 | Entity Class | BC5CDR Mentions | Synthetic Mentions | Augmented Train | Augmented Valid | Augmented Test | Augmented Total |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `DISEASE` | 12,850 | 5,000 | 8,182 | 4,744 | 4,924 | **17,850** |
-| `MEDICATION` | 6,690 | 2,644 | 4,295 | 2,458 | 2,581 | **9,334** |
+| `MEDICATION` | 6,690 | 2,646 | 4,294 | 2,458 | 2,584 | **9,336** |
 | `CHEMICAL` (retained) | 9,245 | 0 | 2,964 | 3,141 | 3,140 | **9,245** |
 | `PATIENT_NAME` | 0 | 5,000 | 4,000 | 500 | 500 | **5,000** |
-| **Total Mentions** | **28,785** | **12,644** | **19,441** | **10,843** | **11,145** | **41,429** |
+| **Total Mentions** | **28,785** | **12,646** | **19,440** | **10,843** | **11,148** | **41,431** |
 
 *Chemical Reconciliation:*  
 - Original BC5CDR chemical mentions: **15,935**.
 - Mapped to `MEDICATION`: **6,690**.
 - Retained as `CHEMICAL`: **9,245**.
 - Check: $6,690 + 9,245 = 15,935$.
-- Synthetic addition of `MEDICATION`: **2,644**.
-- Final `MEDICATION` mentions in augmented dataset: $6,690 + 2,644 = 9,334$.
+- Synthetic addition of `MEDICATION`: **2,646**.
+- Final `MEDICATION` mentions in augmented dataset: $6,690 + 2,646 = 9,336$.
 - Final `CHEMICAL` mentions in augmented dataset: $9,245 + 0 = 9,245$.
 
 ---
@@ -86,7 +88,7 @@ In the training split, 5,141 unique BC5CDR sentences + 4,000 uniquely generated 
 | :--- | :--- | :--- | :--- | :--- |
 | **Any Target Entity** | **85.8%** (7,915 / 9,228) | **75.3%** (4,389 / 5,830) | **72.9%** (4,640 / 6,365) | **79.1%** (16,944 / 21,423) |
 | `DISEASE` | 72.2% (6,661) | 54.7% (3,188) | 52.6% (3,346) | 61.6% (13,195) |
-| `MEDICATION` | 40.5% (3,740) | 33.0% (1,926) | 32.3% (2,055) | 36.0% (7,721) |
+| `MEDICATION` | 40.5% (3,739) | 33.0% (1,926) | 32.3% (2,058) | 36.1% (7,723) |
 | `CHEMICAL` (retained) | 20.5% (1,893) | 34.0% (1,985) | 32.2% (2,047) | 27.7% (5,925) |
 | `PATIENT_NAME` | 43.3% (4,000) | 8.6% (500) | 7.9% (500) | 23.3% (5,000) |
 
@@ -96,7 +98,9 @@ In the training split, 5,141 unique BC5CDR sentences + 4,000 uniquely generated 
 
 Rather than blindly converting all chemicals to medications, `src/data/map_entities.py` applies a verified 4-tier decision hierarchy. Every individual decision is logged in `reports/medication_mapping_audit.csv`.
 
-### Stratified Sample Audit Summary (N = 100 Sampled Mentions)
+### Manual Stratified Spot-Check (N = 100 Sampled Mentions)
+> [!NOTE]
+> The figures in this subsection come from a one-time manual review of sampled mentions. They are written into the report as-is and are **not** recomputed by this pipeline. The complete, machine-generated decision log is `reports/medication_mapping_audit.csv`.
 - **Tier 1 (Non-Medication Exclusions, N = 20 sampled):**
   - Excluded metabolites (*creatinine, urea, bilirubin, cholesterol, lactate*), minerals/electrolytes (*calcium, sodium, potassium*), and environmental toxins (*benzene, CCl4, carbon monoxide*).
   - *Precision:* **100%** (20/20 non-medications correctly retained as CHEMICAL).
