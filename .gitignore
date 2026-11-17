@@ -112,20 +112,7 @@ client_secret*.json
 *~
 *.bak
 
-# ------------------------------------------------------------------------------
-# 9. Machine Learning Models, Serialized Checkpoints, and Tracking
-# ------------------------------------------------------------------------------
-/models/
-checkpoints/
-*.pkl
-*.joblib
-*.pt
-*.pth
-*.onnx
-*.h5
-wandb/
-runs/
-mlruns/
+
 
 # ------------------------------------------------------------------------------
 # 10. Large Downloaded and Generated Datasets (~29 MB total)
